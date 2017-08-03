@@ -14,17 +14,16 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
     <script>
-      $(document).ready(function() {
+    $(document).ready(function() {
     $('select').material_select();
     $('.modal').modal();
     });
+  
     $(document).ready(function() {
     $('.horarios').hide();
     $("#selHorarios>li>a").css("background-color", "red darken-4");
-});
- 
-   
-
+    });
+  
     function alertar() {
     alert("Parabéns! Sua disciplina foi agendada e sua alma agora pertence ao lorde das trevas!");
     }
@@ -36,6 +35,6 @@
    function horarios() {
     $('.horarios').show();
     }
-      </script>
+    </script>
   </body>
 </html>

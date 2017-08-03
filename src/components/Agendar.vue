@@ -2,7 +2,7 @@
   <div id="agendar">
     <div class="container">
         <div class="explic">
-            <p class="center-align" style="font-size: 25px;">Clique numa disciplina abaixo para começar a agendar!</p>
+            <p class="center-align" style="font-size: 25px;">Clique numa disciplina abaixo para começar a agendar</p>
         </div>
         <ul class="collapsible popout" data-collapsible="accordion">
             <li>
@@ -32,7 +32,7 @@
             <li>
                 <div class="collapsible-header">Programação</div>
                 <div class="collapsible-body">
-                    <select onchange="horarios()" id="selHorarios">
+                    <select onclick="horarios()" id="selHorarios">
                         <option value="" disabled selected>Unidade: </option>
                         <option value="bento">Bento Ribeiro</option>
                         <option value="jacare">Jacarépaguá</option>

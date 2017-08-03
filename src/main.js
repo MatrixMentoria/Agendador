@@ -4,38 +4,41 @@
 import Vue from 'vue'
 //import the App component
 import App from './App'
-//import the Agendar Component
+//importar o componente Agendar
 import Agendar from './components/Agendar'
-//import the Agendamentos Component
+//importar o componente Agendamentos
 import Agendamentos from './components/Agendamentos'
-//import the vue router
+//importar o vue router
 import VueRouter from 'vue-router'
 
-//tell vue to use the router
+//Diga ao vue para usar o router.
 Vue.use(VueRouter)
-//define your routes
+
+//defina suas rotas
 const routes = [
-//define the root url of the application.
-{ path: '/', component: Agendar },
-{path: '/agendar', component: Agendar},
-{path: '/agendamentos', component: Agendamentos},
+  //defina a url raíz da aplicação
+  { path: '/', component: Agendar },
+  {path: '/agendar', component: Agendar},
+  {path: '/agendamentos', component: Agendamentos},
 ]
 
-// Create the router instance and pass the `routes` option
-// You can pass in additional options here, but let's
-// keep it simple for now.
+// Criar a instancia do router e passar a opção de 'routes'
+// Você pode colocar opções adicionais aqui, Mas vamos
+// deixar isso assim por enquanto
+
 const router = new VueRouter({
-  routes, // short for routes: routes
+  routes, // ->  routes: routes
   mode: 'history'
 })
-//instatinat the vue instance
+
+//instantinat the vue instance
 new Vue({
-//define the selector for the root component
+  //defina o seletor para o componente raíz
   el: '#app',
-  //pass the template to the root component
+  //passar o template para o componente raíz
   template: '<App/>',
-  //declare components that the root component can access
+  //declarar componentes que o componente raiz pode acessar
   components: { App },
-  //pass in the router to the Vue instance
+  //passar o router para a instância do vue.
   router
-}).$mount('#app')//mount the router on the app
+}).$mount('#app')//montará o router no app
