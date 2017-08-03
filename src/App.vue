@@ -1,12 +1,5 @@
 <template>
   <div id="app">
-	<nav class="nav-wrapper red darken-4">
-		<span class="brand-logo center">Agendamentos</span>
-  		<ul id="nav-mobile" class="left hide-on-med-and-down">
-		    <li><router-link onclick="window.location.reload()" v-bind:to="'/Agendar'">Agendar</router-link></li>
-  		  <li><router-link v-bind:to="'/Agendamentos'">Agendamentos</router-link></li>
-        </ul>
-	</nav>
   <router-view></router-view>
 </div>
 </template>

@@ -8,6 +8,8 @@ import App from './App'
 import Agendar from './components/Agendar'
 //importar o componente Agendamentos
 import Agendamentos from './components/Agendamentos'
+//importar o componente Login
+import Login from './components/Login'
 //importar o vue router
 import VueRouter from 'vue-router'
 
@@ -17,7 +19,7 @@ Vue.use(VueRouter)
 //defina suas rotas
 const routes = [
   //defina a url raíz da aplicação
-  { path: '/', component: Agendar },
+  { path: '/', component: Login },
   {path: '/agendar', component: Agendar},
   {path: '/agendamentos', component: Agendamentos},
 ]

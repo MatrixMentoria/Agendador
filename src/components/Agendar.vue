@@ -1,6 +1,13 @@
 <template>
   <div id="agendar">
-    <div class="container">
+      <nav class="nav-wrapper red darken-4">
+		<span class="brand-logo center">Agendamentos</span>
+  		<ul id="nav-mobile" class="left hide-on-med-and-down">
+		    <li><router-link onclick="window.location.reload()" v-bind:to="'/Agendar'">Agendar</router-link></li>
+  		  <li><router-link v-bind:to="'/Agendamentos'">Agendamentos</router-link></li>
+        </ul>
+	  </nav>
+      <div class="container">
         <div class="explic">
             <p class="center-align" style="font-size: 25px;">Clique numa disciplina abaixo para começar a agendar</p>
         </div>
@@ -28,7 +35,7 @@
             </li>
         </ul>
     
-    <ul class="collapsible popout" data-collapsible="accordion">
+        <ul class="collapsible popout" data-collapsible="accordion">
             <li>
                 <div class="collapsible-header">Programação</div>
                 <div class="collapsible-body">
