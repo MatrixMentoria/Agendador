@@ -4,8 +4,6 @@
   </div>
 </template>
 
-<<script>
-  $(document).ready(function () {
-    $('.modal').modal();
-  });
+<script>
+
 </script>
