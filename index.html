@@ -2,10 +2,39 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>agendador</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+    <title>Agendador de Provas</title>
   </head>
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+     <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+    <script>
+    $(document).ready(function() {
+    $('select').material_select();
+    $('.modal').modal();
+    });
+  
+    $(document).ready(function() {
+    $('.horarios').hide();
+    $("#selHorarios>li>a").css("background-color", "red darken-4");
+    });
+  
+    function alertar() {
+    alert("Parabéns! Sua disciplina foi agendada com sucesso!");
+    }
+
+    function alertarcancelar() {
+    alert("Disciplina cancelada com sucesso!");
+    $('#materia1').hide();
+    }
+   function horarios() {
+    $('.horarios').show();
+    }
+    </script>
   </body>
 </html>
