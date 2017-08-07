@@ -16,9 +16,9 @@
         <p class="center-align" style="font-size: 25px;">Clique numa disciplina abaixo para começar a agendar</p>
       </div>
 
-      <ul class="collapsible popout" data-collapsible="accordion">
+      <ul class="collapsible popout" data-collapsible="accordion" id="collapsible1">
         <li>
-          <div @click="collapsibleOpen(1)" class="collapsible-header" >
+          <div @click="collapsibleOpen(1)" class="collapsible-header">
             {{ disciplinas[0].descricao }}    
             <span id="badge1" class="new badge red" data-badge-caption="">{{ situacao1 }}</span>
           </div>
@@ -40,9 +40,9 @@
         </li>
       </ul>
 
-      <ul class="collapsible popout" data-collapsible="accordion">
+      <ul class="collapsible popout" data-collapsible="accordion" id="collapsible2">
         <li>
-          <div @click="collapsibleOpen(2)" class="collapsible-header" >
+          <div @click="collapsibleOpen(2)" class="collapsible-header">
             {{ disciplinas[1].descricao }}    
             <span id="badge2" class="new badge red" data-badge-caption="">{{ situacao2 }}</span>
           </div>
@@ -64,9 +64,9 @@
         </li>
       </ul>
 
-      <ul class="collapsible popout" data-collapsible="accordion">
+      <ul class="collapsible popout" data-collapsible="accordion" id="collapsible3">
         <li>
-          <div @click="collapsibleOpen(3)" class="collapsible-header" >
+          <div @click="collapsibleOpen(3)" class="collapsible-header">
             {{ disciplinas[2].descricao }}    
             <span id="badge3" class="new badge red" data-badge-caption="">{{ situacao3 }}</span>
           </div>
@@ -149,6 +149,8 @@ export default {
       collapsibleOpen: function (i) {
         var h = "horario"+i;
         $('#'+h).hide();
+        var b = "collapsible"+i;
+        $('#'+b).collapsible('open');
       },
       selectShow: function (i) {
         var i = "horario"+i;
