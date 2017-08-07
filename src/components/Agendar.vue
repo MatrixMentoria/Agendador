@@ -18,21 +18,21 @@
 
       <ul class="collapsible popout" data-collapsible="accordion">
         <li>
-          <div @click="badgeOpen(1)" class="collapsible-header">
-            Algoritmos 1
+          <div @click="collapsibleOpen(1)" class="collapsible-header" >
+            {{ disciplinas[0].descricao }}    
             <span id="badge1" class="new badge red" data-badge-caption="">{{ situacao1 }}</span>
           </div>
           <div class="collapsible-body">
             <select class="browser-default" v-on:change="selectShow(1)" required>
               <option value="" disabled selected>Unidade:</option>
-               <option v-for="unidade in unidades" v-bind:key="unidade.value">
-                {{unidade.texto}}
+              <option v-for="unidade in unidades">
+                {{ unidade.descrição }}
               </option>
             </select>
             <div id="horario1">
               <div class="collection">
-                <a @click="modalFunc(1)" class="collection-item center btn modal-trigger" v-for="horario in horarios" v-bind:key="horario.value">
-                  {{horario.texto}}  
+                <a @click="modalFunc(1)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
+                  {{ horario.data }} - Sala {{ horario.sala }}
                 </a>
               </div>
             </div>
@@ -42,21 +42,21 @@
 
       <ul class="collapsible popout" data-collapsible="accordion">
         <li>
-          <div @click="badgeOpen(2)" class="collapsible-header">
-            Programação
+          <div @click="collapsibleOpen(2)" class="collapsible-header" >
+            {{ disciplinas[1].descricao }}    
             <span id="badge2" class="new badge red" data-badge-caption="">{{ situacao2 }}</span>
           </div>
           <div class="collapsible-body">
             <select class="browser-default" v-on:change="selectShow(2)" required>
               <option value="" disabled selected>Unidade:</option>
-               <option v-for="unidade in unidades" v-bind:key="unidade.value">
-                {{unidade.texto}}
+              <option v-for="unidade in unidades">
+                {{ unidade.descrição }}
               </option>
             </select>
             <div id="horario2">
               <div class="collection">
-                <a @click="modalFunc(2)" class="collection-item center btn modal-trigger" v-for="horario in horarios" v-bind:key="horario.value">
-                  {{horario.texto}}  
+                <a @click="modalFunc(2)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
+                  {{ horario.data }} - Sala {{ horario.sala }}
                 </a>
               </div>
             </div>
@@ -66,21 +66,21 @@
 
       <ul class="collapsible popout" data-collapsible="accordion">
         <li>
-          <div @click="badgeOpen(3)" class="collapsible-header">
-            Engenharia
+          <div @click="collapsibleOpen(3)" class="collapsible-header" >
+            {{ disciplinas[2].descricao }}    
             <span id="badge3" class="new badge red" data-badge-caption="">{{ situacao3 }}</span>
           </div>
           <div class="collapsible-body">
             <select class="browser-default" v-on:change="selectShow(3)" required>
               <option value="" disabled selected>Unidade:</option>
-               <option v-for="unidade in unidades" v-bind:key="unidade.value">
-                {{unidade.texto}}
+              <option v-for="unidade in unidades">
+                {{ unidade.descrição }}
               </option>
             </select>
             <div id="horario3">
               <div class="collection">
-                <a @click="modalFunc(3)" class="collection-item center btn modal-trigger" v-for="horario in horarios" v-bind:key="horario.value">
-                  {{horario.texto}}  
+                <a @click="modalFunc(3)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
+                  {{ horario.data }} - Sala {{ horario.sala }}
                 </a>
               </div>
             </div>
@@ -105,26 +105,24 @@
 </template>
 
 <script>
+//importar disciplinascompleto.json
+import disciplinasJSON from '../../dados_json/disciplinas.json'
+import unidadesJSON from '../../dados_json/unidades.json'
+import disciplinasCompletoJSON from '../../dados_json/disciplinascompleto.json'
+import horariosJSON from '../../dados_json/horarios.json'
+
+import moment from 'moment'
 
 export default {
     name: 'Agendar',
     data () {
       return {
-        unidades: [
-          { texto: "Bento Ribeiro", value: "1" },
-          { texto: "Jacarépaguá",   value: "2" },
-          { texto: "Méier 1",       value: "3" },
-          { texto: "Méier 2",       value: "4" },
-          { texto: "Rio Comprido",  value: "5" }
-        ],
-        horarios: [
-          { texto:"Data: 01/11/2017 | Horário: 07:50 | Sala: 201", value: "1" },
-          { texto:"Data: 02/11/2017 | Horário: 08:50 | Sala: 301", value: "2" },
-          { texto:"Data: 03/11/2017 | Horário: 09:50 | Sala: 301", value: "3" },
-        ],
-        situacao1: 'Pendente',
-        situacao2: 'Pendente',
-        situacao3: 'Pendente',
+        disciplinas: [],
+        unidades: [],
+        horarios: [],
+        situacao1: "Pendente",
+        situacao2: "Pendente",
+        situacao3: "Pendente",
         badgeDisciplina: ''
       }
     },
@@ -148,7 +146,7 @@ export default {
           }
         }
       },
-      badgeOpen: function (i) {
+      collapsibleOpen: function (i) {
         var h = "horario"+i;
         $('#'+h).hide();
       },
@@ -161,6 +159,23 @@ export default {
       $('.collapsible').collapsible();
       $('select').material_select();
       $('.modal').modal();
+
+      var qtdDisciplinas = disciplinasJSON.disciplinas.length;
+      for (var i = 0 ; i < qtdDisciplinas ; i++) {
+        this.disciplinas.push(disciplinasJSON.disciplinas[i]);
+      }
+
+      var qtdUnidades = unidadesJSON.unidades.length;
+      for (var i = 0 ; i < qtdUnidades ; i++) {
+        this.unidades.push(unidadesJSON.unidades[i]);
+      }
+
+      var qtdHorarios = horariosJSON.horarios.length;
+      for (var i = 0 ; i < qtdHorarios ; i++) {
+        var horarioFormatado = moment (horariosJSON.horarios[i]).format("DD/MM/YYYY [-] h:mm");
+        horariosJSON.horarios[i].data = horarioFormatado;
+        this.horarios.push(horariosJSON.horarios[i]);
+      }
     }
 }
 </script>
