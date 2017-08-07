@@ -1,0 +1,19 @@
+{
+  "disciplinas": [
+    {
+      "codigo": "1234AB",
+      "descricao": "Arquitetura de Computadores",
+      "professor": "João Silício"
+    },
+    {
+      "codigo": "1234CD",
+      "descricao": "Banco de dados I",
+      "professor": "Carlos Tupla"
+    },
+    {
+      "codigo": "1234CD",
+      "descricao": "Matemática Discreta",
+      "professor": "Luís Soma"
+    }
+  ]
+}
