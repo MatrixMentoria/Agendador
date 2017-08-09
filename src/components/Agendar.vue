@@ -18,7 +18,7 @@
 
       <ul class="collapsible popout" data-collapsible="accordion">
         <li>
-          <div class="collapsible-header" id="teste">
+          <div @click="badgeOpen(1)" class="collapsible-header" id="teste">
             Algoritmos 1
            <span id="check" class="ion-checkmark-round" data-pack="default" data-tags="complete, finished, success, on"></span>
           </div>
@@ -29,6 +29,7 @@
                 {{unidade.texto}}
               </option>
             </select>
+
             <div id="horario1">
               <table class="highlight">
               <thead>
@@ -60,7 +61,7 @@
 
       <ul class="collapsible popout" data-collapsible="accordion">
         <li>
-          <div class="collapsible-header">
+          <div @click="badgeOpen(2)" class="collapsible-header">
             Programação
             <span id="check2" class="ion-checkmark-round" data-pack="default" data-tags="complete, finished, success, on" ></span>
           </div>
@@ -71,7 +72,7 @@
                 {{unidade.texto}}
               </option>
             </select>
-            <div id="horario1">
+            <div id="horario2">
               <table class="highlight">
               <thead>
                 <tr>
@@ -97,7 +98,7 @@
 
       <ul class="collapsible popout" data-collapsible="accordion">
         <li>
-          <div class="collapsible-header">
+          <div @click="badgeOpen(3)" class="collapsible-header">
             Engenharia
             <span id="check3" class="ion-checkmark-round" data-pack="default" data-tags="complete, finished, success, on" ></span>
           </div>
@@ -108,7 +109,7 @@
                 {{unidade.texto}}
               </option>
             </select>
-            <div id="horario1">
+            <div id="horario3">
               <table class="highlight">
               <thead>
                 <tr>
@@ -235,6 +236,7 @@ cursor: pointer;
   display: none;
   float: right;
   color:#00ff00;
+  
 }
 #check2{
   display: none;
