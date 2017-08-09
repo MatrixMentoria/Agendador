@@ -18,9 +18,9 @@
 
       <ul class="collapsible popout" data-collapsible="accordion">
         <li>
-          <div @click="badgeOpen(1)" class="collapsible-header">
+          <div class="collapsible-header" id="teste">
             Algoritmos 1
-            <span id="badge1" class="new badge red" data-badge-caption="">{{ situacao1 }}</span>
+           <span id="check" class="ion-checkmark-round" data-pack="default" data-tags="complete, finished, success, on"></span>
           </div>
           <div class="collapsible-body">
             <select class="browser-default" v-on:change="selectShow(1)" required>
@@ -31,7 +31,7 @@
             </select>
             <div id="horario1">
               <div class="collection">
-                <a @click="modalFunc(1)" class="collection-item center btn modal-trigger" v-for="horario in horarios" v-bind:key="horario.value">
+                <a @click="modalFunc(1)" class="collection-item btn modal-trigger" v-for="horario in horarios" v-bind:key="horario.value">
                   {{horario.texto}}  
                 </a>
               </div>
@@ -42,9 +42,9 @@
 
       <ul class="collapsible popout" data-collapsible="accordion">
         <li>
-          <div @click="badgeOpen(2)" class="collapsible-header">
+          <div class="collapsible-header">
             Programação
-            <span id="badge2" class="new badge red" data-badge-caption="">{{ situacao2 }}</span>
+            <span id="check2" class="ion-checkmark-round" data-pack="default" data-tags="complete, finished, success, on" ></span>
           </div>
           <div class="collapsible-body">
             <select class="browser-default" v-on:change="selectShow(2)" required>
@@ -66,9 +66,9 @@
 
       <ul class="collapsible popout" data-collapsible="accordion">
         <li>
-          <div @click="badgeOpen(3)" class="collapsible-header">
+          <div class="collapsible-header">
             Engenharia
-            <span id="badge3" class="new badge red" data-badge-caption="">{{ situacao3 }}</span>
+            <span id="check3" class="ion-checkmark-round" data-pack="default" data-tags="complete, finished, success, on" ></span>
           </div>
           <div class="collapsible-body">
             <select class="browser-default" v-on:change="selectShow(3)" required>
@@ -91,11 +91,11 @@
       <div id="modal1" class="modal">
         <div class="modal-content">
           <h4>Confirmar Disciplina?</h4>
-          <p>Ao confirmar irá agendar essa disciplina definitivamente e concorda com os termos da UniCarioca.</p>
+          <p>AQUI ENTRA OS DETALHES DA DISCIPLINA AGENDADA</p>
         </div>
         <div class="modal-footer">
 
-          <a @click="alertar()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
+          <a @click="mostrar()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
           <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
       </div>
@@ -110,6 +110,7 @@ export default {
     name: 'Agendar',
     data () {
       return {
+        estadoCheck: false,
         unidades: [
           { texto: "Bento Ribeiro", value: "1" },
           { texto: "Jacarépaguá",   value: "2" },
@@ -129,24 +130,37 @@ export default {
       }
     },
     methods: {
+      mostrar: function(){
+        if(this.badgeDisciplina === 1){
+      setTimeout(function(){
+        $('#check').css("display","block")
+        this.estadoCheck = true;
+        }, 800)}else{
+        if(this.badgeDisciplina === 2){
+          setTimeout(function(){
+        $('#check2').css("display","block")
+        this.estadoCheck = true;
+        }, 1000)}else{
+        setTimeout(function(){
+        $('#check3').css("display","block")
+        this.estadoCheck = true;
+        }, 1000)
+        }
+        }
+      
+       
+      },
       modalFunc: function (x) {
         this.badgeDisciplina = x;
         $('#modal1').modal('open');
+        
+       //$('#check').hide();
+      
+
       },
       alertar: function () {
-        alert("Parabéns! Sua disciplina foi agendada com sucesso!");
-        if (this.badgeDisciplina === 1) {
-          this.situacao1 = "OK";
-          document.querySelector("#badge1").className = "new badge blue";
-        } else {
-          if (this.badgeDisciplina === 2) {
-            this.situacao2 = "OK";
-            document.querySelector("#badge2").className = "new badge blue";
-          } else {
-            this.situacao3 = "OK";
-            document.querySelector("#badge3").className = "new badge blue";
-          }
-        }
+        alert("Sua disciplina foi agendada com sucesso");
+      
       },
       badgeOpen: function (i) {
         var h = "horario"+i;
@@ -161,11 +175,28 @@ export default {
       $('.collapsible').collapsible();
       $('select').material_select();
       $('.modal').modal();
-    }
+     
+    },
+    
 }
 </script>
 
 <style>
+#check{
+  display: none;
+  float: right;
+  color:#00ff00;
+}
+#check2{
+  display: none;
+  float: right;
+  color:#00ff00;
+}
+#check3{
+  display: none;
+  float: right;
+  color:#00ff00;
+}
   .collapsible-header {
     position: relative;
   }

@@ -34,7 +34,7 @@
             <td>01/11/2017</td>
             <td>07:50</td>
             <td>306</td>
-            <td><a class="waves-effect waves-light btn red darken-4 modal-trigger" @click="modalFunc2()">Cancelar Disciplina</a></td>
+            <td><a class="waves-effect waves-light btn red darken-4 modal-trigger" @click="modalFunc2()">Cancelar Agendamento</a></td>
           </tr>
           <tr id="materia2">
             <td>Programação:</td>
@@ -42,7 +42,7 @@
             <td>03/11/2017</td>
             <td>18:50</td>
             <td>T02</td>
-            <td><a class="waves-effect waves-light btn red darken-4 modal-trigger" @click="modalFunc2()">Cancelar Disciplina</a></td>
+            <td><a class="waves-effect waves-light btn red darken-4 modal-trigger" @click="modalFunc2()">Cancelar Agendamento</a></td>
 
           </tr>
           <tr id="materia3">
@@ -51,15 +51,15 @@
             <td>07/11/2017</td>
             <td>21:40</td>
             <td>101</td>
-            <td><a class="waves-effect waves-light btn red darken-4 modal-trigger" @click="modalFunc2()">Cancelar Disciplina</a></td>
+            <td><a class="waves-effect waves-light btn red darken-4 modal-trigger" @click="modalFunc2()">Cancelar Agendamento</a></td>
 
           </tr>
         </tbody>
       </table>
       <div id="modal2" class="modal">
         <div class="modal-content">
-          <h4>Cancelar Disciplina??</h4>
-          <p>Deseja cancelar definitivamente essa disciplina?</p>
+          <h4>Cancelar Agendamento??</h4>
+          <p>Se deseja cancelar definitivamente esse agendamento click em "Confirmar"</p>
         </div>
         <div class="modal-footer">
           <a @click="alertarCancelar()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
@@ -84,7 +84,7 @@ export default {
             $('#modal2').modal('open');
         },
         alertarCancelar: function () {
-            alert("Disciplina cancelada com sucesso!");
+            alert("Agendamento cancelado com sucesso!");
             $('#materia1').hide();
         }
     }
