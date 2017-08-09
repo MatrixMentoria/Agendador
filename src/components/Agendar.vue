@@ -30,11 +30,29 @@
               </option>
             </select>
             <div id="horario1">
-              <div class="collection">
+              <table class="highlight">
+              <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Horario</th>
+                    <th>Sala</th>
+                </tr>
+              </thead>
+              
+              <tbody>
+                <tr @click="modalFunc(1)" class="blocoHor">
+                  <td>21/04/2018</td>
+                  <td>09:30</td>
+                  <td>202</td>
+                </tr>
+              </tbody>
+               
+              </table>
+             <!-- <div class="collection">
                 <a @click="modalFunc(1)" class="collection-item btn modal-trigger" v-for="horario in horarios" v-bind:key="horario.value">
                   {{horario.texto}}  
                 </a>
-              </div>
+              </div>-->
             </div>
           </div>
         </li>
@@ -53,13 +71,26 @@
                 {{unidade.texto}}
               </option>
             </select>
-            <div id="horario2">
-              <div class="collection">
-                <a @click="modalFunc(2)" class="collection-item center btn modal-trigger" v-for="horario in horarios" v-bind:key="horario.value">
-                  {{horario.texto}}  
-                </a>
-              </div>
-            </div>
+            <div id="horario1">
+              <table class="highlight">
+              <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Horario</th>
+                    <th>Sala</th>
+                </tr>
+              </thead>
+              
+              <tbody>
+                <tr @click="modalFunc(2)" class="blocoHor">
+                  <td>21/04/2018</td>
+                  <td>09:30</td>
+                  <td>202</td>
+                </tr>
+              </tbody>
+               
+              </table>
+          </div>
           </div>
         </li>
       </ul>
@@ -77,13 +108,26 @@
                 {{unidade.texto}}
               </option>
             </select>
-            <div id="horario3">
-              <div class="collection">
-                <a @click="modalFunc(3)" class="collection-item center btn modal-trigger" v-for="horario in horarios" v-bind:key="horario.value">
-                  {{horario.texto}}  
-                </a>
-              </div>
-            </div>
+            <div id="horario1">
+              <table class="highlight">
+              <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Horario</th>
+                    <th>Sala</th>
+                </tr>
+              </thead>
+              
+              <tbody>
+                <tr @click="modalFunc(3)" class="blocoHor">
+                  <td>21/04/2018</td>
+                  <td>09:30</td>
+                  <td>202</td>
+                </tr>
+              </tbody>
+               
+              </table>
+          </div>
           </div>
         </li>
       </ul>
@@ -95,7 +139,7 @@
         </div>
         <div class="modal-footer">
 
-          <a @click="mostrar()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
+          <a @click="mostrar(),alertar()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
           <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
       </div>
@@ -118,40 +162,42 @@ export default {
           { texto: "Méier 2",       value: "4" },
           { texto: "Rio Comprido",  value: "5" }
         ],
-        horarios: [
-          { texto:"Data: 01/11/2017 | Horário: 07:50 | Sala: 201", value: "1" },
-          { texto:"Data: 02/11/2017 | Horário: 08:50 | Sala: 301", value: "2" },
-          { texto:"Data: 03/11/2017 | Horário: 09:50 | Sala: 301", value: "3" },
+        datas:[
+          //necessário JSON para deixar os dados dinamicamente
         ],
-        situacao1: 'Pendente',
-        situacao2: 'Pendente',
-        situacao3: 'Pendente',
-        badgeDisciplina: ''
+        horarios: [
+         //necessário JSON para deixar os dados dinamicamente
+        ],
+        sala:[
+          //necessário JSON para deixar os dados dinamicamente
+        ],
+        
+        disciplina: ''
       }
     },
     methods: {
       mostrar: function(){
-        if(this.badgeDisciplina === 1){
+        if(this.disciplina === 1){
       setTimeout(function(){
         $('#check').css("display","block")
         this.estadoCheck = true;
-        }, 800)}else{
-        if(this.badgeDisciplina === 2){
+        }, 700)}else{
+        if(this.disciplina === 2){
           setTimeout(function(){
         $('#check2').css("display","block")
         this.estadoCheck = true;
-        }, 1000)}else{
+        }, 700)}else{
         setTimeout(function(){
         $('#check3').css("display","block")
         this.estadoCheck = true;
-        }, 1000)
+        }, 700)
         }
         }
       
        
       },
       modalFunc: function (x) {
-        this.badgeDisciplina = x;
+        this.disciplina = x;
         $('#modal1').modal('open');
         
        //$('#check').hide();
@@ -182,6 +228,9 @@ export default {
 </script>
 
 <style>
+.blocoHor{
+cursor: pointer;
+}
 #check{
   display: none;
   float: right;
