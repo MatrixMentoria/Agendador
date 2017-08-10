@@ -16,44 +16,18 @@
       <h1 class="center-align" id="discipAgend">Disciplinas Agendadas:</h1>
       <br>
 
-      <table class="bordered">
+      <table class="bordered" id="tabelaAgenda">
         <thead>
           <tr>
             <th>Disciplina</th>
             <th>Unidade</th>
-            <th>Data</th>
-            <th>Horário</th>
+            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data e Hora</th>
             <th>Sala</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr id="materia1">
-            <td>Algoritmos 1:</td>
-            <td>Rio Comprido</td>
-            <td>01/11/2017</td>
-            <td>07:50</td>
-            <td>306</td>
-            <td><a class="waves-effect waves-light btn red darken-4 modal-trigger" @click="modalFunc2()">Cancelar Disciplina</a></td>
-          </tr>
-          <tr id="materia2">
-            <td>Programação:</td>
-            <td>Méier 2</td>
-            <td>03/11/2017</td>
-            <td>18:50</td>
-            <td>T02</td>
-            <td><a class="waves-effect waves-light btn red darken-4 modal-trigger" @click="modalFunc2()">Cancelar Disciplina</a></td>
 
-          </tr>
-          <tr id="materia3">
-            <td>Engenharia:</td>
-            <td>Bento Ribeiro</td>
-            <td>07/11/2017</td>
-            <td>21:40</td>
-            <td>101</td>
-            <td><a class="waves-effect waves-light btn red darken-4 modal-trigger" @click="modalFunc2()">Cancelar Disciplina</a></td>
-
-          </tr>
         </tbody>
       </table>
       <div id="modal2" class="modal">
@@ -87,8 +61,28 @@ export default {
             alert("Disciplina cancelada com sucesso!");
             $('#materia1').hide();
         }
-    }
-}
+        },
+        mounted: function () {
+          $("#tabelaAgenda td").remove();
+          var agend = JSON.parse(localStorage.getItem("agendado"));
+          for (var i = 0;;i+=4) {
+            if (agend[i] == undefined) {
+              break;
+            }
+            var tb = document.getElementById("tabelaAgenda");
+            var tbrow = tb.insertRow(-1);
+            var cell0 = tbrow.insertCell(0);
+            var cell1 = tbrow.insertCell(1);
+            var cell2 = tbrow.insertCell(2);
+            var cell3 = tbrow.insertCell(3);
+            
+            cell0.appendChild(document.createTextNode(agend[i]));
+            cell1.appendChild(document.createTextNode(agend[i+1]));
+            cell2.appendChild(document.createTextNode(agend[i+2]));
+            cell3.appendChild(document.createTextNode(agend[i+3]));
+          }
+        }
+      }
 </script>
 
 <!-- styling for the component -->

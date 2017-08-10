@@ -16,22 +16,46 @@
         <p class="center-align" style="font-size: 25px;">Clique numa disciplina abaixo para começar a agendar</p>
       </div>
 
-      <ul class="collapsible popout" data-collapsible="accordion" id="collapsible1">
+
+      <ul class="collapsible popout" data-collapsible="accordion" id="collapsible0">
         <li>
-          <div @click="collapsibleOpen(1)" class="collapsible-header">
+          <div @click="collapsibleOpen(0)" class="collapsible-header" >
             {{ disciplinas[0].descricao }}    
-            <span id="badge1" class="new badge red" data-badge-caption="">{{ situacao1 }}</span>
           </div>
           <div class="collapsible-body">
-            <select class="browser-default" v-on:change="selectShow(1)" required>
+            <select class="browser-default" v-model="unidSelec" v-on:change="selectShow(0)" required>
               <option value="" disabled selected>Unidade:</option>
-              <option v-for="unidade in unidades">
+
+              <option v-for="unidade in unidades" v-bind:key="unidade.descricao">
+                {{ unidade.descrição }}
+              </option>
+            </select>
+            <div id="horario0">
+              <div class="collection">
+                <a @click="modalFunc(0, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
+                  {{ horario.data }} - Sala {{ horario.sala }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="collapsible popout" data-collapsible="accordion" id="collapsible1">
+        <li>
+          <div @click="collapsibleOpen(1)" class="collapsible-header" >
+            {{ disciplinas[1].descricao }}    
+          </div>
+          <div class="collapsible-body">
+            <select class="browser-default" v-model="unidSelec" v-on:change="selectShow(1)" required>
+              <option value="" disabled selected>Unidade:</option>
+              <option v-for="unidade in unidades" v-bind:key="unidade.descricao">
                 {{ unidade.descrição }}
               </option>
             </select>
             <div id="horario1">
               <div class="collection">
-                <a @click="modalFunc(1)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
+                 <a @click="modalFunc(1, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
                   {{ horario.data }} - Sala {{ horario.sala }}
                 </a>
               </div>
@@ -42,20 +66,19 @@
 
       <ul class="collapsible popout" data-collapsible="accordion" id="collapsible2">
         <li>
-          <div @click="collapsibleOpen(2)" class="collapsible-header">
-            {{ disciplinas[1].descricao }}    
-            <span id="badge2" class="new badge red" data-badge-caption="">{{ situacao2 }}</span>
+          <div @click="collapsibleOpen(2)" class="collapsible-header" >
+            {{ disciplinas[2].descricao }}    
           </div>
           <div class="collapsible-body">
-            <select class="browser-default" v-on:change="selectShow(2)" required>
+            <select class="browser-default" v-model="unidSelec" v-on:change="selectShow(2)" required>
               <option value="" disabled selected>Unidade:</option>
-              <option v-for="unidade in unidades">
+              <option v-for="unidade in unidades" v-bind:key="unidade.descricao">
                 {{ unidade.descrição }}
               </option>
             </select>
             <div id="horario2">
               <div class="collection">
-                <a @click="modalFunc(2)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
+                 <a @click="modalFunc(2, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
                   {{ horario.data }} - Sala {{ horario.sala }}
                 </a>
               </div>
@@ -64,38 +87,14 @@
         </li>
       </ul>
 
-      <ul class="collapsible popout" data-collapsible="accordion" id="collapsible3">
-        <li>
-          <div @click="collapsibleOpen(3)" class="collapsible-header">
-            {{ disciplinas[2].descricao }}    
-            <span id="badge3" class="new badge red" data-badge-caption="">{{ situacao3 }}</span>
-          </div>
-          <div class="collapsible-body">
-            <select class="browser-default" v-on:change="selectShow(3)" required>
-              <option value="" disabled selected>Unidade:</option>
-              <option v-for="unidade in unidades">
-                {{ unidade.descrição }}
-              </option>
-            </select>
-            <div id="horario3">
-              <div class="collection">
-                <a @click="modalFunc(3)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
-                  {{ horario.data }} - Sala {{ horario.sala }}
-                </a>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-
-      <div id="modal1" class="modal">
+      <div id="modal0" class="modal">
         <div class="modal-content">
           <h4>Confirmar Disciplina?</h4>
           <p>Ao confirmar irá agendar essa disciplina definitivamente e concorda com os termos da UniCarioca.</p>
         </div>
         <div class="modal-footer">
 
-          <a @click="alertar()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
+          <a @click="salvar()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
           <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
       </div>
@@ -109,7 +108,6 @@
 import disciplinasJSON from '../../dados_json/disciplinas.json'
 import unidadesJSON from '../../dados_json/unidades.json'
 import disciplinasCompletoJSON from '../../dados_json/disciplinascompleto.json'
-import horariosJSON from '../../dados_json/horarios.json'
 
 import moment from 'moment'
 
@@ -118,33 +116,34 @@ export default {
     data () {
       return {
         disciplinas: [],
+        discipValue: '',
+        discipSelec: '',
         unidades: [],
+        unidSelec: '',
         horarios: [],
-        situacao1: "Pendente",
-        situacao2: "Pendente",
-        situacao3: "Pendente",
-        badgeDisciplina: ''
+        horaData: '',
+        horaSala: '',
+        DiscipUnidHora: [],
       }
     },
     methods: {
-      modalFunc: function (x) {
-        this.badgeDisciplina = x;
-        $('#modal1').modal('open');
+      modalFunc: function (x, y, z) {
+        this.discipSelec = x;
+        this.horaData = y;
+        this.horaSala = z;
+        $('#modal0').modal('open');
       },
-      alertar: function () {
-        alert("Parabéns! Sua disciplina foi agendada com sucesso!");
-        if (this.badgeDisciplina === 1) {
-          this.situacao1 = "OK";
-          document.querySelector("#badge1").className = "new badge blue";
-        } else {
-          if (this.badgeDisciplina === 2) {
-            this.situacao2 = "OK";
-            document.querySelector("#badge2").className = "new badge blue";
-          } else {
-            this.situacao3 = "OK";
-            document.querySelector("#badge3").className = "new badge blue";
-          }
+      salvar: function () {
+        if (localStorage.getItem("agendado")) {
+          this.DiscipUnidHora = JSON.parse(localStorage.getItem("agendado"));
         }
+        
+        this.discipSelec = this.disciplinas[this.discipSelec].descricao;
+
+        this.DiscipUnidHora.push(this.discipSelec, this.unidSelec, this.horaData, this.horaSala);
+        localStorage.setItem("agendado", JSON.stringify(this.DiscipUnidHora));
+
+        alert("Parabéns! Sua disciplina foi agendada com sucesso!");
       },
       collapsibleOpen: function (i) {
         var h = "horario"+i;
@@ -157,12 +156,12 @@ export default {
         $('#'+i).show();
       }
     },
-    mounted: function() {
+    created: function() {
       $('.collapsible').collapsible();
       $('select').material_select();
       $('.modal').modal();
 
-      var qtdDisciplinas = disciplinasJSON.disciplinas.length;
+var qtdDisciplinas = disciplinasJSON.disciplinas.length;
       for (var i = 0 ; i < qtdDisciplinas ; i++) {
         this.disciplinas.push(disciplinasJSON.disciplinas[i]);
       }
