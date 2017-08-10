@@ -197,5 +197,4 @@ var qtdDisciplinas = disciplinasJSON.disciplinas.length;
   #textoAjuda {
     font-size: 25px;
   }
-  
 </style>
