@@ -16,6 +16,7 @@
         <p class="center-align" style="font-size: 25px;">Clique numa disciplina abaixo para começar a agendar</p>
       </div>
 
+
       <ul class="collapsible popout" data-collapsible="accordion" id="collapsible0">
         <li>
           <div @click="collapsibleOpen(0)" class="collapsible-header" >
@@ -24,6 +25,7 @@
           <div class="collapsible-body">
             <select class="browser-default" v-model="unidSelec" v-on:change="selectShow(0)" required>
               <option value="" disabled selected>Unidade:</option>
+
               <option v-for="unidade in unidades" v-bind:key="unidade.descricao">
                 {{ unidade.descrição }}
               </option>
@@ -105,7 +107,7 @@
 //importar disciplinascompleto.json
 import disciplinasJSON from '../../dados_json/disciplinas.json'
 import unidadesJSON from '../../dados_json/unidades.json'
-import horariosJSON from '../../dados_json/horarios.json'
+import disciplinasCompletoJSON from '../../dados_json/disciplinascompleto.json'
 
 import moment from 'moment'
 
@@ -158,8 +160,8 @@ export default {
       $('.collapsible').collapsible();
       $('select').material_select();
       $('.modal').modal();
-    
-      var qtdDisciplinas = disciplinasJSON.disciplinas.length;
+
+var qtdDisciplinas = disciplinasJSON.disciplinas.length;
       for (var i = 0 ; i < qtdDisciplinas ; i++) {
         this.disciplinas.push(disciplinasJSON.disciplinas[i]);
       }
