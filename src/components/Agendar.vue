@@ -12,8 +12,8 @@
       </ul>
     </nav>
     <div class="container">
-      <div class="explic">
-        <p class="center-align" style="font-size: 25px;">Clique numa disciplina abaixo para começar a agendar</p>
+      <div>
+        <p id="textoAjuda" class="center-align">Clique numa disciplina abaixo para começar a agendar</p>
       </div>
 
 
@@ -107,7 +107,7 @@
 //importar disciplinascompleto.json
 import disciplinasJSON from '../../dados_json/disciplinas.json'
 import unidadesJSON from '../../dados_json/unidades.json'
-import disciplinasCompletoJSON from '../../dados_json/disciplinascompleto.json'
+import horariosJSON from '../../dados_json/horarios.json'
 
 import moment from 'moment'
 
@@ -188,6 +188,10 @@ var qtdDisciplinas = disciplinasJSON.disciplinas.length;
 
   a.collection-item {
     color: black !important;
+  }
+
+  #textoAjuda {
+    font-size: 25px;
   }
   
 </style>
