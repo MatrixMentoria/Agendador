@@ -4,9 +4,6 @@
       <span class="brand-logo center">Agendar</span>
       <ul id="nav-mobile" class="left hide-on-med-and-down">
         <li>
-          <router-link to="/Agendar">Agendar</router-link>
-        </li>
-        <li>
           <router-link to="/Agendamentos">Agendamentos</router-link>
         </li>
       </ul>
@@ -161,7 +158,6 @@ export default {
         if (this.checkSelec == 2) {
           this.checkOpacity2 = 100;
         }
-        alert("Parabéns! Sua disciplina foi agendada com sucesso!");
       },
       collapsibleOpen: function (i) {
         var h = "horario"+i;
