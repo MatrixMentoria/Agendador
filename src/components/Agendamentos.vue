@@ -32,8 +32,8 @@
       </table>
       <div id="modal2" class="modal">
         <div class="modal-content">
-          <h4>Cancelar Agendamento??</h4>
-          <p>Se deseja cancelar definitivamente esse agendamento click em "Confirmar"</p>
+          <h4>Cancelar Agendamento?</h4>
+          <p>Disciplina: {{modalDisciplina}}<br>Unidade: {{modalUnidade}}<br>Data: {{modalHora}}<br>Sala: {{modalSala}}</p>
         </div>
         <div class="modal-footer">
           <a @click="cancelarAgendamento()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
@@ -59,16 +59,28 @@ export default {
     name: 'Agendamentos',
     data () {
       return {
-        btnCancelar: ''
+        btnCancelar: '',
+        modalAgendado: '',
+        modalDisciplina: '',
+        modalUnidade: '',
+        modalHora: '',
+        modalSala: '',
       }
     },
     methods: {
         modalFunc2: function (i) {
-            $('#modal2').modal('open');
             this.btnCancelar = i;
+            this.modalAgendado = JSON.parse(localStorage.getItem("agendado"));
+            i = 4 * i;
+            this.modalDisciplina = this.modalAgendado[i];
+            this.modalUnidade = this.modalAgendado[i+1];
+            this.modalHora= this.modalAgendado[i+2];
+            this.modalSala = this.modalAgendado[i+3];
+            $('#modal2').modal('open');
         },
         cancelarAgendamento: function () {
           var agendado = JSON.parse(localStorage.getItem("agendado"));
+          localStorage.removeItem("check"+this.btnCancelar);
           var tabelaAgenda = document.getElementById("tabelaAgenda").deleteRow(this.btnCancelar+1);
           this.btnCancelar = 4 * this.btnCancelar; 
           agendado.splice(this.btnCancelar,4);

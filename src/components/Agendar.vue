@@ -20,7 +20,7 @@
       <ul class="collapsible popout" data-collapsible="accordion" id="collapsible0">
         <li>
           <div @click="collapsibleOpen(0)" class="collapsible-header" >
-            {{ disciplinas[0].descricao }}    
+            {{ disciplinas[0].descricao }} <i v-bind:style="{opacity: checkOpacity0}" class="material-icons right">check</i>  
           </div>
           <div class="collapsible-body">
             <select class="browser-default" v-model="unidSelec" v-on:change="selectShow(0)" required>
@@ -35,7 +35,7 @@
                 <a @click="modalFunc(0, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
                   {{ horario.data }} - Sala {{ horario.sala }}
                 </a>
-              </div>-->
+              </div>
             </div>
           </div>
         </li>
@@ -44,7 +44,7 @@
       <ul class="collapsible popout" data-collapsible="accordion" id="collapsible1">
         <li>
           <div @click="collapsibleOpen(1)" class="collapsible-header" >
-            {{ disciplinas[1].descricao }}    
+            {{ disciplinas[1].descricao }} <i v-bind:style="{opacity: checkOpacity1}" class="material-icons right">check</i>   
           </div>
           <div class="collapsible-body">
             <select class="browser-default" v-model="unidSelec" v-on:change="selectShow(1)" required>
@@ -67,7 +67,7 @@
       <ul class="collapsible popout" data-collapsible="accordion" id="collapsible2">
         <li>
           <div @click="collapsibleOpen(2)" class="collapsible-header" >
-            {{ disciplinas[2].descricao }}    
+            {{ disciplinas[2].descricao }} <i v-bind:style="{opacity: checkOpacity2}" class="material-icons right">check</i>
           </div>
           <div class="collapsible-body">
             <select class="browser-default" v-model="unidSelec" v-on:change="selectShow(2)" required>
@@ -124,10 +124,15 @@ export default {
         horaSala: '',
         horarioModal: [],
         DiscipUnidHora: [],
+        checkOpacity0: 0,
+        checkOpacity1: 0,
+        checkOpacity2: 0,
+        checkSelec: ''
       }
     },
     methods: {
       modalFunc: function (x, y, z) {
+        this.checkSelec = x;
         this.discipSelec = x;
         this.horaData = y;
         this.horaSala = z;
@@ -145,7 +150,17 @@ export default {
 
         this.DiscipUnidHora.push(this.discipSelec, this.unidSelec, this.horaData, this.horaSala);
         localStorage.setItem("agendado", JSON.stringify(this.DiscipUnidHora));
-        this.horarioModal.splice(0);
+        this.horarioModal.splice(0); 
+        localStorage.setItem("check"+this.checkSelec, "true");         
+        if (this.checkSelec == 0) {
+          this.checkOpacity0 = 100;
+        }
+        if (this.checkSelec == 1) {
+          this.checkOpacity1 = 100;
+        }
+        if (this.checkSelec == 2) {
+          this.checkOpacity2 = 100;
+        }
         alert("Parabéns! Sua disciplina foi agendada com sucesso!");
       },
       collapsibleOpen: function (i) {
@@ -163,11 +178,22 @@ export default {
       $('.collapsible').collapsible();
       $('select').material_select();
       $('.modal').modal();
-var qtdDisciplinas = disciplinasJSON.disciplinas.length;
+      
+      var qtdDisciplinas = disciplinasJSON.disciplinas.length;
       for (var i = 0 ; i < qtdDisciplinas ; i++) {
         this.disciplinas.push(disciplinasJSON.disciplinas[i]);
       }
 
+      if (localStorage.getItem("check0")) {
+        this.checkOpacity0 = 100;
+        }
+      if (localStorage.getItem("check1")) {
+        this.checkOpacity1 = 100;
+      }
+      if (localStorage.getItem("check2")) {
+        this.checkOpacity2 = 100;
+      }
+      
       var qtdUnidades = unidadesJSON.unidades.length;
       for (var i = 0 ; i < qtdUnidades ; i++) {
         this.unidades.push(unidadesJSON.unidades[i]);
