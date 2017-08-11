@@ -6,9 +6,6 @@
         <li>
           <router-link to="/Agendar">Agendar</router-link>
         </li>
-        <li>
-          <router-link to="/Agendamentos">Agendamentos</router-link>
-        </li>
       </ul>
     </nav>
     <div class="container">
