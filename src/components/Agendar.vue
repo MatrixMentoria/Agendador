@@ -90,12 +90,12 @@
       <div id="modal0" class="modal">
         <div class="modal-content">
           <h4>Confirmar Disciplina?</h4>
-          <p>Ao confirmar irá agendar essa disciplina definitivamente e concorda com os termos da UniCarioca.</p>
+          <p>Disciplina: {{discipSelec}}<br>Unidade: {{unidSelec}}<br>Data: {{horaData}}<br>Sala: {{horaSala}}</p>
         </div>
         <div class="modal-footer">
 
           <a @click="salvar()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
-          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <a @click="limparHorarioModal()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
       </div>
     </div>
@@ -123,6 +123,7 @@ export default {
         horarios: [],
         horaData: '',
         horaSala: '',
+        horarioModal: [],
         DiscipUnidHora: [],
       }
     },
@@ -131,18 +132,21 @@ export default {
         this.discipSelec = x;
         this.horaData = y;
         this.horaSala = z;
+        this.discipSelec = this.disciplinas[this.discipSelec].descricao;
+        this.horarioModal.push("Sala: "+this.discipSelec, this.unidSelec, this.horaData, this.horaSala);
         $('#modal0').modal('open');
+      },
+      limparHorarioModal: function () {
+        this.horarioModal.splice(0);
       },
       salvar: function () {
         if (localStorage.getItem("agendado")) {
           this.DiscipUnidHora = JSON.parse(localStorage.getItem("agendado"));
         }
-        
-        this.discipSelec = this.disciplinas[this.discipSelec].descricao;
 
         this.DiscipUnidHora.push(this.discipSelec, this.unidSelec, this.horaData, this.horaSala);
         localStorage.setItem("agendado", JSON.stringify(this.DiscipUnidHora));
-
+        this.horarioModal.splice(0);
         alert("Parabéns! Sua disciplina foi agendada com sucesso!");
       },
       collapsibleOpen: function (i) {
@@ -193,5 +197,4 @@ var qtdDisciplinas = disciplinasJSON.disciplinas.length;
   #textoAjuda {
     font-size: 25px;
   }
-  
 </style>
