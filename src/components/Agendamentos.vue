@@ -28,13 +28,12 @@
         </thead>
 
         <tbody>
-
         </tbody>
       </table>
       <div id="modal2" class="modal">
         <div class="modal-content">
-          <h4>Cancelar Disciplina??</h4>
-          <p>Deseja cancelar definitivamente essa disciplina?</p>
+          <h4>Cancelar Agendamento??</h4>
+          <p>Se deseja cancelar definitivamente esse agendamento click em "Confirmar"</p>
         </div>
         <div class="modal-footer">
           <a @click="cancelarAgendamento()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>

@@ -35,7 +35,7 @@
                 <a @click="modalFunc(0, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
                   {{ horario.data }} - Sala {{ horario.sala }}
                 </a>
-              </div>
+              </div>-->
             </div>
           </div>
         </li>
@@ -93,7 +93,6 @@
           <p>Disciplina: {{discipSelec}}<br>Unidade: {{unidSelec}}<br>Data: {{horaData}}<br>Sala: {{horaSala}}</p>
         </div>
         <div class="modal-footer">
-
           <a @click="salvar()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
           <a @click="limparHorarioModal()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
@@ -164,7 +163,6 @@ export default {
       $('.collapsible').collapsible();
       $('select').material_select();
       $('.modal').modal();
-
 var qtdDisciplinas = disciplinasJSON.disciplinas.length;
       for (var i = 0 ; i < qtdDisciplinas ; i++) {
         this.disciplinas.push(disciplinasJSON.disciplinas[i]);
@@ -186,6 +184,25 @@ var qtdDisciplinas = disciplinasJSON.disciplinas.length;
 </script>
 
 <style>
+.blocoHor{
+cursor: pointer;
+}
+#check{
+  display: none;
+  float: right;
+  color:#00ff00;
+  
+}
+#check2{
+  display: none;
+  float: right;
+  color:#00ff00;
+}
+#check3{
+  display: none;
+  float: right;
+  color:#00ff00;
+}
   .collapsible-header {
     position: relative;
   }
