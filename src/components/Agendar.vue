@@ -25,10 +25,9 @@
                 {{ unidade.descrição }}
               </option>
             </select>
-
             <div :id="'horario-' + disciplina.codigo">
               <div class="collection">
-                <a @click="abrirModalDeConfirmacaoDeDisciplina(disciplina, disciplina.unidade, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in unidadeSelecionada.horarios">
+                <a @click="abrirModalDeConfirmacaoDeDisciplina(disciplina, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in unidadeSelecionada.horarios">
                   {{ horario.data }} - Sala {{ horario.sala }}
                 </a>
               </div>
@@ -36,80 +35,6 @@
           </div>
         </li>
       </ul>
-
-
-      
-<!-- 
-      <ul class="collapsible popout" data-collapsible="accordion" id="collapsible0">
-        <li>
-          <div @click="collapsibleOpen(0)" class="collapsible-header" >
-            {{ disciplinas[0].descricao }} <i v-bind:style="{opacity: checkOpacity0}" class="material-icons right">check</i>  
-          </div>
-          <div class="collapsible-body">
-            <select class="browser-default" v-model="unidSelec" v-on:change="selectShow(0)" required>
-              <option value="" disabled selected>Unidade:</option>
-
-              <option v-for="unidade in unidades" v-bind:key="unidade.descricao">
-                {{ unidade.descrição }}
-              </option>
-            </select>
-            <div id="horario0">
-              <div class="collection">
-                <a @click="modalFunc(0, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
-                  {{ horario.data }} - Sala {{ horario.sala }}
-                </a>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-
-      <ul class="collapsible popout" data-collapsible="accordion" id="collapsible1">
-        <li>
-          <div @click="collapsibleOpen(1)" class="collapsible-header" >
-            {{ disciplinas[1].descricao }} <i v-bind:style="{opacity: checkOpacity1}" class="material-icons right">check</i>   
-          </div>
-          <div class="collapsible-body">
-            <select class="browser-default" v-model="unidSelec" v-on:change="selectShow(1)" required>
-              <option value="" disabled selected>Unidade:</option>
-              <option v-for="unidade in unidades" v-bind:key="unidade.descricao">
-                {{ unidade.descrição }}
-              </option>
-            </select>
-            <div id="horario1">
-              <div class="collection">
-                 <a @click="modalFunc(1, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
-                  {{ horario.data }} - Sala {{ horario.sala }}
-                </a>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-
-      <ul class="collapsible popout" data-collapsible="accordion" id="collapsible2">
-        <li>
-          <div @click="collapsibleOpen(2)" class="collapsible-header" >
-            {{ disciplinas[2].descricao }} <i v-bind:style="{opacity: checkOpacity2}" class="material-icons right">check</i>
-          </div>
-          <div class="collapsible-body">
-            <select class="browser-default" v-model="unidSelec" v-on:change="selectShow(2)" required>
-              <option value="" disabled selected>Unidade:</option>
-              <option v-for="unidade in unidades" v-bind:key="unidade.descricao">
-                {{ unidade.descrição }}
-              </option>
-            </select>
-            <div id="horario2">
-              <div class="collection">
-                 <a @click="modalFunc(2, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
-                  {{ horario.data }} - Sala {{ horario.sala }}
-                </a>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul> 
--->
 
       <div id="modal" class="modal">
         <div class="modal-content">
@@ -155,6 +80,7 @@ export default {
           dataSelecionada: '',
           salaSelecionada: ''
         },
+        unidadeSelecionadaObj: {},
 
 
 
@@ -181,28 +107,29 @@ export default {
       abrirModalDeConfirmacaoDeDisciplina: function (disciplina, data, sala) {
         this.checkSelec = disciplina.codigo;
         this.selecaoExibidaNoModal.disciplinaSelecionada = disciplina.descricao;
+        this.selecaoExibidaNoModal.unidadeSelecionada = this.unidadeSelecionada.descrição;
         this.selecaoExibidaNoModal.dataSelecionada = data;
         this.selecaoExibidaNoModal.salaSelecionada = sala;
         $('#modal').modal('open');
       },
-      exibicaoDaListaDeHorarios: function (i) {
-        var i = "horario"+i;
-        $('#'+i).show();
+      exibicaoDaListaDeHorarios: function (id) {
+        var id = "horario"+id;
+        $('#'+id).show();
       },
 
 
 
 
 
-      modalFunc: function (x, y, z) {
-        this.checkSelec = x;
-        this.discipSelec = x;
-        this.horaData = y;
-        this.horaSala = z;
-        this.discipSelec = this.disciplinas[this.discipSelec].descricao;
-        this.horarioModal.push("Sala: "+this.discipSelec, this.unidSelec, this.horaData, this.horaSala);
-        $('#modal0').modal('open');
-      },
+      // modalFunc: function (x, y, z) {
+      //   this.checkSelec = x;
+      //   this.discipSelec = x;
+      //   this.horaData = y;
+      //   this.horaSala = z;
+      //   this.discipSelec = this.disciplinas[this.discipSelec].descricao;
+      //   this.horarioModal.push("Sala: "+this.discipSelec, this.unidSelec, this.horaData, this.horaSala);
+      //   $('#modal0').modal('open');
+      // },
       limparHorarioModal: function () {
         this.horarioModal.splice(0);
       },
