@@ -13,7 +13,33 @@
         <p id="textoAjuda" class="center-align">Clique numa disciplina abaixo para começar a agendar</p>
       </div>
 
+      <ul v-for="disciplina in disciplinas" class="collapsible popout" data-collapsible="acordion" :id="disciplina.codigo"> 
+        <li>
+          <div @click="abrirCollapsible(disciplina.codigo)" class="collapsible-header">
+            {{ disciplina.descricao }} <i v-bind:style="{opacity: checkOpacity0}" class="material-icons right">check</i>
+          </div>
+          <div class="collapsible-body">
+            <select class="browser-default" v-model="unidadeSelecionada" v-on:change="exibicaoDaListaDeHorarios(disciplina.codigo)" required>
+              <option value="" disabled selected>Unidade:</option>
+              <option v-for="unidade in disciplina.unidades" v-bind:value="unidade">
+                {{ unidade.descrição }}
+              </option>
+            </select>
 
+            <div :id="'horario-' + disciplina.codigo">
+              <div class="collection">
+                <a @click="abrirModalDeConfirmacaoDeDisciplina(disciplina, disciplina.unidade, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in unidadeSelecionada.horarios">
+                  {{ horario.data }} - Sala {{ horario.sala }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+
+      
+<!-- 
       <ul class="collapsible popout" data-collapsible="accordion" id="collapsible0">
         <li>
           <div @click="collapsibleOpen(0)" class="collapsible-header" >
@@ -82,12 +108,21 @@
             </div>
           </div>
         </li>
-      </ul>
+      </ul> 
+-->
 
-      <div id="modal0" class="modal">
+      <div id="modal" class="modal">
         <div class="modal-content">
-          <h4>Confirmar Disciplina?</h4>
-          <p>Disciplina: {{discipSelec}}<br>Unidade: {{unidSelec}}<br>Data: {{horaData}}<br>Sala: {{horaSala}}</p>
+          <h4 align="center">Confirmar Disciplina?</h4>
+          
+          <p align="center">
+            Disciplina: {{ selecaoExibidaNoModal.disciplinaSelecionada }}<br>
+            Unidade: {{ selecaoExibidaNoModal.unidadeSelecionada }}<br>
+            Data: {{ selecaoExibidaNoModal.dataSelecionada }}<br>
+            Sala: {{ selecaoExibidaNoModal.salaSelecionada }}
+          </p>
+
+          <!-- <p>Disciplina: {{discipSelec}}<br>Unidade: {{unidSelec}}<br>Data: {{horaData}}<br>Sala: {{horaSala}}</p> -->
         </div>
         <div class="modal-footer">
           <a @click="salvar()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
@@ -101,9 +136,10 @@
 
 <script>
 //importar disciplinascompleto.json
-import disciplinasJSON from '../../dados_json/disciplinas.json'
-import unidadesJSON from '../../dados_json/unidades.json'
-import horariosJSON from '../../dados_json/horarios.json'
+import disciplinasJSON from '../../dados_json/disciplinascompleto.json'
+// import disciplinasJSON from '../../dados_json/disciplinas.json'
+// import unidadesJSON from '../../dados_json/unidades.json'
+// import horariosJSON from '../../dados_json/horarios.json'
 
 import moment from 'moment'
 
@@ -112,6 +148,16 @@ export default {
     data () {
       return {
         disciplinas: [],
+        unidadeSelecionada: [],
+        selecaoExibidaNoModal: {
+          disciplinaSelecionada: '',
+          unidadeSelecionada: '',
+          dataSelecionada: '',
+          salaSelecionada: ''
+        },
+
+
+
         discipValue: '',
         discipSelec: '',
         unidades: [],
@@ -128,6 +174,26 @@ export default {
       }
     },
     methods: {
+      abrirCollapsible: function (id) {
+        $('#horario-' + id).show();
+        $('#' + id).collapsible('open');
+      },
+      abrirModalDeConfirmacaoDeDisciplina: function (disciplina, data, sala) {
+        this.checkSelec = disciplina.codigo;
+        this.selecaoExibidaNoModal.disciplinaSelecionada = disciplina.descricao;
+        this.selecaoExibidaNoModal.dataSelecionada = data;
+        this.selecaoExibidaNoModal.salaSelecionada = sala;
+        $('#modal').modal('open');
+      },
+      exibicaoDaListaDeHorarios: function (i) {
+        var i = "horario"+i;
+        $('#'+i).show();
+      },
+
+
+
+
+
       modalFunc: function (x, y, z) {
         this.checkSelec = x;
         this.discipSelec = x;
@@ -179,7 +245,6 @@ export default {
       for (var i = 0 ; i < qtdDisciplinas ; i++) {
         this.disciplinas.push(disciplinasJSON.disciplinas[i]);
       }
-
       if (localStorage.getItem("check0")) {
         this.checkOpacity0 = 100;
         }
@@ -188,18 +253,6 @@ export default {
       }
       if (localStorage.getItem("check2")) {
         this.checkOpacity2 = 100;
-      }
-      
-      var qtdUnidades = unidadesJSON.unidades.length;
-      for (var i = 0 ; i < qtdUnidades ; i++) {
-        this.unidades.push(unidadesJSON.unidades[i]);
-      }
-
-      var qtdHorarios = horariosJSON.horarios.length;
-      for (var i = 0 ; i < qtdHorarios ; i++) {
-        var horarioFormatado = moment (horariosJSON.horarios[i]).format("DD/MM/YYYY [-] h:mm");
-        horariosJSON.horarios[i].data = horarioFormatado;
-        this.horarios.push(horariosJSON.horarios[i]);
       }
     }
 }
