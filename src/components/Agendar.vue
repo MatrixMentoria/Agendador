@@ -12,7 +12,8 @@
       <ul v-for="disciplina in disciplinas" class="collapsible popout" data-collapsible="acordion" :id="disciplina.codigo"> 
         <li>
           <div @click="abrirCollapsible(disciplina.codigo)" class="collapsible-header">
-            {{ disciplina.descricao }} <i v-bind:style="{opacity: checkOpacity}" class="material-icons right">check</i>
+            {{ disciplina.descricao }} 
+            <!-- <i v-bind:style="{opacity: checkOpacity}" class="material-icons right">check</i> -->
           </div>
           <div class="collapsible-body">
             <select class="browser-default" v-model="unidadeSelecionada" v-on:change="exibicaoDaListaDeHorarios(disciplina.codigo)" required>
@@ -100,6 +101,11 @@ export default {
     },
     methods: {
       abrirCollapsible: function (id) {
+        $('.collapsible').collapsible('close', 0); // Devido ao fato de o horário de uma disciplina aparecer nos collapsibles de outras,
+                                                   // este código fecha os outros collapsibles.
+                                                   // Precisamos rever isso, para não precisarmos fechar.
+                                                   // Além disso, dessa forma, depois de aberto, o usuário só consegue fechar o collapsible
+                                                   // quando abre outro.
         $('#horario-' + id).hide();
         $('#' + id).collapsible('open');
       },
