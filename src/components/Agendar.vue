@@ -22,12 +22,22 @@
                 {{ unidade.descrição }}
               </option>
             </select>
+              
             <div :id="'horario-' + disciplina.codigo">
-              <div class="collection">
-                <a @click="abrirModalDeConfirmacaoDeDisciplina(disciplina, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in unidadeSelecionada.horarios">
-                  {{ horario.data | dataFormatada }} - {{ horario.data | horarioFormatado }} - Sala {{ horario.sala }}
-                </a>
-              </div>
+              <table class="highlight">
+              <thead>
+                  <tr>
+                     <th>Data</th>
+                     <th>Horario</th>
+                     <th>Sala</th>
+                 </tr>
+               </thead>
+               <tbody>
+                <tr @click="abrirModalDeConfirmacaoDeDisciplina(disciplina, horario.data, horario.sala)" class="collection-item center modal-trigger blocoHorario" v-for="horario in unidadeSelecionada.horarios">
+                  <td>{{ horario.data | dataFormatada }}</td><td>  {{ horario.data | horarioFormatado }}</td> <td> Sala {{ horario.sala }}</td>
+                </tr>
+               </tbody>
+               </table>
             </div>
           </div>
         </li>
@@ -203,7 +213,7 @@ export default {
 </script>
 
 <style>
-.blocoHor{
+.blocoHorario{
 cursor: pointer;
 }
 #check{
