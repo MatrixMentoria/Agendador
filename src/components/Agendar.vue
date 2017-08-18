@@ -24,20 +24,25 @@
             </select>
               
             <div :id="'horario-' + disciplina.codigo">
-              <table class="highlight">
-              <thead>
-                  <tr>
-                     <th>Data</th>
-                     <th>Horario</th>
-                     <th>Sala</th>
-                 </tr>
-               </thead>
-               <tbody>
-                <tr @click="abrirModalDeConfirmacaoDeDisciplina(disciplina, horario.data, horario.sala)" class="collection-item center modal-trigger blocoHorario" v-for="horario in unidadeSelecionada.horarios">
-                  <td>{{ horario.data | dataFormatada }}</td><td>  {{ horario.data | horarioFormatado }}</td> <td> Sala {{ horario.sala }}</td>
-                </tr>
-               </tbody>
+              <table class="highlight centered">
+                <thead>
+                    <tr>
+                      <th>Data</th>
+                      <th>Horario</th>
+                      <th>Sala</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr @click="abrirModalDeConfirmacaoDeDisciplina(disciplina, horario.data, horario.sala)" class="collection-item center modal-trigger blocoHorario" v-for="horario in unidadeSelecionada.horarios">
+                    <td>{{ horario.data | dataFormatada }}</td>
+                    <td>{{ horario.data | horarioFormatado }}</td>
+                    <td>{{ horario.sala }}</td>
+                  </tr>
+                </tbody>
                </table>
+            </div>
+            <div class="row center">
+              <a class="waves-effect waves-light btn" @click="cancelarDisciplina(disciplina.descricao)">Cancelar Agendamento</a>
             </div>
           </div>
         </li>
@@ -124,7 +129,6 @@ export default {
         this.selecaoExibidaNoModal.disciplinaSelecionada = disciplina.descricao;
         this.selecaoExibidaNoModal.unidadeSelecionada = this.unidadeSelecionada.descrição;
         this.selecaoExibidaNoModal.dataSelecionada = data;
-        console.log(this.selecaoExibidaNoModal.dataSelecionada)
         this.selecaoExibidaNoModal.salaSelecionada = sala;
         $('#modal').modal('open');
       },
@@ -156,7 +160,18 @@ export default {
           localStorage.setItem("Agendamentos",JSON.stringify(arrayDeAgendamentos));
         }
       },
+      cancelarDisciplina: function (disciplina) {
+       var disciplinasAgendadas = JSON.parse(localStorage.getItem("Agendamentos")); // puxa os dados do local storage para a variável disciplinasAgendadas
+       var qtdDeDisciplinas = disciplinasAgendadas.length; // atribui a qdtDeDisciplinas o tamanho do array de objetos armazenado no local storage
 
+       for(var i = 0 ; i < qtdDeDisciplinas ; i++) {                                // percorre o array e ao encontrar um objeto em que tenha a mesma disciplina
+         if(disciplinasAgendadas[i].disciplinaAgendada === disciplina) {            // que foi passada como parâmetro da função, usa o splice na posição encontrada
+           disciplinasAgendadas.splice(i,1);                                        // e o break para sair da repetição sem percorrer todos os outros objetos do array
+           break;
+         }
+       }
+       localStorage.setItem("Agendamentos",JSON.stringify(disciplinasAgendadas));   // salva novamente no local storage sobrescrevendo o que está lá
+     },
 
 
       // A parte do check deve ser refeita e inserida na função salvarDadosNoLocalStorage
