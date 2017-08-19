@@ -9,54 +9,57 @@
         <p id="textoAjuda" class="center-align">Clique numa disciplina abaixo para começar a agendar</p>
       </div>
 
-      <ul v-for="disciplina in disciplinas" class="collapsible popout" data-collapsible="acordion" :id="disciplina.codigo"> 
+      <ul v-for="disciplina in disciplinas" class="collapsible popout" data-collapsible="acordion" :id="disciplina.codigo">
         <li>
-          <div @click="abrirCollapsible(disciplina.codigo)" class="collapsible-header">
-            {{ disciplina.descricao }} 
-            <!-- <i v-bind:style="{opacity: checkOpacity}" class="material-icons right">check</i> -->
+          <div @click="abrirCollapsible(disciplina.descricao,disciplina.codigo)" class="collapsible-header">
+            {{ disciplina.descricao }}
+            <span :id="'badge-' + disciplina.codigo" style="background-color:red" class="new badge" data-badge-caption="">Pendente</span> <!--Criação do badge-->
           </div>
-          <div class="collapsible-body">
-            <select class="browser-default" v-model="unidadeSelecionada" v-on:change="exibicaoDaListaDeHorarios(disciplina.codigo)" required>
-              <option value="" disabled selected>Unidade:</option>
-              <option v-for="unidade in disciplina.unidades" v-bind:value="unidade">
-                {{ unidade.descrição }}
-              </option>
-            </select>
-              
-            <div :id="'horario-' + disciplina.codigo">
-              <table class="highlight centered">
-                <thead>
+          <div class="collapsible-body center">
+            <div :id="'agendado-' + disciplina.codigo"> <!--Criação de uma div par agrupar o agendamento-->
+            <h5><strong>Prova Agendada</strong></h5>
+            <table :id="'resumo-' + disciplina.codigo" class="highlight centered">
+            </table> <!--Conteúdo da tabela sendo criado dinamicamente-->
+            <br>
+            <a @click="abrirModalDeConfirmacaoDeCancelamento()" class='red darken-4 waves-effect waves-light btn'>Cancelar Agendamento</a> <!--Chamada do modal de cancelamento-->
+            </div>
+              <select :id="'select-' + disciplina.codigo" class="browser-default" v-model="unidadeSelecionada" v-on:change="exibicaoDaListaDeHorarios(disciplina.codigo)">
+                <option value="" disabled>Unidade:</option>
+                <option v-for="unidade in disciplina.unidades" v-bind:value="unidade">
+                  {{ unidade.descrição }}
+                </option>
+              </select>
+              <div :id="'horario-' + disciplina.codigo">
+                <table class="highlight centered">
+                  <thead>
                     <tr>
                       <th>Data</th>
                       <th>Horario</th>
                       <th>Sala</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr @click="abrirModalDeConfirmacaoDeDisciplina(disciplina, horario.data, horario.sala)" class="collection-item center modal-trigger blocoHorario" v-for="horario in unidadeSelecionada.horarios">
-                    <td>{{ horario.data | dataFormatada }}</td>
-                    <td>{{ horario.data | horarioFormatado }}</td>
-                    <td>{{ horario.sala }}</td>
-                  </tr>
-                </tbody>
-               </table>
-            </div>
-            <div class="row center">
-              <a class="waves-effect waves-light btn" @click="cancelarDisciplina(disciplina.descricao)">Cancelar Agendamento</a>
-            </div>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr @click="abrirModalDeConfirmacaoDeDisciplina(disciplina, horario.data, horario.sala)" class="collection-item center modal-trigger blocoHorario"
+                      v-for="horario in unidadeSelecionada.horarios">
+                      <td>{{ horario.data | dataFormatada }}</td>
+                      <td> {{ horario.data | horarioFormatado }}</td>
+                      <td> Sala {{ horario.sala }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
           </div>
         </li>
       </ul>
 
       <div id="modal" class="modal">
         <div class="modal-content">
-          <h4 align="center">Confirmar Disciplina?</h4>
+          <h4 align="center">Confirmar Agendamento?</h4>
           <p align="center">
-            Disciplina: {{ selecaoExibidaNoModal.disciplinaSelecionada }}<br>
-            Unidade: {{ selecaoExibidaNoModal.unidadeSelecionada }}<br>
-            Data: {{ selecaoExibidaNoModal.dataSelecionada }}<br>
-            Sala: {{ selecaoExibidaNoModal.salaSelecionada }}
-            
+            Disciplina: {{ selecaoExibidaNoModal.disciplinaSelecionada }}<br> Unidade: {{ selecaoExibidaNoModal.unidadeSelecionada
+            }}
+            <br> Data: {{ selecaoExibidaNoModal.dataSelecionada }}<br> Sala: {{ selecaoExibidaNoModal.salaSelecionada }}
+
             <!-- Não sei porque dá erro formatando dessa forma!! ↓↓↓↓↓↓↓ -->
             <!-- Data: {{ selecaoExibidaNoModal.dataSelecionada | dataFormatada }}<br> -->
             <!-- Horario: {{ selecaoExibidaNoModal.dataSelecionada | horarioFormatado }}<br> -->
@@ -65,7 +68,27 @@
 
         <div class="modal-footer">
           <a @click="salvarDadosNoLocalStorage()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
-          <a @click="limparHorarioModal()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+        </div>
+      </div>
+
+      <div id="modal2" class="modal">
+        <div class="modal-content">
+          <h4 align="center">Cancelar Agendamento?</h4>
+          <p align="center">
+            Disciplina: {{ selecaoExibidaNoModal.disciplinaSelecionada }}<br> Unidade: {{ selecaoExibidaNoModal.unidadeSelecionada
+            }}
+            <br> Data: {{ selecaoExibidaNoModal.dataSelecionada }}<br> Sala: {{ selecaoExibidaNoModal.salaSelecionada }}
+
+            <!-- Não sei porque dá erro formatando dessa forma!! ↓↓↓↓↓↓↓ -->
+            <!-- Data: {{ selecaoExibidaNoModal.dataSelecionada | dataFormatada }}<br> -->
+            <!-- Horario: {{ selecaoExibidaNoModal.dataSelecionada | horarioFormatado }}<br> -->
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <a @click="cancelarDisciplina()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a> <!--Chamada da função de cancelamento da disciplina-->
+          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Voltar</a>
         </div>
       </div>
     </div>
@@ -73,13 +96,10 @@
 
 </template>
 
-<script>
-//import dos dados dos arquivos JSON
-import disciplinasJSON from '../../dados_json/disciplinascompleto.json'
-// import disciplinasJSON from '../../dados_json/disciplinas.json'
-// import unidadesJSON from '../../dados_json/unidades.json'
-// import horariosJSON from '../../dados_json/horarios.json'
 
+
+<script>
+import disciplinasJSON from '../../dados_json/disciplinascompleto.json'
 import moment from 'moment'
 
 
@@ -96,47 +116,48 @@ export default {
           salaSelecionada: ''
         },
         disciplinaSelecionada: {},
-
-
-        //Rever o que ainda é necessário aqui ↓
-        discipValue: '',
-        discipSelec: '',
-        unidades: [],
-        unidSelec: '',
-        horarios: [],
-        horaData: '',
-        horaSala: '',
-        horarioModal: [],
-        DiscipUnidHora: [],
-        checkOpacity0: 0,
-        checkOpacity1: 0,
-        checkOpacity2: 0,
-        checkSelec: ''
+        objResumoAgendamento: [],
+        objResumoAgendamentoCollapsible: [],
+        descricaoTemp: '',
+        codigoTemp: '',
       }
     },
     methods: {
-      abrirCollapsible: function (id) {
-        $('.collapsible').collapsible('close', 0); // Devido ao fato de o horário de uma disciplina aparecer nos collapsibles de outras,
-                                                   // este código fecha os outros collapsibles.
-                                                   // Precisamos rever isso, para não precisarmos fechar.
-                                                   // Além disso, dessa forma, depois de aberto, o usuário só consegue fechar o collapsible
-                                                   // quando abre outro.
-        $('#horario-' + id).hide();
-        $('#' + id).collapsible('open');
+      abrirCollapsible: function (descricao, codigo) {
+        this.descricaoTemp = descricao; //armazena a descricao da disciplina clicada temporariamente
+        this.codigoTemp = codigo; //armazena o codigo da disciplina clicada temporariamente
+        $('.collapsible').collapsible('close', 0); // Fechando o collapsible
+        $('#agendado-' + codigo).hide(); //Escondendo a div do agendamento
+        $('#select-' + codigo).prop('selectedIndex',0); //o selected do html não está funcionando, então esse código JQuery substitui ele                       
+        $('#horario-' + codigo).hide(); //Escondendo os horários da disciplina
+        this.mostrarResumoDoAgendamento(); //chama a função de mostrar o resumo ao abrir o collapsible
+        $('#' + codigo).collapsible('open'); //abrindo o collapsible clicado
       },
       abrirModalDeConfirmacaoDeDisciplina: function (disciplina, data, sala) {
-        this.checkSelec = disciplina.codigo;
         this.selecaoExibidaNoModal.disciplinaSelecionada = disciplina.descricao;
         this.selecaoExibidaNoModal.unidadeSelecionada = this.unidadeSelecionada.descrição;
         this.selecaoExibidaNoModal.dataSelecionada = data;
         this.selecaoExibidaNoModal.salaSelecionada = sala;
         $('#modal').modal('open');
       },
-      exibicaoDaListaDeHorarios: function (id) {
-        $('#horario-'+id).show();
+      abrirModalDeConfirmacaoDeCancelamento: function () {
+        //semelhante à função de cancelamento, com a diferença que ao invés de cancelar, ele pega os dados pra exibir no modal
+        var disciplinasAgendadas = JSON.parse(localStorage.getItem("Agendamentos"));
+        var qtdDeDisciplinas = disciplinasAgendadas.length;
+        for(var i = 0 ; i < qtdDeDisciplinas ; i++) {
+          if(disciplinasAgendadas[i].disciplinaAgendada == this.descricaoTemp) {
+          //pegando do localStorage e colocando nas variáveis do modal
+          this.selecaoExibidaNoModal.disciplinaSelecionada = disciplinasAgendadas[i].disciplinaAgendada;
+          this.selecaoExibidaNoModal.unidadeSelecionada = disciplinasAgendadas[i].unidadeAgendada;
+          this.selecaoExibidaNoModal.dataSelecionada = disciplinasAgendadas[i].dataAgendada;
+          this.selecaoExibidaNoModal.salaSelecionada = disciplinasAgendadas[i].salaAgendada;
+            break;
+          }
+        }
+        $('#modal2').modal('open');
       },
-      limparHorarioModal: function () {
-        this.horarioModal.splice(0);
+      exibicaoDaListaDeHorarios: function (id) {
+        $('#horario-'+id).show(); 
       },
       salvarDadosNoLocalStorage: function () {
         //↓ Cria o objeto que será armazenado no local storage
@@ -151,6 +172,7 @@ export default {
           //Caso não haja matérias agendadas, insere o objeto em um array e o armazena no local storage
           var arrayDeAgendamentos = [objDisciplinaAgendada];
           localStorage.setItem("Agendamentos",JSON.stringify(arrayDeAgendamentos));
+          this.mostrarResumoDoAgendamento();
         }
         else
         {
@@ -158,59 +180,57 @@ export default {
           var arrayDeAgendamentos = JSON.parse(localStorage.getItem("Agendamentos"));
           arrayDeAgendamentos.push(objDisciplinaAgendada);
           localStorage.setItem("Agendamentos",JSON.stringify(arrayDeAgendamentos));
+          this.mostrarResumoDoAgendamento();
+        }
+        
+      },
+      mostrarResumoDoAgendamento: function () {
+        //Pega os agendamentos do banco de dados
+        this.objResumoAgendamento = JSON.parse(localStorage.getItem("Agendamentos"));
+        
+        if (this.objResumoAgendamento){ //teste para ver se pegou algo
+          var qtdDisciplinas = Object.keys(this.objResumoAgendamento).length; //armazenando o tamanho do objeto para ser usado no for
+          for (var i = 0; i < qtdDisciplinas; i++) {
+            if (this.descricaoTemp == this.objResumoAgendamento[i].disciplinaAgendada) { //testa se a descricao da disciplina clicada no collapsible é igual ao que está guardado no local storage
+              $('#badge-' + this.codigoTemp).css('background-color', 'green'); //alterando cor do badge
+              $('#badge-' + this.codigoTemp).empty(); //esvaziando badge
+              $('#badge-' + this.codigoTemp).append("Agendado"); //Colocando string agendado no badge
+              $('#select-' + this.codigoTemp).hide(); //escondendo o select
+              $('#horario-' + this.codigoTemp).hide();//escondendo os horários
+              $('#resumo-' + this.codigoTemp).empty();//esvaziando o resumo para adicionar dinamicamente sem repetição
+              //adicionando dinamicamente o agendamento na tabela
+              $('#resumo-' + this.codigoTemp).append("<thead><tr><th>Unidade</th><th>Data</th><th>Sala</th></tr></thead><tbody><tr><td>" + this.objResumoAgendamento[i].unidadeAgendada + "</td> <td>" + this.objResumoAgendamento[i].dataAgendada + "</td> <td> Sala " +this.objResumoAgendamento[i].salaAgendada + "</td></tr></tbody>");
+              $('#agendado-' + this.codigoTemp).show(); //mostra o agendamento
+              break;
+            }
+          }
         }
       },
-      cancelarDisciplina: function (disciplina) {
-       var disciplinasAgendadas = JSON.parse(localStorage.getItem("Agendamentos")); // puxa os dados do local storage para a variável disciplinasAgendadas
-       var qtdDeDisciplinas = disciplinasAgendadas.length; // atribui a qdtDeDisciplinas o tamanho do array de objetos armazenado no local storage
-
-       for(var i = 0 ; i < qtdDeDisciplinas ; i++) {                                // percorre o array e ao encontrar um objeto em que tenha a mesma disciplina
-         if(disciplinasAgendadas[i].disciplinaAgendada === disciplina) {            // que foi passada como parâmetro da função, usa o splice na posição encontrada
-           disciplinasAgendadas.splice(i,1);                                        // e o break para sair da repetição sem percorrer todos os outros objetos do array
-           break;
-         }
-       }
-       localStorage.setItem("Agendamentos",JSON.stringify(disciplinasAgendadas));   // salva novamente no local storage sobrescrevendo o que está lá
-     },
-
-
-      // A parte do check deve ser refeita e inserida na função salvarDadosNoLocalStorage
-      // salvar: function () {
-      //   if (localStorage.getItem("agendado")) {
-      //     this.DiscipUnidHora = JSON.parse(localStorage.getItem("agendado"));
-      //   }
-
-      //   this.DiscipUnidHora.push(this.discipSelec, this.unidSelec, this.horaData, this.horaSala);
-      //   localStorage.setItem("agendado", JSON.stringify(this.DiscipUnidHora));
-      //   this.horarioModal.splice(0); 
-      //   localStorage.setItem("check"+this.checkSelec, "true");         
-      //   if (this.checkSelec == 0) {
-      //     this.checkOpacity0 = 100;
-      //   }
-      //   if (this.checkSelec == 1) {
-      //     this.checkOpacity1 = 100;
-      //   }
-      //   if (this.checkSelec == 2) {
-      //     this.checkOpacity2 = 100;
-      //   }
-      // }
+      cancelarDisciplina: function () {
+        var disciplinasAgendadas = JSON.parse(localStorage.getItem("Agendamentos")); // puxa os dados do local storage para a variável disciplinasAgendadas
+        var qtdDeDisciplinas = disciplinasAgendadas.length;
+        for(var i = 0 ; i < qtdDeDisciplinas ; i++) {
+          if(disciplinasAgendadas[i].disciplinaAgendada === this.descricaoTemp) {
+            disciplinasAgendadas.splice(i,1);
+            break;
+          }
+        }
+          localStorage.setItem("Agendamentos",JSON.stringify(disciplinasAgendadas));   // salva novamente no local storage sobrescrevendo o que está lá
+          $('#agendado-' + this.codigoTemp).hide(); //escondendo o agendamento
+          $('#horario-' + this.codigoTemp).hide(); //escondendo o horário
+          $('#select-' + this.codigoTemp).prop('selectedIndex',0); //reiniciando o select
+          $('#select-' + this.codigoTemp).show(); //mostrando o select
+          $('#badge-' + this.codigoTemp).css('background-color', 'red'); //deixando o badge vermelho
+          $('#badge-' + this.codigoTemp).empty(); //esvaziando o badge
+          $('#badge-' + this.codigoTemp).append("Pendente"); //adicionando a string pendente no badge
+      },
     },
-    created: function() {
+    mounted: function() {
       $('.collapsible').collapsible();
       $('select').material_select();
       $('.modal').modal();
       
       this.disciplinas = disciplinasJSON.disciplinas;
-
-      // if (localStorage.getItem("check0")) {
-      //   this.checkOpacity0 = 100;
-      //   }
-      // if (localStorage.getItem("check1")) {
-      //   this.checkOpacity1 = 100;
-      // }
-      // if (localStorage.getItem("check2")) {
-      //   this.checkOpacity2 = 100;
-      // }
     },
     filters: {
       dataFormatada: function(data) {
@@ -228,24 +248,8 @@ export default {
 </script>
 
 <style>
-.blocoHorario{
+.blocoHor{
 cursor: pointer;
-}
-#check{
-  display: none;
-  float: right;
-  color:#00ff00;
-  
-}
-#check2{
-  display: none;
-  float: right;
-  color:#00ff00;
-}
-#check3{
-  display: none;
-  float: right;
-  color:#00ff00;
 }
   .collapsible-header {
     position: relative;

@@ -9,8 +9,6 @@ import VueRouter from 'vue-router'
 import App from './App'
 //importar o componente Agendar
 import Agendar from './components/Agendar'
-//importar o componente Agendamentos
-import Agendamentos from './components/Agendamentos'
 //importar o componente Login
 import Login from './components/Login'
 
@@ -22,7 +20,6 @@ const routes = [
   //defina a url raíz da aplicação
   {path: '/', component: Login },
   {path: '/agendar', component: Agendar},
-  {path: '/agendamentos', component: Agendamentos},
 ]
 
 // Criar a instancia do router e passar a opção de 'routes'
