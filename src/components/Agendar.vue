@@ -9,11 +9,12 @@
         <p id="textoAjuda" class="center-align">Clique numa disciplina abaixo para começar a agendar</p>
       </div>
 
-      <ul v-for="disciplina in disciplinas" class="collapsible popout" data-collapsible="acordion" :id="disciplina.codigo">
+   <div class="col s12 m12 l12">  
+      <ul v-for="disciplina in disciplinas" class="collapsible" data-collapsible="acordion" :id="disciplina.codigo">
         <li>
           <div @click="abrirCollapsible(disciplina.descricao,disciplina.codigo)" class="collapsible-header">
             {{ disciplina.descricao }}
-            <span :id="'badge-' + disciplina.codigo" style="background-color:red" class="new badge" data-badge-caption="">Pendente</span> <!--Criação do badge-->
+            <span :id="'badge-' + disciplina.codigo" style="background-color:red" class="new badge" data-badge-caption="" >Pendente</span> <!--Criação do badge-->
           </div>
           <div class="collapsible-body center">
             <div :id="'agendado-' + disciplina.codigo"> <!--Criação de uma div par agrupar o agendamento-->
@@ -51,7 +52,7 @@
           </div>
         </li>
       </ul>
-
+   </div>  
       <div id="modal" class="modal">
         <div class="modal-content">
           <h4 align="center">Confirmar Agendamento?</h4>
