@@ -40,10 +40,10 @@
                   </thead>
                   <tbody>
                     <tr @click="abrirModalDeConfirmacaoDeDisciplina(disciplina, horario.data, horario.sala)" class="collection-item center modal-trigger blocoHorario"
-                      v-for="horario in unidadeSelecionada.horarios">
+                      v-for="horario in unidadeSelecionada.horarios" v-bind:value="horario"> 
                       <td>{{ horario.data | dataFormatada }}</td>
                       <td> {{ horario.data | horarioFormatado }}</td>
-                      <td> Sala {{ horario.sala }}</td>
+                      <td> {{ horario.sala }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -58,7 +58,7 @@
           <p align="center">
             Disciplina: {{ selecaoExibidaNoModal.disciplinaSelecionada }}<br> Unidade: {{ selecaoExibidaNoModal.unidadeSelecionada
             }}
-            <br> Data: {{ selecaoExibidaNoModal.dataSelecionada }}<br> Sala: {{ selecaoExibidaNoModal.salaSelecionada }}
+            <br> Data:{{teste}}  <br> Sala: {{ selecaoExibidaNoModal.salaSelecionada }}
 
             <!-- Não sei porque dá erro formatando dessa forma!! ↓↓↓↓↓↓↓ -->
             <!-- Data: {{ selecaoExibidaNoModal.dataSelecionada | dataFormatada }}<br> -->
@@ -109,6 +109,7 @@ export default {
       return {
         disciplinas: [],
         unidadeSelecionada: [],
+        teste:[],
         selecaoExibidaNoModal: {
           disciplinaSelecionada: '',
           unidadeSelecionada: '',
@@ -136,6 +137,10 @@ export default {
       abrirModalDeConfirmacaoDeDisciplina: function (disciplina, data, sala) {
         this.selecaoExibidaNoModal.disciplinaSelecionada = disciplina.descricao;
         this.selecaoExibidaNoModal.unidadeSelecionada = this.unidadeSelecionada.descrição;
+        var d = new Date(JSON.parse(data+'000'));
+        this.teste = d.toLocaleDateString();
+        //console.log(typeof(JSON.parse(this.teste)));
+        //console.log(new Date(JSON.parse(this.teste+'000')));
         this.selecaoExibidaNoModal.dataSelecionada = data;
         this.selecaoExibidaNoModal.salaSelecionada = sala;
         $('#modal').modal('open');
@@ -233,10 +238,12 @@ export default {
       this.disciplinas = disciplinasJSON.disciplinas;
     },
     filters: {
-      dataFormatada: function(data) {
+      
+    
+      dataFormatada: function(jData) {
         //Precisamos melhorar essa parte. Consegui converter as datas somente
         //a partir de milisegundos. Por isso o '+000'
-        var dataParse = JSON.parse(data+'000')
+        var dataParse = JSON.parse(jData+'000')
         return moment(dataParse).format('DD/MM/YYYY')
       },
       horarioFormatado: function(data) {
