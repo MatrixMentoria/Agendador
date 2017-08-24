@@ -15,9 +15,12 @@
           <li>
             <div @click="abrirCollapsible(disciplina.descricao,disciplina.codigo)" class="collapsible-header">
               {{ disciplina.descricao }}
-              <span :id="'badge-' + disciplina.codigo" style="background-color:red" class="new badge" data-badge-caption="">Pendente</span>
-              <!--Criação do badge-->
+              <span v-if="badges(disciplina.descricao) == true" :id="'badge-' + disciplina.codigo" :class="agendadoClass" data-badge-caption="">{{agendadoTxt}}
+              </span>
+              <span v-else :id="'badge-' + disciplina.codigo" :class="pendenteClass" data-badge-caption="">{{pendenteTxt}}
+              </span>
             </div>
+
             <div class="collapsible-body center">
               <div :id="'agendado-' + disciplina.codigo">
                 <!--Criação de uma div par agrupar o agendamento-->
@@ -58,7 +61,7 @@
           </li>
         </ul>
       </div>
-      <button @click="mostrarResumoDoAgendamento(true)">badge</button>
+
       <div id="modal" class="modal">
         <div class="modal-content">
           <h4 align="center">Confirmar Agendamento?</h4>
@@ -104,9 +107,8 @@
 
 </template>
 
-
 <script>
-  
+
 import disciplinasJSON from '../../dados_json/disciplinascompleto.json'
 import moment from 'moment'
 
@@ -124,10 +126,12 @@ export default {
         salaSelecionada: ''
       },
       disciplinaSelecionada: {},
-      objResumoAgendamento: [],
-      objResumoAgendamentoCollapsible: [],
       descricaoTemp: '',
       codigoTemp: '',
+      pendenteClass: 'new badge red',
+      pendenteTxt: 'Pendente',
+      agendadoClass: 'new badge green',
+      agendadoTxt: 'Agendado'
     }
   },
   methods: {
@@ -138,7 +142,7 @@ export default {
       $('#agendado-' + codigo).hide(); //Escondendo a div do agendamento
       $('#select-' + codigo).prop('selectedIndex', 0); //o selected do html não está funcionando, então esse código JQuery substitui ele                       
       $('#horario-' + codigo).hide(); //Escondendo os horários da disciplina
-      this.mostrarResumoDoAgendamento(false); //chama a função de mostrar o resumo ao abrir o collapsible
+      this.mostrarResumoDoAgendamento(); //chama a função de mostrar o resumo ao abrir o collapsible
       $('#' + codigo).collapsible('open'); //abrindo o collapsible clicado
     },
     abrirModalDeConfirmacaoDeDisciplina: function (disciplina, data, sala) {
@@ -180,39 +184,44 @@ export default {
         //Caso não haja matérias agendadas, insere o objeto em um array e o armazena no local storage
         var arrayDeAgendamentos = [objDisciplinaAgendada];
         localStorage.setItem("Agendamentos", JSON.stringify(arrayDeAgendamentos));
-        this.mostrarResumoDoAgendamento(false);
+        this.mostrarResumoDoAgendamento();
       } else {
         //Caso haja matérias agendadas, insere o objeto no array já criado
         var arrayDeAgendamentos = JSON.parse(localStorage.getItem("Agendamentos"));
         arrayDeAgendamentos.push(objDisciplinaAgendada);
         localStorage.setItem("Agendamentos", JSON.stringify(arrayDeAgendamentos));
-        this.mostrarResumoDoAgendamento(false);
+        this.mostrarResumoDoAgendamento();
       }
 
     },
-    mostrarResumoDoAgendamento: function (badge) {
+    mostrarResumoDoAgendamento: function () {
       //Pega os agendamentos do banco de dados
-      this.objResumoAgendamento = JSON.parse(localStorage.getItem("Agendamentos"));
+      var objResumoAgendamento = JSON.parse(localStorage.getItem("Agendamentos"));
 
-      if (this.objResumoAgendamento) { //teste para ver se pegou algo
-        var qtdDisciplinasLocalStorage = Object.keys(this.objResumoAgendamento).length; //armazenando o tamanho do objeto para ser usado no for
-        var qtdDisciplinasAluno = Object.keys(this.disciplinas).length;
-        for (var i = 0; i < qtdDisciplinasLocalStorage; i++) {
-          for (var j = 0; j < qtdDisciplinasAluno; j++) {
-            if (this.disciplinas[j].descricao == this.objResumoAgendamento[i].disciplinaAgendada) { //testa se a descricao da disciplina é igual ao que está guardado no local storage
-              $('#badge-' + this.disciplinas[j].codigo).css('background-color', 'green'); //alterando cor do badge
-              $('#badge-' + this.disciplinas[j].codigo).empty(); //esvaziando badge
-              $('#badge-' + this.disciplinas[j].codigo).append("Agendado"); //Colocando string agendado no badge
-              if (badge === false) {
-                $('#select-' + this.disciplinas[j].codigo).hide(); //escondendo o select
-                $('#horario-' + this.disciplinas[j].codigo).hide(); //escondendo os horários
-                $('#resumo-' + this.disciplinas[j].codigo).empty(); //esvaziando o resumo para adicionar dinamicamente sem repetição
-                //adicionando dinamicamente o agendamento na tabela
-                $('#resumo-' + this.disciplinas[j].codigo).append("<thead><tr><th>Unidade</th><th>Data</th><th>Sala</th></tr></thead><tbody><tr><td>" + this.objResumoAgendamento[i].unidadeAgendada + "</td> <td>" + this.objResumoAgendamento[i].dataAgendada + "</td> <td> Sala " + this.objResumoAgendamento[i].salaAgendada + "</td></tr></tbody>");
-                $('#agendado-' + this.disciplinas[j].codigo).show(); //mostra o agendamento
-                break;
-              }
-            }
+      if (objResumoAgendamento) { //teste para ver se pegou algo
+        var qtdDisciplinas = Object.keys(objResumoAgendamento).length; //armazenando o tamanho do objeto para ser usado no for
+        for (var i = 0; i < qtdDisciplinas; i++) {
+          if (this.descricaoTemp == objResumoAgendamento[i].disciplinaAgendada) { //testa se a descricao da disciplina clicada no collapsible é igual ao que está guardado no local storage
+            $('#select-' + this.codigoTemp).hide(); //escondendo o select
+            $('#horario-' + this.codigoTemp).hide(); //escondendo os horários
+            $('#resumo-' + this.codigoTemp).empty(); //esvaziando o resumo para adicionar dinamicamente sem repetição
+            //adicionando dinamicamente o agendamento na tabela
+            $('#resumo-' + this.codigoTemp).append("<thead><tr><th>Unidade</th><th>Data</th><th>Sala</th></tr></thead><tbody><tr><td>" + objResumoAgendamento[i].unidadeAgendada + "</td> <td>" + objResumoAgendamento[i].dataAgendada + "</td> <td> Sala " + objResumoAgendamento[i].salaAgendada + "</td></tr></tbody>");
+            $('#agendado-' + this.codigoTemp).show(); //mostra o agendamento
+            break;
+          }
+        }
+      }
+    },
+    badges: function (descricaoBadge) {
+      //Pega os agendamentos do banco de dados
+      var objBadgeLocalStorage = JSON.parse(localStorage.getItem("Agendamentos"));
+
+      if (objBadgeLocalStorage) { //teste para ver se pegou algo
+        var qtdObjBadgeLocalStorage = Object.keys(objBadgeLocalStorage).length; //armazenando o tamanho do objeto para ser usado no for
+        for (var i = 0; i < qtdObjBadgeLocalStorage; i++) {
+          if (descricaoBadge == objBadgeLocalStorage[i].disciplinaAgendada) {
+            return (true);
           }
         }
       }
@@ -231,9 +240,6 @@ export default {
       $('#horario-' + this.codigoTemp).hide(); //escondendo o horário
       $('#select-' + this.codigoTemp).prop('selectedIndex', 0); //reiniciando o select
       $('#select-' + this.codigoTemp).show(); //mostrando o select
-      $('#badge-' + this.codigoTemp).css('background-color', 'red'); //deixando o badge vermelho
-      $('#badge-' + this.codigoTemp).empty(); //esvaziando o badge
-      $('#badge-' + this.codigoTemp).append("Pendente"); //adicionando a string pendente no badge
     },
   },
   mounted: function (e) {
@@ -242,7 +248,6 @@ export default {
     $('.modal').modal();
 
     this.disciplinas = disciplinasJSON.disciplinas;
-    this.mostrarResumoDoAgendamento(true);
   },
   filters: {
     dataFormatada: function (data) {
@@ -256,10 +261,9 @@ export default {
       return moment(dataParse).format('hh:mm')
     }
   }
-} 
+}
 
 </script>
-
 
 
 <style>
