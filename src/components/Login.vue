@@ -28,7 +28,7 @@
         </div>
 
         <div class="row">
-          <div class="input-field col s1 push-s5">
+          <div class="input-field col l1 s1 offset-l5 push-s4 push-m5 ">
             <router-link to="/Agendar"><a class="red darken-4 waves-effect waves-light btn">Entrar</a></router-link>
           </div>
         </div>
