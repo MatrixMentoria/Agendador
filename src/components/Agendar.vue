@@ -101,9 +101,17 @@
           <!--Chamada da função de cancelamento da disciplina-->
           <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Voltar</a>
         </div>
+
       </div>
+
+      <div>
+        <a class="red darken-4 waves-light btn" onclick="window.print();">Imprimir Comprovante</a>
+      </div>
+      
     </div>
   </div>
+
+
 
 </template>
 
