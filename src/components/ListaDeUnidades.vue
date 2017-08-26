@@ -6,7 +6,7 @@
                 {{ unidade.descrição }}
             </option>
         </select>
-        <lista-de-horarios :horarios.sync="unidadeSelecionada.horarios" :unidade="unidadeSelecionada" :disciplina="disciplina"></lista-de-horarios>
+        <lista-de-horarios :horarios="unidadeSelecionada.horarios" :unidade="unidadeSelecionada" :disciplina="disciplina"></lista-de-horarios>
     </div>
 </template>
 

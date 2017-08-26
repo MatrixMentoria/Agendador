@@ -3,13 +3,14 @@
         <ul class="collapsible" data-collapsible="acordion">
             <li>
                 <div class="collapsible-header">
-                    <badge :pendente.sync="pendente"></badge>
+                    <badge :pendente="disciplina.pendente"></badge>
                     {{ disciplina.descricao }}
                 </div>
-                <div class="collapsible-body center" v-if="pendente">
-                    <lista-de-unidades :unidades="disciplina.unidades" :disciplina="disciplina"></lista-de-unidades>
+                <div class="collapsible-body center" v-show="disciplina.pendente">
+                    <lista-de-unidades :unidades="disciplina.unidades" :disciplina="disciplina"></lista-de-unidades>                    
                 </div>
-                <div v-else>
+                
+                <div v-show="disciplina.pendente === false">                
                     <h5 class="center"><strong>Prova Agendada</strong></h5>
                     <table class="highlight centered">
                         <thead>
@@ -55,8 +56,7 @@
             Badge,
         },
         data() {
-            return {
-                pendente: '',
+            return {                
                 dataAgendada: '',
                 unidadeAgendada: '',
                 dataAgendada: '',
@@ -67,13 +67,13 @@
         mounted: function() {
             $('.collapsible').collapsible();
             $('select').material_select();
-            this.pendente = true;
+            this.disciplina.pendente = true;
             var agendamentos = JSON.parse(localStorage.getItem("Agendamentos"));
             if (agendamentos) {
                 var qtd = agendamentos.length;
                 for( var i = 0 ; i < qtd ; i++ ) {
                     if (this.disciplina.descricao == agendamentos[i].disciplinaAgendada) {
-                        this.pendente = false;
+                        this.disciplina.pendente = false;
                         this.unidadeAgendada = agendamentos[i].unidadeAgendada;
                         this.dataAgendada = moment(JSON.parse(agendamentos[i].dataAgendada+'000')).format('DD/MM/YYYY');
                         this.horarioAgendado = moment(JSON.parse(agendamentos[i].dataAgendada+'000')).format('hh:mm');
@@ -115,7 +115,7 @@
                         };
                     };
                     localStorage.setItem("Agendamentos", JSON.stringify(disciplinasAgendadas)); // salva novamente no local storage sobrescrevendo o que está lá
-                    location.reload()   // Melhorar isso!! Recarregando a página. Precisamos ver como usar computed.
+                    this.disciplina.pendente = true;
                 });
             },
         },

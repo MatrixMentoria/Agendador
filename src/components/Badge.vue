@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div v-if="pendente">
+        <div v-show="pendente">
             <span class="new badge red" data-badge-caption="">Pendente</span>
         </div>
-        <div v-else>
+        <div v-show="pendente === false">
             <span class="new badge blue" data-badge-caption="">Agendado</span>
         </div>
     </div>

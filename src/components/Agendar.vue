@@ -10,6 +10,10 @@
   import Navbar from './Navbar';
   import disciplinasJSON from '../../dados_json/disciplinascompleto.json'
 
+  disciplinasJSON.disciplinas.forEach((item)=>{
+    item.pendente = true;
+  })
+
   export default {
     name:'agendar',
     components: {

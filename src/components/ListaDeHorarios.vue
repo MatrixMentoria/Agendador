@@ -69,6 +69,7 @@
                     sweetalert({
                         title: 'Confirmado',
                         html: true,
+                        closeOnConfirm: true,
                         text: 
                             '<ul>' + 
                                 '<li>' + disciplina + '</li>' + 
@@ -78,7 +79,7 @@
                             '</ul>',
                         type: 'success',
                     },
-                    () => { location.reload() }   // Melhorar isso!! Recarregando a página. Precisamos ver como usar computed.
+                    () => { this.disciplina.pendente = false; }   
                     );                            
                 });
             },
@@ -94,6 +95,6 @@
                 var dataParse = JSON.parse(data+'000')
                 return moment(dataParse).format('hh:mm')
             },
-        },
+        }
     };
 </script>
