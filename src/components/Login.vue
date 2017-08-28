@@ -14,23 +14,22 @@
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix">account_circle</i>
-            <input id="icon_prefix" type="text" class="validate">
-            <label for="text" data-error="incorreto" data-success="ok">Matrícula: </label>
+            <input v-model="email" id="icon_prefix" type="email" class="validate" required>
+            <label for="text" data-error="incorreto" data-success="ok">E-mail: </label>
           </div>
         </div>
 
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix">edit</i>
-            <input id="icon_prefix" type="password" class="validate">
+            <input v-model="senha" id="icon_prefix" type="password" class="validate" required>
             <label for="password" data-error="incorreto" data-success="ok">Senha de Acesso: </label>
           </div>
         </div>
 
-        <div class="row">
-          <div class="input-field col l1 s1 offset-l5 push-s4 push-m5 ">
-            <router-link to="/Agendar"><a class="red darken-4 waves-effect waves-light btn">Entrar</a></router-link>
-          </div>
+        <div class="row center">
+            <a @click="login" class="red darken-4 waves-effect waves-light btn">Entrar</a>
+            <a @click="signup" class="red darken-4 waves-effect waves-light btn">cadastrar</a>
         </div>
       </form>
     </div>
@@ -43,3 +42,38 @@
       font-size: 25px;
     }
 </style>
+
+<<script>
+import {firebaseauth} from '../FirebaseAuth'
+
+export default {
+  name: 'login',
+  data() {
+    return {
+      email: '',
+      senha: ''
+    }
+  },
+  created: function() {
+    firebaseauth.signOut();
+  },
+  methods: {
+    login: function () {
+      firebaseauth.signInWithEmailAndPassword(this.email, this.senha).then(function(){
+        window.location.href = "/agendar";
+      }).catch(function(error) {
+      alert("email ou senha incorreto");
+    });
+    },
+    signup: function () {
+      firebaseauth.createUserWithEmailAndPassword(this.email, this.senha).then(function(){
+        alert("Cadastrado com sucesso");
+      }).catch(function(error) {
+      alert("erro ao cadastrar, verifique se as informações estão corretas");
+      });
+    }
+  }
+}
+</script>
+
+
