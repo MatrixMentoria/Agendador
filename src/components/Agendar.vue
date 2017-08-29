@@ -1,239 +1,29 @@
 <template>
   <div id="agendar">
-    <nav class="nav-wrapper red darken-4">
-      <span class="brand-logo center">Agendar</span>
-      <ul id="nav-mobile" class="left hide-on-med-and-down">
-        <li>
-          <router-link to="/Agendamentos">Agendamentos</router-link>
-        </li>
-      </ul>
-    </nav>
-    <div class="container">
-      <div>
-        <p id="textoAjuda" class="center-align">Clique numa disciplina abaixo para começar a agendar</p>
-      </div>
-
-
-      <ul class="collapsible popout" data-collapsible="accordion" id="collapsible0">
-        <li>
-          <div @click="collapsibleOpen(0)" class="collapsible-header" >
-            {{ disciplinas[0].descricao }} <i v-bind:style="{opacity: checkOpacity0}" class="material-icons right">check</i>  
-          </div>
-          <div class="collapsible-body">
-            <select class="browser-default" v-model="unidSelec" v-on:change="selectShow(0)" required>
-              <option value="" disabled selected>Unidade:</option>
-
-              <option v-for="unidade in unidades" v-bind:key="unidade.descricao">
-                {{ unidade.descrição }}
-              </option>
-            </select>
-            <div id="horario0">
-              <div class="collection">
-                <a @click="modalFunc(0, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
-                  {{ horario.data }} - Sala {{ horario.sala }}
-                </a>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-
-      <ul class="collapsible popout" data-collapsible="accordion" id="collapsible1">
-        <li>
-          <div @click="collapsibleOpen(1)" class="collapsible-header" >
-            {{ disciplinas[1].descricao }} <i v-bind:style="{opacity: checkOpacity1}" class="material-icons right">check</i>   
-          </div>
-          <div class="collapsible-body">
-            <select class="browser-default" v-model="unidSelec" v-on:change="selectShow(1)" required>
-              <option value="" disabled selected>Unidade:</option>
-              <option v-for="unidade in unidades" v-bind:key="unidade.descricao">
-                {{ unidade.descrição }}
-              </option>
-            </select>
-            <div id="horario1">
-              <div class="collection">
-                 <a @click="modalFunc(1, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
-                  {{ horario.data }} - Sala {{ horario.sala }}
-                </a>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-
-      <ul class="collapsible popout" data-collapsible="accordion" id="collapsible2">
-        <li>
-          <div @click="collapsibleOpen(2)" class="collapsible-header" >
-            {{ disciplinas[2].descricao }} <i v-bind:style="{opacity: checkOpacity2}" class="material-icons right">check</i>
-          </div>
-          <div class="collapsible-body">
-            <select class="browser-default" v-model="unidSelec" v-on:change="selectShow(2)" required>
-              <option value="" disabled selected>Unidade:</option>
-              <option v-for="unidade in unidades" v-bind:key="unidade.descricao">
-                {{ unidade.descrição }}
-              </option>
-            </select>
-            <div id="horario2">
-              <div class="collection">
-                 <a @click="modalFunc(2, horario.data, horario.sala)" class="collection-item center btn modal-trigger" v-for="horario in horarios">
-                  {{ horario.data }} - Sala {{ horario.sala }}
-                </a>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-
-      <div id="modal0" class="modal">
-        <div class="modal-content">
-          <h4>Confirmar Disciplina?</h4>
-          <p>Disciplina: {{discipSelec}}<br>Unidade: {{unidSelec}}<br>Data: {{horaData}}<br>Sala: {{horaSala}}</p>
-        </div>
-        <div class="modal-footer">
-          <a @click="salvar()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
-          <a @click="limparHorarioModal()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
-        </div>
-      </div>
-    </div>
+    <navbar></navbar>
+    <lista-de-disciplinas v-bind:disciplinas="disciplinas"></lista-de-disciplinas>
   </div>
-
 </template>
 
 <script>
-//importar disciplinascompleto.json
-import disciplinasJSON from '../../dados_json/disciplinas.json'
-import unidadesJSON from '../../dados_json/unidades.json'
-import horariosJSON from '../../dados_json/horarios.json'
+  import ListaDeDisciplinas from './ListaDeDisciplinas';
+  import Navbar from './Navbar';
+  import disciplinasJSON from '../../dados_json/disciplinascompleto.json'
 
-import moment from 'moment'
+  disciplinasJSON.disciplinas.forEach((item)=>{
+    item.pendente = true;
+  })
 
-export default {
-    name: 'Agendar',
-    data () {
+  export default {
+    name:'agendar',
+    components: {
+      Navbar,
+      ListaDeDisciplinas,
+    },
+    data() {
       return {
-        disciplinas: [],
-        discipValue: '',
-        discipSelec: '',
-        unidades: [],
-        unidSelec: '',
-        horarios: [],
-        horaData: '',
-        horaSala: '',
-        horarioModal: [],
-        DiscipUnidHora: [],
-        checkOpacity0: 0,
-        checkOpacity1: 0,
-        checkOpacity2: 0,
-        checkSelec: ''
-      }
+        disciplinas: disciplinasJSON.disciplinas,
+      };
     },
-    methods: {
-      modalFunc: function (x, y, z) {
-        this.checkSelec = x;
-        this.discipSelec = x;
-        this.horaData = y;
-        this.horaSala = z;
-        this.discipSelec = this.disciplinas[this.discipSelec].descricao;
-        this.horarioModal.push("Sala: "+this.discipSelec, this.unidSelec, this.horaData, this.horaSala);
-        $('#modal0').modal('open');
-      },
-      limparHorarioModal: function () {
-        this.horarioModal.splice(0);
-      },
-      salvar: function () {
-        if (localStorage.getItem("agendado")) {
-          this.DiscipUnidHora = JSON.parse(localStorage.getItem("agendado"));
-        }
-
-        this.DiscipUnidHora.push(this.discipSelec, this.unidSelec, this.horaData, this.horaSala);
-        localStorage.setItem("agendado", JSON.stringify(this.DiscipUnidHora));
-        this.horarioModal.splice(0); 
-        localStorage.setItem("check"+this.checkSelec, "true");         
-        if (this.checkSelec == 0) {
-          this.checkOpacity0 = 100;
-        }
-        if (this.checkSelec == 1) {
-          this.checkOpacity1 = 100;
-        }
-        if (this.checkSelec == 2) {
-          this.checkOpacity2 = 100;
-        }
-      },
-      collapsibleOpen: function (i) {
-        var h = "horario"+i;
-        $('#'+h).hide();
-        var b = "collapsible"+i;
-        $('#'+b).collapsible('open');
-      },
-      selectShow: function (i) {
-        var i = "horario"+i;
-        $('#'+i).show();
-      }
-    },
-    created: function() {
-      $('.collapsible').collapsible();
-      $('select').material_select();
-      $('.modal').modal();
-      
-      var qtdDisciplinas = disciplinasJSON.disciplinas.length;
-      for (var i = 0 ; i < qtdDisciplinas ; i++) {
-        this.disciplinas.push(disciplinasJSON.disciplinas[i]);
-      }
-
-      if (localStorage.getItem("check0")) {
-        this.checkOpacity0 = 100;
-        }
-      if (localStorage.getItem("check1")) {
-        this.checkOpacity1 = 100;
-      }
-      if (localStorage.getItem("check2")) {
-        this.checkOpacity2 = 100;
-      }
-      
-      var qtdUnidades = unidadesJSON.unidades.length;
-      for (var i = 0 ; i < qtdUnidades ; i++) {
-        this.unidades.push(unidadesJSON.unidades[i]);
-      }
-
-      var qtdHorarios = horariosJSON.horarios.length;
-      for (var i = 0 ; i < qtdHorarios ; i++) {
-        var horarioFormatado = moment (horariosJSON.horarios[i]).format("DD/MM/YYYY [-] h:mm");
-        horariosJSON.horarios[i].data = horarioFormatado;
-        this.horarios.push(horariosJSON.horarios[i]);
-      }
-    }
-}
+  };
 </script>
-
-<style>
-.blocoHor{
-cursor: pointer;
-}
-#check{
-  display: none;
-  float: right;
-  color:#00ff00;
-  
-}
-#check2{
-  display: none;
-  float: right;
-  color:#00ff00;
-}
-#check3{
-  display: none;
-  float: right;
-  color:#00ff00;
-}
-  .collapsible-header {
-    position: relative;
-  }
-
-  a.collection-item {
-    color: black !important;
-  }
-
-  #textoAjuda {
-    font-size: 25px;
-  }
-</style>
