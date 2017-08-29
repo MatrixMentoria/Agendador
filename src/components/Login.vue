@@ -26,11 +26,9 @@
             <label for="password" data-error="incorreto" data-success="ok">Senha de Acesso: </label>
           </div>
         </div>
-
-        <div class="row">
-          <div class="input-field col l1 s1 offset-l5 push-s4 push-m5 ">
-            <router-link to="/Agendar"><a class="red darken-4 waves-effect waves-light btn">Entrar</a></router-link>
-          </div>
+        <div class="row center">
+          <router-link to="/Agendar"><a class="red darken-4 waves-effect waves-light btn">Entrar</a></router-link>
+          <router-link to="/Cadastrar"><a class="red darken-4 waves-effect waves-light btn">Cadastrar</a></router-link>
         </div>
       </form>
     </div>
