@@ -1,13 +1,23 @@
 <template>
-<navbar></navbar>
+  <div>
+    <navbar></navbar>
+    <sidenav></sidenav>
+    <tabela></tabela>
+  </div>
 </template>
 
 <script>
-import Navbar from './Navbar';
+import Navbar from './CadastrarComponents/Navbar';
+import Sidenav from './CadastrarComponents/Sidenav';
+import Tabela from './CadastrarComponents/Tabela';
+
 export default {
   name:'cadastrar',
     components: {
-      Navbar
+      Navbar,
+      Sidenav,
+      Tabela,
+      //NovoCadastro,
     },
 }
 </script>

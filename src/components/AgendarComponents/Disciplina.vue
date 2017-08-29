@@ -6,11 +6,11 @@
                     <badge :pendente="disciplina.pendente"></badge>
                     {{ disciplina.descricao }}
                 </div>
-                <div class="collapsible-body center" v-show="disciplina.pendente">
+                <div class="collapsible-body center" v-if="disciplina.pendente">
                     <lista-de-unidades :unidades="disciplina.unidades" :disciplina="disciplina"></lista-de-unidades>                    
                 </div>
                 
-                <div v-show="disciplina.pendente === false">                
+                <div v-show="disciplina.pendente === false">
                     <h5 class="center"><strong>Prova Agendada</strong></h5>
                     <table class="highlight centered">
                         <thead>
@@ -56,8 +56,7 @@
             Badge,
         },
         data() {
-            return {                
-                dataAgendada: '',
+            return {
                 unidadeAgendada: '',
                 dataAgendada: '',
                 horarioAgendado: '',

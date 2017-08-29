@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div >
         <select class="browser-default" v-model="unidadeSelecionada">
             <option value="" disabled>Unidade:</option>
             <option v-for="unidade in unidades" v-bind:value="unidade" :key="unidade.codigo">

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table class="highlight centered">
+        <table class="highlight striped centered">
             <thead>
                 <tr>
                     <th>Data</th>
