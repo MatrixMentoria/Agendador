@@ -28,11 +28,11 @@
     },
     beforeCreate: function() {
       firebaseauth.onAuthStateChanged(function(user) {
-      if (!user) {
-        alert("deslogado, entre para poder acessar essa página");
-        window.location.href = "/";
-      }
-});
+        if (!user) {
+          alert("deslogado, entre para poder acessar essa página");
+          window.location.href = "/";
+        }
+      });
     }
   };
 </script>

@@ -13,6 +13,8 @@ import App from './App'
 import Agendar from './components/Agendar'
 //importar o componente Login
 import Login from './components/Login'
+//importar o componente Cadastrar
+import Cadastrar from './components/Cadastrar'
 
 //Diga ao vue para usar o router.
 Vue.use(VueRouter)
@@ -23,6 +25,7 @@ const routes = [
   //defina a url raíz da aplicação
   {path: '/', component: Login },
   {path: '/agendar', component: Agendar},
+  {path: '/cadastrar', component: Cadastrar},
 ]
 
 // Criar a instancia do router e passar a opção de 'routes'

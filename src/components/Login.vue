@@ -8,7 +8,7 @@
     <div class="container">
       <form id="formulario">
         <div class="row">
-          <p class="center-align" id="loginEstud">Login de Estudantes</p>
+          <p class="center-align" id="loginEstud"><strong>Entrar</strong></p>
         </div>
 
         <div class="row">
@@ -23,7 +23,7 @@
           <div class="input-field col s12">
             <i class="material-icons prefix">edit</i>
             <input v-model="senha" id="icon_prefix" type="password" class="validate" required>
-            <label for="password" data-error="incorreto" data-success="ok">Senha de Acesso: </label>
+            <label for="password" data-error="incorreto" data-success="ok">Senha:</label>
           </div>
         </div>
 
@@ -45,17 +45,35 @@
 
 <<script>
 import {firebaseauth} from '../FirebaseAuth'
+import sMDAJSON from '../sMDA.json'
 
 export default {
   name: 'login',
   data() {
     return {
       email: '',
-      senha: ''
+      senha: '',
+      smdajson: sMDAJSON,
     }
   },
+  /*for (var i = 0; i < smdaLenght; i++) {
+          if(user.uid == this.smdajson.smda[i].smdaCode){
+            window.location.href = "/cadastrar";
+          }
+        }*/
   created: function() {
     firebaseauth.signOut();
+    var smdaLenght = Object.keys(this.smdajson.smda).length;
+    var smdaFirebase = this.smdajson;
+    firebaseauth.onAuthStateChanged(function(user) {
+    if (user) {
+      for (var i = 0; i < smdaLenght; i++) {
+        if (user.uid == smdaFirebase.smda[i].smdaCode){
+            window.location.href = "/cadastrar";
+        }
+      }
+    } 
+});
   },
   methods: {
     login: function () {
