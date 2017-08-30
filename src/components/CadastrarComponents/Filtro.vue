@@ -4,7 +4,7 @@
         <div class="container">
             <div class="row">
                 <div class="col s6">
-                    <select class="browser-default" v-model="teste.disciplina" @change="exportaDados">
+                    <select class="browser-default" v-model="selecao.disciplina" @change="exportaDados">
                         <option value="" disabled>Disciplina:</option>
                         <option value="1234AB">Arquitetura de Computadores</option>
                         <option value="1234CD">Banco de Dados I</option>
@@ -12,7 +12,7 @@
                     </select>
                 </div>
                 <div class="col s6">
-                    <select class="browser-default" v-model="teste.unidade" @change="exportaDados">
+                    <select class="browser-default" v-model="selecao.unidade" @change="exportaDados">
                         <option value="" disabled>Unidade:</option>
                         <option value="1">Unidade1</option>
                         <option value="2">Unidade2</option>
@@ -31,7 +31,7 @@ import { Dados } from './Dados.js'
 export default {
     data() {
         return {
-            teste: {
+            selecao: {
                 disciplina: '',
                 unidade: '',
             },
@@ -39,7 +39,7 @@ export default {
     },
     methods: {
         exportaDados() {
-            Dados.$emit('selecao',this.teste);
+            Dados.$emit('selecao',this.selecao);
         },
     },
 }

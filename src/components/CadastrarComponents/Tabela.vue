@@ -18,7 +18,6 @@ export default {
         Dados.$on('selecao', (dado) => {
             this.disciplina = dado.disciplina;
             this.unidade = dado.unidade;
-            console.log(dado)
         });
     }
 

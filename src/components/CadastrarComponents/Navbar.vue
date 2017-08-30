@@ -1,7 +1,7 @@
 <template>
     <div class="navbar-fixed">
         <nav class="nav-wrapper red darken-4">
-            <span class="brand-logo center">Agendamento de Provas</span>
+            <span class="brand-logo center">Cadastro</span>
         </nav>
     </div>
 </template>
@@ -18,6 +18,5 @@ export default {
     #textoAjuda {
         font-size: 25px;
     }
-
 </style>
 

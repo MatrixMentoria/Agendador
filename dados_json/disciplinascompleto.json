@@ -6,12 +6,12 @@
       "professor": "João Silício",
       "unidades": [
         {
-          "codigo": "9 3/4",
-          "descrição": "Unidade Surrey I",
+          "codigo": "9345",
+          "descrição": "Unidade Rio Comprido",
           "endereço:": {
-            "logradouro": "Rua dos Alfeneiros",
-            "numero": "4",
-            "cidade": "Little Whinging"
+            "logradouro": "Avenida Paulo de Frontin",
+            "numero": "568",
+            "cidade": "Rio de Janeiro"
           },
           "horarios": [
             {
@@ -21,29 +21,39 @@
             },
             {
               "data": "1503999000",
-              "vagas": 12,
+              "vagas": 50,
               "sala": "214"
             },
             {
               "data": "1504107000",
-              "vagas": 5,
+              "vagas": 50,
               "sala": "410"
             }
           ]
         },
         {
           "codigo": "1985",
-          "descrição": "Hill Valley",
+          "descrição": "Introdução a Programação",
           "endereço:": {
-            "logradouro": "Mockingbird Square",
-            "numero": "9",
-            "cidade": " Petaluma, California"
+            "logradouro": "Avenida Paulo de Frontin",
+            "numero": "568",
+            "cidade": "Rio de Janeiro"
           },
           "horarios": [
             {
               "data": "1503999000",
               "vagas": 30,
               "sala": "520"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 50,
+              "sala": "214"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 50,
+              "sala": "410"
             }
           ]
         }
@@ -55,61 +65,71 @@
       "professor": "Carlos Tupla",
       "unidades": [
         {
-          "codigo": "9 3/4",
-          "descrição": "Unidade Surrey I",
+          "codigo": "2058",
+          "descrição": "Unidade Méier I",
           "endereço:": {
-            "logradouro": "Rua dos Alfeneiros",
-            "numero": "4",
-            "cidade": "Little Whinging"
+            "logradouro": "Rua Vencesclau",
+            "numero": "315",
+            "cidade": "Rio de Janeiro"
           },
           "horarios": [
             {
               "data": "1503912600",
               "vagas": 30,
-              "sala": "514"
+              "sala": "201"
+            },
+            {
+              "data": "1503912600",
+              "vagas": 28,
+              "sala": "203"
+            },
+            {
+              "data": "1503912600",
+              "vagas": 40,
+              "sala": "301"
             }
           ]
         },
         {
           "codigo": "1985",
-          "descrição": "Hill Valley",
+          "descrição": "Unidade Bento Ribeiro",
           "endereço:": {
-            "logradouro": "Mockingbird Square",
-            "numero": "9",
-            "cidade": " Petaluma, California"
+            "logradouro":"Rua João Vicente",
+            "numero": "1355",
+            "cidade": "Rio de Janeiro"
           },
           "horarios": [
             {
               "data": "1503912600",
               "vagas": 30,
-              "sala": "605"
+              "sala": "T02"
             },
             {
               "data": "1503999000",
               "vagas": 12,
-              "sala": "110"
+              "sala": "101"
             },
             {
               "data": "1504107000",
               "vagas": 5,
-              "sala": "Auditório  Marty McFly"
+              "sala": "401"
             }
           ]
         }
       ]
     },
     {
-      "codigo": "1234EF",
+      "codigo": "1234",
       "descricao": "Matemática Discreta",
       "professor": "Luís Soma",
       "unidades": [
         {
-          "codigo": "9 3/4",
-          "descrição": "Unidade Surrey I",
+          "codigo": "2020",
+          "descrição": "Unidade Jacarepaguá",
           "endereço:": {
-            "logradouro": "Rua dos Alfeneiros",
-            "numero": "4",
-            "cidade": "Little Whinging"
+            "logradouro": "Estrada de Jacarepaguá",
+            "numero": "6816",
+            "cidade": "Rio de Janeiro"
           },
           "horarios": [
             {
@@ -119,13 +139,405 @@
             },
             {
               "data": "1503999000",
-              "vagas": 12,
+              "vagas": 22,
               "sala": "214"
             },
             {
               "data": "1504107000",
-              "vagas": 5,
+              "vagas": 25,
               "sala": "410"
+            }
+          ]
+        },
+        {
+          "codigo": "2027",
+          "descrição": "Unidade Rio Comprido",
+          "endereço:": {
+            "logradouro": "Avenida Paulo de Frontin",
+            "numero": "568",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 40,
+              "sala": "310"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 11,
+              "sala": "313"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 15,
+              "sala": "301"
+            }
+          ]
+        },
+        {
+          "codigo": "2027",
+          "descrição": "Unidade Bento Ribeiro",
+          "endereço:": {
+            "logradouro": "Rua João Vicente",
+            "numero": "1355",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 40,
+              "sala": "310"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 11,
+              "sala": "313"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 15,
+              "sala": "301"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "codigo": "1234",
+      "descricao": "Sistemas Operacionais",
+      "professor": "Luís Roberto",
+      "unidades": [
+        {
+          "codigo": "2027",
+          "descrição": "Unidade Jacarepaguá",
+          "endereço:": {
+            "logradouro": "Estrada de Jacarepaguá",
+            "numero": "6816",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 30,
+              "sala": "210"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 22,
+              "sala": "314"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 25,
+              "sala": "410"
+            }
+          ]
+        },
+        {
+          "codigo": "2027",
+          "descrição": "Unidade Méier",
+          "endereço:": {
+            "logradouro": "Rua Vencesclau",
+            "numero": "315",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 40,
+              "sala": "210"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 11,
+              "sala": "303"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 15,
+              "sala": "301"
+            }
+          ]
+        },
+        {
+          "codigo": "2027",
+          "descrição": "Unidade Rio Comprido",
+          "endereço:": {
+            "logradouro": "Avenida Paulo de Frontin",
+            "numero": "568",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 40,
+              "sala": "310"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 11,
+              "sala": "313"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 15,
+              "sala": "301"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "codigo": "0234",
+      "descricao": "Tópicos Avançados em Arquitetura de Computadores",
+      "professor": "Mario Monteiro",
+      "unidades": [
+        {
+          "codigo": "2220",
+          "descrição": "Unidade Bento Ribeiro",
+          "endereço:": {
+            "logradouro": "Rua João Vicente",
+            "numero": "1355",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 30,
+              "sala": "T10"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 22,
+              "sala": "214"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 25,
+              "sala": "410"
+            }
+          ]
+        },
+        {
+          "codigo": "2027",
+          "descrição": "Unidade Rio Comprido",
+          "endereço:": {
+            "logradouro": "Avenida Paulo de Frontin",
+            "numero": "568",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 40,
+              "sala": "310"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 11,
+              "sala": "313"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 15,
+              "sala": "301"
+            }
+          ]
+        },
+        {
+          "codigo": "2027",
+          "descrição": "Unidade Méier II",
+          "endereço:": {
+            "logradouro": "Rua Vencesclau",
+            "numero": "315",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 10,
+              "sala": "310"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 21,
+              "sala": "313"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 35,
+              "sala": "301"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "codigo": "0234",
+      "descricao": "Ética e Responsabilidade Social",
+      "professor": "Godofreda Rodrigues",
+      "unidades": [
+        {
+          "codigo": "2220",
+          "descrição": "Unidade Bento Ribeiro",
+          "endereço:": {
+            "logradouro": "Rua João Vicente",
+            "numero": "1355",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 20,
+              "sala": "T12"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 12,
+              "sala": "314"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 25,
+              "sala": "110"
+            }
+          ]
+        },
+        {
+          "codigo": "2027",
+          "descrição": "Unidade Rio Comprido",
+          "endereço:": {
+            "logradouro": "Avenida Paulo de Frontin",
+            "numero": "568",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 40,
+              "sala": "210"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 11,
+              "sala": "113"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 15,
+              "sala": "501"
+            }
+          ]
+        },
+        {
+          "codigo": "2027",
+          "descrição": "Unidade Méier II",
+          "endereço:": {
+            "logradouro": "Rua Vencesclau",
+            "numero": "315",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 10,
+              "sala": "110"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 21,
+              "sala": "213"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 35,
+              "sala": "401"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "codigo": "0234",
+      "descricao": "Linguagens Formais e Autômatos",
+      "professor": "Julio Tadeu",
+      "unidades": [
+        {
+          "codigo": "2220",
+          "descrição": "Unidade Bento Ribeiro",
+          "endereço:": {
+            "logradouro": "Rua João Vicente",
+            "numero": "1355",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 40,
+              "sala": "T02"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 22,
+              "sala": "200"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 25,
+              "sala": "400"
+            }
+          ]
+        },
+        {
+          "codigo": "2027",
+          "descrição": "Unidade Rio Comprido",
+          "endereço:": {
+            "logradouro": "Avenida Paulo de Frontin",
+            "numero": "568",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 35,
+              "sala": "301"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 21,
+              "sala": "310"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 45,
+              "sala": "401"
+            }
+          ]
+        },
+        {
+          "codigo": "2027",
+          "descrição": "Unidade Méier II",
+          "endereço:": {
+            "logradouro": "Rua Vencesclau",
+            "numero": "315",
+            "cidade": "Rio de Janeiro"
+          },
+          "horarios": [
+            {
+              "data": "1503912600",
+              "vagas": 10,
+              "sala": "310"
+            },
+            {
+              "data": "1503999000",
+              "vagas": 21,
+              "sala": "313"
+            },
+            {
+              "data": "1504107000",
+              "vagas": 5,
+              "sala": "301"
             }
           ]
         }
