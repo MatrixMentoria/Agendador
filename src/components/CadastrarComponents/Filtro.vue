@@ -27,6 +27,7 @@
 
 <script>
 import { Dados } from './Dados.js'
+  import disciplinasJSON from '../../../dados_json/disciplinascompleto.json'
 
 export default {
     data() {
@@ -35,11 +36,13 @@ export default {
                 disciplina: '',
                 unidade: '',
             },
+            horarios: '',
         };
     },
     methods: {
         exportaDados() {
-            Dados.$emit('selecao',this.selecao);
+            this.horarios = disciplinasJSON.disciplinas[0].unidades[0].horarios; //exemplo filtrando a primeira unidade da primeira disciplina
+            Dados.$emit('filtro',this.horarios);
         },
     },
 }

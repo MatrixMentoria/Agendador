@@ -31,15 +31,6 @@ export default {
     #textoAjuda {
         font-size: 25px;
     }
-    /* tabela {
-      padding-left: 300px;
-    } */
-
-    /* @media only screen and (max-width : 992px) {
-      navbar, tabela {
-        padding-left: 0;
-      }
-    } */
 </style>
 
 
