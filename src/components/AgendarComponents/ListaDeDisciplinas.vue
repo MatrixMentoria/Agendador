@@ -7,7 +7,7 @@
             <disciplina v-for="disciplina in disciplinas" :disciplina.sync="disciplina" :key="disciplina.codigo"></disciplina>
         </div>
         <div class="row center">
-            <a class="red darken-4 waves-light btn" onclick="window.print();">Imprimir Comprovante</a>
+            <a class="red darken-4 waves-light btn-large" onclick="window.print()"><i class="material-icons left">local_printshop</i> Imprimir</a>
         </div>
     </div>
 </template>

@@ -10,7 +10,8 @@
 </template>
 
 <script>
-import {firebaseauth} from '../FirebaseAuth'
+import {firebaseauth} from '../../FirebaseAuth'
+
 export default {
     mounted: function() {
         $(".button-collapse").sideNav();

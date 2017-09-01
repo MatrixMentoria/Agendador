@@ -29,7 +29,7 @@
 
         <div class="row center">
             <a @click="login" class="red darken-4 waves-effect waves-light btn">Entrar</a>
-            <a @click="signup" class="red darken-4 waves-effect waves-light btn">cadastrar</a>
+            <a @click="signup" class="red darken-4 waves-effect waves-light btn">Cadastrar Usuário</a>
         </div>
       </form>
     </div>

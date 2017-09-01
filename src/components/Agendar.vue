@@ -7,8 +7,8 @@
 
 <script>
   import {firebaseauth} from '../FirebaseAuth'
-  import ListaDeDisciplinas from './ListaDeDisciplinas';
-  import Navbar from './Navbar';
+  import ListaDeDisciplinas from './AgendarComponents/ListaDeDisciplinas';
+  import Navbar from './AgendarComponents/Navbar';
   import disciplinasJSON from '../../dados_json/disciplinascompleto.json'
 
   disciplinasJSON.disciplinas.forEach((item)=>{

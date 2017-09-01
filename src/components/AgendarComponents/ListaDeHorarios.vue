@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table class="highlight centered">
+        <table class="highlight striped centered" v-if="selecao">
             <thead>
                 <tr>
                     <th>Data</th>
@@ -24,7 +24,7 @@
     import sweetalert from 'sweetalert';
 
     export default {
-        props: ['horarios','unidade','disciplina','pendente'],
+        props: ['horarios','unidade','disciplina','pendente','selecao'],
         methods: {
             confirmacaoDeAgendamento(disciplina,unidade,horario,sala){
                 var horarioMoment = moment(JSON.parse(horario+'000')).format('DD/MM/YYYY - hh:mm')
