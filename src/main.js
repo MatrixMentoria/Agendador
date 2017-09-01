@@ -5,6 +5,8 @@
 import Vue from 'vue'
 //importar o vue router
 import VueRouter from 'vue-router'
+//import the vuefirebase
+import VueFire from 'vuefire'
 //import the App component
 import App from './App'
 //importar o componente Agendar
@@ -16,6 +18,7 @@ import Cadastrar from './components/Cadastrar'
 
 //Diga ao vue para usar o router.
 Vue.use(VueRouter)
+Vue.use(VueFire)
 
 //defina suas rotas
 const routes = [

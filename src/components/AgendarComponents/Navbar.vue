@@ -3,17 +3,26 @@
         <nav class="nav-wrapper red darken-4">
             <span class="brand-logo center">Agendamento de Provas</span>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a onclick="window.print()">Imprimir Comprovante</a></li>
+                <li><a @click="logout">Sair</a></li>
             </ul>
         </nav>
     </div>
 </template>
 
 <script>
+import {firebaseauth} from '../../FirebaseAuth'
+
 export default {
     mounted: function() {
         $(".button-collapse").sideNav();
     },
+    methods: {
+        logout: function() {
+            firebaseauth.signOut().then(function(){
+                window.location.href = "/";
+            });
+        }
+    }
 };
 </script>
 
