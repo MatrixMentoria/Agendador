@@ -1,12 +1,12 @@
 <template>
     <div >
-        <select class="browser-default" v-model="unidadeSelecionada">
+        <select class="browser-default" v-model="unidadeSelecionada" @change="selectAlterado">
             <option value="" disabled>Unidade:</option>
             <option v-for="unidade in unidades" v-bind:value="unidade" :key="unidade.codigo">
                 {{ unidade.descrição }}
             </option>
         </select>
-        <lista-de-horarios :horarios="unidadeSelecionada.horarios" :unidade="unidadeSelecionada" :disciplina="disciplina"></lista-de-horarios>
+        <lista-de-horarios :selecao="selecao" :horarios="unidadeSelecionada.horarios" :unidade="unidadeSelecionada" :disciplina="disciplina"></lista-de-horarios>
     </div>
 </template>
 
@@ -21,7 +21,13 @@
         data() {
             return {
                 unidadeSelecionada: '',
+                selecao: false,
             };
+        },
+        methods: {
+            selectAlterado: function() {
+                this.selecao = true;
+            }
         }
     };
 </script>
