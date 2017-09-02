@@ -15,6 +15,7 @@
                     <td>{{ horario.data | horarioFormatado }}</td>
                     <td>{{ horario.sala }}</td>
                     <td>{{ horario.vagas }}</td>
+                    <td><i id="botaoExcluir"class="large material-icons" @click="remover(horario.data, horario.sala, horario.vagas)">highlight_off</i></td>
                 </tr>
             </tbody>
         </table>
@@ -24,6 +25,7 @@
 <script>
     import { Dados } from './Dados.js'
     import moment from 'moment';
+    import sweetalert from 'sweetalert';
 
 
 export default {
@@ -36,6 +38,27 @@ export default {
         Dados.$on('filtro', (horariosFiltrados) => {
             this.horarios = horariosFiltrados
         });
+    },
+    methods:{
+        remover: function(horario, sala, vaga){
+            var horarioMoment = moment(JSON.parse(horario+'000')).format('DD/MM/YYYY - hh:mm')
+            sweetalert({
+                    title: 'Confirmar Exclusao?',
+                    html: true,
+                    text:
+                        '<ul>' + 
+                            '<li>' + horarioMoment + '</li>' + 
+                            '<li>'+'Sala: ' + sala + '</li>' + 
+                            '<li>'+'Vagas: ' + vaga + 'h</li>' + 
+                        '</ul>',
+                    type: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#DD6B55',
+                    confirmButtonText: 'Confirmar',
+                    closeOnConfirm: false,
+                })
+        }
     },
     filters: {
         dataFormatada: function(data) {
@@ -50,4 +73,10 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+#botaoExcluir{
+    font-size: 30px; 
+    cursor:pointer; 
+    color: #C40018;
+}
+</style>
