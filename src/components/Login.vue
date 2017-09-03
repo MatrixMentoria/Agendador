@@ -22,7 +22,7 @@
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix">edit</i>
-            <input v-model="senha" id="icon_prefix" type="password" class="validate" required>
+            <input @keyup.enter="login" v-model="senha" id="icon_prefix" type="password" class="validate" required>
             <label for="password" data-error="incorreto" data-success="ok">Senha:</label>
           </div>
         </div>
