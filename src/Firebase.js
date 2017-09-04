@@ -8,4 +8,4 @@ const firebaseApp = Firebase.initializeApp ({
     messagingSenderId: "681569781782"
 });
 
-export const firebaseauth = firebaseApp.auth();
+export const firebase = firebaseApp

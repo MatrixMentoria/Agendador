@@ -22,7 +22,7 @@
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix">edit</i>
-            <input v-model="senha" id="icon_prefix" type="password" class="validate" required>
+            <input @keyup.enter="login" v-model="senha" id="icon_prefix" type="password" class="validate" required>
             <label for="password" data-error="incorreto" data-success="ok">Senha:</label>
           </div>
         </div>
@@ -44,7 +44,7 @@
 </style>
 
 <<script>
-import {firebaseauth} from '../FirebaseAuth'
+import {firebase} from '../Firebase'
 import sMDAJSON from '../sMDA.json'
 
 export default {
@@ -62,10 +62,10 @@ export default {
           }
         }*/
   created: function() {
-    firebaseauth.signOut();
+    firebase.auth().signOut();
     var smdaLenght = Object.keys(this.smdajson.smda).length;
     var smdaFirebase = this.smdajson;
-    firebaseauth.onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       for (var i = 0; i < smdaLenght; i++) {
         if (user.uid == smdaFirebase.smda[i].smdaCode){
@@ -77,14 +77,14 @@ export default {
   },
   methods: {
     login: function () {
-      firebaseauth.signInWithEmailAndPassword(this.email, this.senha).then(function(){
+      firebase.auth().signInWithEmailAndPassword(this.email, this.senha).then(function(){
         window.location.href = "/agendar";
       }).catch(function(error) {
       alert("email ou senha incorreto");
     });
     },
     signup: function () {
-      firebaseauth.createUserWithEmailAndPassword(this.email, this.senha).then(function(){
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.senha).then(function(){
         alert("Cadastrado com sucesso");
       }).catch(function(error) {
       alert("erro ao cadastrar, verifique se as informações estão corretas");
