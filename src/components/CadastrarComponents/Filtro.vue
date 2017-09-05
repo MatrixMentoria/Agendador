@@ -3,17 +3,14 @@
         <br>
         <div class="container">
             <div class="row">
-                <div class="col s6">
-                    <select class="browser-default"  v-model="unidades">
-                        <option value="" disabled>Disciplina:</option>
-                        <option v-for="disciplina in disciplinas" :key="disciplina.horarios" v-bind:value="disciplina.unidades">{{ disciplina.descricao }}</option>
-                    </select>
-                </div>
-                <div class="col s6">
-                    <select class="browser-default" v-model="horarios" @change="exportaDados">
-                        <option value="" disabled>Unidade:</option>
-                        <option v-for="unidade in unidades" :key="unidade.codigo" v-bind:value="unidade.horarios">{{ unidade.descrição }}</option>
-                    </select>
+                <div class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">school</i>
+                            <input type="text" id="autocomplete-input" class="autocomplete">
+                            <label for="autocomplete-input">Disciplina</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,6 +29,7 @@ export default {
     data() {
         return {
             disciplinas: '',
+            disciplinaSelecionada: '',
             unidades: '',
             horarios: '',
         };
@@ -39,18 +37,34 @@ export default {
     mounted: function() {
         var disciplinasPromise = disciplinasRef.once('value');
         disciplinasPromise.then((snapshot) => {
-        snapshot.forEach((item) => {               
-          this.disciplinas = item.val();
-          this.disciplinas.forEach((item)=> {
-            this.$set(item,'pendente',true);
-          })
-        });             
-      });
-    },
-    methods: {
-        exportaDados() {
-            Dados.$emit('filtro',this.horarios);
-        },
+            snapshot.forEach((item) => {               
+                this.disciplinas = item.val();
+            });
+        });
+        
+        Dados.$emit('completo',this.disciplinas);
+        var listaParaAutoComplete = {};
+        for ( var i = 0 ; i < this.disciplinas.length ; i++ ) {
+            listaParaAutoComplete[this.disciplinas[i].descricao] = null
+        }
+
+        $(() => {
+            $('input.autocomplete').autocomplete({
+                data: listaParaAutoComplete,
+                limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+                onAutocomplete: function(val) {
+                    // Callback function when value is autcompleted.
+                    for ( var i = 0 ; i < disciplinasJSON.disciplinas.length ; i++ ) {
+                        if ( val === disciplinasJSON.disciplinas[i].descricao ) {
+                            this.disciplinaSelecionada = disciplinasJSON.disciplinas[i];
+                            Dados.$emit('filtro',this.disciplinaSelecionada);
+                            break;
+                        }
+                    }
+                },
+                minLength: 0, // The minimum length of the input for the autocomplete to start. Default: 1.
+            });
+        });
     },
 };
 </script>
