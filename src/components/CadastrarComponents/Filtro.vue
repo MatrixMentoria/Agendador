@@ -30,8 +30,6 @@ export default {
         return {
             disciplinas: '',
             disciplinaSelecionada: '',
-            unidades: '',
-            horarios: '',
         };
     },
     mounted: function() {
@@ -43,24 +41,17 @@ export default {
         });
         
         Dados.$emit('completo',this.disciplinas);
+        
         var listaParaAutoComplete = {};
         for ( var i = 0 ; i < this.disciplinas.length ; i++ ) {
             listaParaAutoComplete[this.disciplinas[i].descricao] = null
         }
-
         $(() => {
             $('input.autocomplete').autocomplete({
                 data: listaParaAutoComplete,
                 limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
                 onAutocomplete: function(val) {
-                    // Callback function when value is autcompleted.
-                    for ( var i = 0 ; i < disciplinasJSON.disciplinas.length ; i++ ) {
-                        if ( val === disciplinasJSON.disciplinas[i].descricao ) {
-                            this.disciplinaSelecionada = disciplinasJSON.disciplinas[i];
-                            Dados.$emit('filtro',this.disciplinaSelecionada);
-                            break;
-                        }
-                    }
+                     Dados.$emit('filtro',val);
                 },
                 minLength: 0, // The minimum length of the input for the autocomplete to start. Default: 1.
             });

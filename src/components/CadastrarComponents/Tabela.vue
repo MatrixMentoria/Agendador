@@ -3,6 +3,8 @@
         <table class='highlight striped centered'>
             <thead>
                 <tr>
+                    <th>Disciplina</th>
+                    <th>Unidade</th>
                     <th>Data</th>
                     <th>Horário</th>
                     <th>Sala</th>
@@ -12,8 +14,7 @@
                 </tr>
             </thead>
             <tbody>
-                
-                <tr v-for="horario in horarios" v-bind:key="horario.data">
+                <tr v-for="horario in horarios" v-if="horario.disciplina === disciplinaSelecionada">
                     <td>{{ horario.disciplina }}</td>
                     <td>{{ horario.unidade }}</td>
                     <td>{{ horario.data | dataFormatada }}</td>
@@ -57,17 +58,20 @@ export default {
             horarios: [],
             disciplinaSelecionada: '',
             unidades: '',
+            disciplinas:''
         };
     },
     mounted: function() {
         this.horarios.length = 0;
         this.disciplinas = disciplinasJSON.disciplinas;
 
+        Dados.$on('filtro', (disciplinaFiltrada) => {
+            this.disciplinaSelecionada = disciplinaFiltrada;
+            console.log(this.disciplinaSelecionada)
+        });
         for ( var k = 0 ; k < this.disciplinas.length ; k++ ) {
-
             for ( var i = 0 ; i < this.disciplinas[k].unidades.length ; i++ ) {
                 for ( var j = 0 ; j < this.disciplinas[k].unidades[i].horarios.length ; j++ ) {
-
                     this.horarios.push ({
                         disciplina: this.disciplinas[k].descricao,
                         unidade: this.disciplinas[k].unidades[i].descrição,
@@ -79,27 +83,8 @@ export default {
                     })
                 }
             }
+
         }
-
-
-        // Dados.$on('filtro', (disciplinaFiltrada) => {
-        //     this.horarios.length = 0;
-        //     this.disciplinaSelecionada = disciplinaFiltrada;
-        //     for ( var i = 0 ; i < this.disciplinaSelecionada.unidades.length ; i++ ) {
-                
-        //         for ( var j = 0 ; j < this.disciplinaSelecionada.unidades[i].horarios.length ; j++ ) {
-        //             this.horarios.push ({
-        //                 disciplina: this.disciplinaSelecionada.descricao,
-        //                 unidade: this.disciplinaSelecionada.unidades[i].descrição,
-        //                 data: this.disciplinaSelecionada.unidades[i].horarios[j].data,
-        //                 horario: this.disciplinaSelecionada.unidades[i].horarios[j].data,
-        //                 sala: this.disciplinaSelecionada.unidades[i].horarios[j].sala,
-        //                 vagas: this.disciplinaSelecionada.unidades[i].horarios[j].vagas,
-        //                 status: this.disciplinaSelecionada.unidades[i].horarios[j].status,
-        //             })
-        //         }
-        //     }
-        // });
     },
     filters: {
        
