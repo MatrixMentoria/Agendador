@@ -3,19 +3,35 @@
         <table class='highlight striped centered'>
             <thead>
                 <tr>
+                    <th>Disciplina</th>
+                    <th>Unidade</th>
                     <th>Data</th>
                     <th>Horário</th>
                     <th>Sala</th>
                     <th>Vagas</th>
+                    
+                   
                 </tr>
             </thead>
             <tbody>
+                
                 <tr v-for="horario in horarios" v-bind:key="horario.data">
+                    <td></td>
+                    <td></td>
                     <td>{{ horario.data | dataFormatada }}</td>
                     <td>{{ horario.data | horarioFormatado }}</td>
                     <td>{{ horario.sala }}</td>
                     <td>{{ horario.vagas }}</td>
-                    <td><i id="botaoExcluir"class="large material-icons" @click="remover(horario.data, horario.sala, horario.vagas)">highlight_off</i></td>
+                      <td><i id="botaoEditar"class="large material-icons" @click="editar(horario.data, horario.sala, horario.vagas)">create</i></td>
+                      <div class="switch">
+                    <label>
+                     Off
+                     <input type="checkbox">
+                     <span class="lever"></span>
+                     On
+                    </label>
+                     </div>
+                      
                 </tr>
             </tbody>
         </table>
@@ -61,6 +77,7 @@ export default {
         }
     },
     filters: {
+       
         dataFormatada: function(data) {
             var dataParse = JSON.parse(data+'000')
             return moment(dataParse).format('DD/MM/YYYY')
@@ -74,7 +91,7 @@ export default {
 </script>
 
 <style>
-#botaoExcluir{
+#botaoEditar{
     font-size: 30px; 
     cursor:pointer; 
     color: #C40018;

@@ -19,6 +19,7 @@
                                 <th>Data</th>
                                 <th>Horário</th>
                                 <th>Sala</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -32,7 +33,7 @@
                     </table>
                     <br>
                     <div class="row center">
-                        <a @click="cancelarDisciplina(disciplina.descricao)" class='red darken-4 waves-effect waves-light btn'>Cancelar Agendamento</a>
+                        <a @click="cancelarDisciplina(disciplina.descricao)" class='card-panel teal lighten-2 waves-effect waves-light btn'>Cancelar Agendamento</a>
                     </div>
                     <br>
                 </div>

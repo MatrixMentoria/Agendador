@@ -4,6 +4,13 @@
     <div class="container">
       <filtro></filtro>
       <tabela></tabela>
+      
+      <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red darken-4 modal-trigger" href="#modalAdd">
+          <i class="large material-icons">mode_edit</i>
+        </a>
+      </div>
+      <novocadastro></novocadastro>
     </div>
   </div>
 </template>
@@ -13,8 +20,8 @@ import {firebase} from '../Firebase'
 import Navbar from './CadastrarComponents/Navbar';
 import Filtro from './CadastrarComponents/Filtro';
 import Tabela from './CadastrarComponents/Tabela';
+import NovoCadastro from './CadastrarComponents/NovoCadastro';
 import sMDAJSON from '../sMDA.json'
-
 
 export default {
   name:'cadastrar',
@@ -22,7 +29,12 @@ export default {
       Navbar,
       Filtro,
       Tabela,
-      //NovoCadastro,
+      NovoCadastro
+    },
+    data() {
+      return {
+        smdajson: sMDAJSON,
+      }
     },
     data() {
       return {
@@ -31,6 +43,7 @@ export default {
     },
       mounted: function() {
         $(".button-collapse").sideNav();
+        $('.modal').modal();
     },
     created: function() {
       var smdaLenght = Object.keys(this.smdajson.smda).length;
