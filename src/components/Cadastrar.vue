@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import {firebaseauth} from '../FirebaseAuth'
+import {firebase} from '../Firebase'
 import Navbar from './CadastrarComponents/Navbar';
 import Filtro from './CadastrarComponents/Filtro';
 import Tabela from './CadastrarComponents/Tabela';
@@ -36,6 +36,11 @@ export default {
         smdajson: sMDAJSON,
       }
     },
+    data() {
+      return {
+        smdajson: sMDAJSON,
+      }
+    },
       mounted: function() {
         $(".button-collapse").sideNav();
         $('.modal').modal();
@@ -44,7 +49,7 @@ export default {
       var smdaLenght = Object.keys(this.smdajson.smda).length;
       var smdaFirebase = this.smdajson;
       var smda = false;
-        firebaseauth.onAuthStateChanged(function(user) {
+        firebase.auth().onAuthStateChanged(function(user) {
             if (!user) {
             alert("deslogado, entre para poder acessar essa página");
             window.location.href = "/";

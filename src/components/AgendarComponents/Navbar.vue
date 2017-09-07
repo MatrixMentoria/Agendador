@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {firebaseauth} from '../../FirebaseAuth'
+import {firebase} from '../../Firebase'
 
 export default {
     mounted: function() {
@@ -18,7 +18,7 @@ export default {
     },
     methods: {
         logout: function() {
-            firebaseauth.signOut().then(function(){
+            firebase.auth().signOut().then(function(){
                 window.location.href = "/";
             });
         }

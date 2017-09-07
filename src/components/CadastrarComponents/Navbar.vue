@@ -11,14 +11,14 @@
 </template>
 
 <script>
-import {firebaseauth} from '../../FirebaseAuth'
+import {firebase} from '../../Firebase'
 export default {
     mounted: function() {
         $(".button-collapse").sideNav();
     },
     methods: {
         logout: function() {
-            firebaseauth.signOut().then(function(){
+            firebase.auth().signOut().then(function(){
                 window.location.href = "/";
             });
         }
