@@ -34,7 +34,7 @@
         snapshot.forEach((item) => {               
           this.disciplinas = item.val();
           this.disciplinas.forEach((item)=> {
-            item.pendente = true;
+            this.$set(item,'pendente',true);
           })
         });             
       });
