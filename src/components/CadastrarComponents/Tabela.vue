@@ -26,7 +26,7 @@
                     </td>
                     <td>
                         <div class = "switch">
-                            <label><input type = "checkbox" :checked="horario.status"><span class = "lever"></span></label>
+                            <label><input type = "checkbox" :checked="horario.status" @change="alterarStatus(horario)"><span class = "lever"></span></label>
                         </div> 
                     </td>
                 </tr>
@@ -57,20 +57,50 @@ export default {
     data() {
         return {
             horarios: [],
-            disciplinaSelecionada: '',
             unidades: '',
             disciplinas:'',
             status: '',
         };
     },
+
+    methods: {
+        alterarStatus: function(horario,e) {
+            horario.status = event.target.checked;
+            var statusLocalStorage = JSON.parse(localStorage.getItem('status'));
+            for (var i = 0 ; i < statusLocalStorage.length ; i++) {
+                if( horario.codigo === statusLocalStorage[i].chave) {
+                    statusLocalStorage[i].status =  horario.status
+                }
+            }
+            localStorage.setItem('status',JSON.stringify(statusLocalStorage));
+        }
+    },
+
     mounted: function() {
-        this.horarios.length = 0;
+        // this.horarios.length = 0;
         this.disciplinas = disciplinasJSON.disciplinas;
+        var statusDisciplinas = [];
+        var statusLocalStorage = JSON.parse(localStorage.getItem('status'));
 
         for ( var k = 0 ; k < this.disciplinas.length ; k++ ) {
             for ( var i = 0 ; i < this.disciplinas[k].unidades.length ; i++ ) {
                 for ( var j = 0 ; j < this.disciplinas[k].unidades[i].horarios.length ; j++ ) {
-                    this.horarios.push ({
+                    
+                    var codigoDaDisciplina = k + '-' + i + '-' + j;
+
+                    if (statusLocalStorage) {
+                        for( var z = 0 ; z < statusLocalStorage.length ; z++ ) {
+                            if( statusLocalStorage[z].chave === codigoDaDisciplina ) {
+                                var statusDaDisciplina = statusLocalStorage[z].status
+                                break;
+                            }
+                        }
+                    } else {
+                        statusDaDisciplina = true;
+                    }
+
+                    var obj = {
+                        codigo: codigoDaDisciplina,
                         filtro: this.disciplinas[k].descricao,
                         disciplina: this.disciplinas[k].descricao,
                         unidade: this.disciplinas[k].unidades[i].descrição,
@@ -78,14 +108,21 @@ export default {
                         horario: this.disciplinas[k].unidades[i].horarios[j].data,
                         sala: this.disciplinas[k].unidades[i].horarios[j].sala,
                         vagas: this.disciplinas[k].unidades[i].horarios[j].vagas,
-                        status: this.disciplinas[k].unidades[i].horarios[j].status,
-                    })
+                        status: statusDaDisciplina,
+                    }
+                    this.horarios.push (obj)
+                    var objLocal = {
+                        chave: obj.codigo,
+                        status: obj.status, 
+                    }
+                    
+                    statusDisciplinas.push(objLocal)
                 }
             }
         }
+        localStorage.setItem('status',JSON.stringify(statusDisciplinas))
 
         Dados.$on('filtro', (disciplinaFiltrada) => {
-            // this.disciplinaSelecionada = disciplinaFiltrada;
             if(disciplinaFiltrada === 'tudo') {
                 for (var i = 0 ; i < this.horarios.length ; i++) {
                     this.horarios[i].filtro = this.horarios[i].disciplina;
@@ -97,8 +134,8 @@ export default {
             }
         });
     },
+
     filters: {
-       
         dataFormatada: function(data) {
             var dataParse = JSON.parse(data+'000')
             return moment(dataParse).format('DD/MM/YYYY')
@@ -108,5 +145,6 @@ export default {
             return moment(dataParse).format('hh:mm')
         },
     }
+
 }
 </script>
