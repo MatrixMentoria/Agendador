@@ -58,7 +58,7 @@ export default {
         return {
             horarios: [],
             unidades: '',
-            disciplinas:'',
+            disciplinas: disciplinasJSON.disciplinas,
             status: '',
         };
     },
@@ -78,7 +78,6 @@ export default {
 
     mounted: function() {
         // this.horarios.length = 0;
-        this.disciplinas = disciplinasJSON.disciplinas;
         var statusDisciplinas = [];
         var statusLocalStorage = JSON.parse(localStorage.getItem('status'));
 

@@ -20,27 +20,27 @@
 
 <script>
     import { Dados } from './Dados.js'
-    import {firebase} from '../../Firebase'
-
-    const firebaseDatabase = firebase.database();
-    const disciplinasRef = firebaseDatabase.ref('agendamentos');
+    import disciplinasJSON from '../../../dados_json/disciplinascompleto.json'
+    // import {firebase} from '../../Firebase'
+    // const firebaseDatabase = firebase.database();
+    // const disciplinasRef = firebaseDatabase.ref('agendamentos');
 
 export default {
     data() {
         return {
-            disciplinas: '',
+            disciplinas: disciplinasJSON.disciplinas,
             disciplinaSelecionada: '',
         };
     },
     mounted: function() {
-        var disciplinasPromise = disciplinasRef.once('value');
-        disciplinasPromise.then((snapshot) => {
-            snapshot.forEach((item) => {               
-                this.disciplinas = item.val();
-            });
-        });
+        // var disciplinasPromise = disciplinasRef.once('value');
+        // disciplinasPromise.then((snapshot) => {
+        //     snapshot.forEach((item) => {               
+        //         this.disciplinas = item.val();
+        //     });
+        // });
         
-        Dados.$emit('completo',this.disciplinas);
+        
         
         var listaParaAutoComplete = {};
         for ( var i = 0 ; i < this.disciplinas.length ; i++ ) {
