@@ -23,7 +23,10 @@
 
 <script>
     import { Dados } from './Dados.js'
-    import disciplinasJSON from '../../../dados_json/disciplinascompleto.json'
+    import {firebase} from '../../Firebase'
+
+    const firebaseDatabase = firebase.database();
+    const disciplinasRef = firebaseDatabase.ref('agendamentos');
 
 export default {
     data() {
@@ -34,7 +37,15 @@ export default {
         };
     },
     mounted: function() {
-        this.disciplinas = disciplinasJSON.disciplinas;
+        var disciplinasPromise = disciplinasRef.once('value');
+        disciplinasPromise.then((snapshot) => {
+        snapshot.forEach((item) => {               
+          this.disciplinas = item.val();
+          this.disciplinas.forEach((item)=> {
+            this.$set(item,'pendente',true);
+          })
+        });             
+      });
     },
     methods: {
         exportaDados() {

@@ -3,21 +3,15 @@
         <table class='highlight striped centered'>
             <thead>
                 <tr>
-                    <th>Disciplina</th>
-                    <th>Unidade</th>
                     <th>Data</th>
                     <th>Horário</th>
                     <th>Sala</th>
                     <th>Vagas</th>
-                    
-                   
                 </tr>
             </thead>
             <tbody>
                 
                 <tr v-for="horario in horarios" v-bind:key="horario.data">
-                    <td></td>
-                    <td></td>
                     <td>{{ horario.data | dataFormatada }}</td>
                     <td>{{ horario.data | horarioFormatado }}</td>
                     <td>{{ horario.sala }}</td>
