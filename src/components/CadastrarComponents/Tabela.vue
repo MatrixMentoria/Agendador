@@ -14,7 +14,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="horario in horarios" v-if="horario.disciplina === disciplinaSelecionada">
+                <tr v-for="horario in horarios" v-if="horario.disciplina === horario.filtro">
                     <td>{{ horario.disciplina }}</td>
                     <td>{{ horario.unidade }}</td>
                     <td>{{ horario.data | dataFormatada }}</td>
@@ -25,8 +25,9 @@
                         <a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons">edit</i></a>
                     </td>
                     <td>
-                        <div class = "switch"><label><input type = "checkbox">
-                        <span class = "lever"></span></label></div> 
+                        <div class = "switch">
+                            <label><input type = "checkbox" :checked="horario.status"><span class = "lever"></span></label>
+                        </div> 
                     </td>
                 </tr>
             </tbody>
@@ -58,26 +59,19 @@ export default {
             horarios: [],
             disciplinaSelecionada: '',
             unidades: '',
-<<<<<<< HEAD
-            disciplinas:''
-=======
             disciplinas:'',
             status: '',
->>>>>>> pequenas alteracoes
         };
     },
     mounted: function() {
         this.horarios.length = 0;
         this.disciplinas = disciplinasJSON.disciplinas;
 
-        Dados.$on('filtro', (disciplinaFiltrada) => {
-            this.disciplinaSelecionada = disciplinaFiltrada;
-            console.log(this.disciplinaSelecionada)
-        });
         for ( var k = 0 ; k < this.disciplinas.length ; k++ ) {
             for ( var i = 0 ; i < this.disciplinas[k].unidades.length ; i++ ) {
                 for ( var j = 0 ; j < this.disciplinas[k].unidades[i].horarios.length ; j++ ) {
                     this.horarios.push ({
+                        filtro: this.disciplinas[k].descricao,
                         disciplina: this.disciplinas[k].descricao,
                         unidade: this.disciplinas[k].unidades[i].descrição,
                         data: this.disciplinas[k].unidades[i].horarios[j].data,
@@ -88,26 +82,20 @@ export default {
                     })
                 }
             }
-<<<<<<< HEAD
-
-        }
-=======
         }
 
         Dados.$on('filtro', (disciplinaFiltrada) => {
-            this.disciplinaSelecionada = disciplinaFiltrada;
-            if(this.disciplinaSelecionada === '') {
+            // this.disciplinaSelecionada = disciplinaFiltrada;
+            if(disciplinaFiltrada === 'tudo') {
                 for (var i = 0 ; i < this.horarios.length ; i++) {
                     this.horarios[i].filtro = this.horarios[i].disciplina;
                 }
             } else {
                 for (var i = 0 ; i < this.horarios.length ; i++) {
-                    this.horarios[i].filtro = this.disciplinaSelecionada;
+                    this.horarios[i].filtro = disciplinaFiltrada;
                 }
             }
         });
-        console.log(this.horarios)
->>>>>>> pequenas alteracoes
     },
     filters: {
        
@@ -122,6 +110,3 @@ export default {
     }
 }
 </script>
-
-<style>
-</style>

@@ -7,7 +7,7 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">school</i>
-                            <input type="text" id="autocomplete-input" class="autocomplete">
+                            <input type="text" id="autocomplete-input" class="autocomplete" v-model='disciplinaSelecionada'>
                             <label for="autocomplete-input">Disciplina</label>
                         </div>
                     </div>
@@ -46,7 +46,6 @@ export default {
         for ( var i = 0 ; i < this.disciplinas.length ; i++ ) {
             listaParaAutoComplete[this.disciplinas[i].descricao] = null
         }
-        console.log(listaParaAutoComplete)
         $(() => {
             $('input.autocomplete').autocomplete({
                 data: listaParaAutoComplete,
@@ -54,10 +53,15 @@ export default {
                 onAutocomplete: function(val) {
                      Dados.$emit('filtro',val);
                 },
-                minLength: 0, // The minimum length of the input for the autocomplete to start. Default: 1.
+                minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
             });
         });
     },
+    watch: {
+        disciplinaSelecionada: function() {
+            Dados.$emit('filtro','tudo');
+        }
+    }
 };
 </script>
 
