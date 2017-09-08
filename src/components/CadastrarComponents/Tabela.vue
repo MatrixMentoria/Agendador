@@ -58,7 +58,12 @@ export default {
             horarios: [],
             disciplinaSelecionada: '',
             unidades: '',
+<<<<<<< HEAD
             disciplinas:''
+=======
+            disciplinas:'',
+            status: '',
+>>>>>>> pequenas alteracoes
         };
     },
     mounted: function() {
@@ -83,8 +88,26 @@ export default {
                     })
                 }
             }
+<<<<<<< HEAD
 
         }
+=======
+        }
+
+        Dados.$on('filtro', (disciplinaFiltrada) => {
+            this.disciplinaSelecionada = disciplinaFiltrada;
+            if(this.disciplinaSelecionada === '') {
+                for (var i = 0 ; i < this.horarios.length ; i++) {
+                    this.horarios[i].filtro = this.horarios[i].disciplina;
+                }
+            } else {
+                for (var i = 0 ; i < this.horarios.length ; i++) {
+                    this.horarios[i].filtro = this.disciplinaSelecionada;
+                }
+            }
+        });
+        console.log(this.horarios)
+>>>>>>> pequenas alteracoes
     },
     filters: {
        

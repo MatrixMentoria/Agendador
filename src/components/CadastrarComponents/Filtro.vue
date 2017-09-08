@@ -46,6 +46,7 @@ export default {
         for ( var i = 0 ; i < this.disciplinas.length ; i++ ) {
             listaParaAutoComplete[this.disciplinas[i].descricao] = null
         }
+        console.log(listaParaAutoComplete)
         $(() => {
             $('input.autocomplete').autocomplete({
                 data: listaParaAutoComplete,
