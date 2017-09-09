@@ -1,5 +1,11 @@
 <template>
     <div>
+    <div>
+        <p style="float:right;">
+                <input type="checkbox" id="exibicao" v-model="estadoCheck"/>
+                <label for="exibicao" >Exibir Disponiveis</label>
+        </p>
+    </div>
         <table class='highlight striped centered'>
             <thead>
                 <tr>
@@ -14,7 +20,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="horario in horarios" v-if="horario.disciplina === horario.filtro">
+                <tr :id="''+ horario.codigo" v-for="horario in horarios" v-if="horario.disciplina === horario.filtro && horario.status == estadoCheck">
+                  
                     <td>{{ horario.disciplina }}</td>
                     <td>{{ horario.unidade }}</td>
                     <td>{{ horario.data | dataFormatada }}</td>
@@ -56,6 +63,7 @@
 export default {
     data() {
         return {
+            estadoCheck:'',
             horarios: [],
             unidades: '',
             disciplinas: disciplinasJSON.disciplinas,
@@ -64,6 +72,7 @@ export default {
     },
 
     methods: {
+
         alterarStatus: function(horario,e) {
             horario.status = event.target.checked;
             var statusLocalStorage = JSON.parse(localStorage.getItem('status'));
@@ -73,7 +82,8 @@ export default {
                 }
             }
             localStorage.setItem('status',JSON.stringify(statusLocalStorage));
-        }
+        },
+        
     },
 
     mounted: function() {
@@ -86,7 +96,6 @@ export default {
                 for ( var j = 0 ; j < this.disciplinas[k].unidades[i].horarios.length ; j++ ) {
                     
                     var codigoDaDisciplina = k + '-' + i + '-' + j;
-
                     if (statusLocalStorage) {
                         for( var z = 0 ; z < statusLocalStorage.length ; z++ ) {
                             if( statusLocalStorage[z].chave === codigoDaDisciplina ) {
