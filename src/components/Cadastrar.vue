@@ -36,11 +36,6 @@ export default {
         smdajson: sMDAJSON,
       }
     },
-    data() {
-      return {
-        smdajson: sMDAJSON,
-      }
-    },
       mounted: function() {
         $(".button-collapse").sideNav();
         $('.modal').modal();
@@ -51,7 +46,6 @@ export default {
       var smda = false;
         firebase.auth().onAuthStateChanged(function(user) {
             if (!user) {
-            alert("deslogado, entre para poder acessar essa página");
             window.location.href = "/";
             }
             for (var i = 0; i < smdaLenght; i++) {
@@ -61,7 +55,7 @@ export default {
             }
             if (smda === false) {
               alert("Você não tem permissão para acessar essa página");
-              window.location.href = "/";
+              window.location.href = "/agendar";
             }
         });
     }

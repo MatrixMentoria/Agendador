@@ -6,16 +6,12 @@
 </template>
 
 <script>
-  import {firebase} from '../Firebase'
   import ListaDeDisciplinas from './AgendarComponents/ListaDeDisciplinas';
   import Navbar from './AgendarComponents/Navbar';
+  import {firebase} from '../Firebase'
 
   const firebaseDatabase = firebase.database();
   const disciplinasRef = firebaseDatabase.ref('agendamentos');
-
-  /*disciplinasJSON.disciplinas.forEach((item)=>{
-    item.pendente = true;
-  })*/
 
   export default {
     name:'agendar',
@@ -37,12 +33,6 @@
             this.$set(item,'pendente',true);
           })
         });             
-      });
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (!user) {
-          alert("deslogado, entre para poder acessar essa página");
-          window.location.href = "/";
-        }
       });
     }
   };
