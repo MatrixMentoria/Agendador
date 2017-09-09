@@ -36,11 +36,6 @@ export default {
         smdajson: sMDAJSON,
       }
     },
-    data() {
-      return {
-        smdajson: sMDAJSON,
-      }
-    },
       mounted: function() {
         $(".button-collapse").sideNav();
         $('.modal').modal();

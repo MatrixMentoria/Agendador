@@ -58,7 +58,9 @@
     import { Dados } from './Dados.js'
     import moment from 'moment';
     import sweetalert from 'sweetalert';
-    import disciplinasJSON from '../../../dados_json/disciplinascompleto.json'
+    import {firebase} from '../../Firebase'
+    const firebaseDatabase = firebase.database();
+    const disciplinasRef = firebaseDatabase.ref('agendamentos');
 
 export default {
     data() {
@@ -66,13 +68,20 @@ export default {
             estadoCheck:'',
             horarios: [],
             unidades: '',
-            disciplinas: disciplinasJSON.disciplinas,
+            disciplinas: [],
             status: '',
         };
     },
-
-    methods: {
-
+    mounted: function() {
+        var disciplinasPromise = disciplinasRef.once('value');
+        disciplinasPromise.then((snapshot) => {
+        snapshot.forEach((item) => {               
+          this.disciplinas = item.val();
+        });
+        this.tabelaShow();       
+        });
+    },
+    methods: {  
         alterarStatus: function(horario,e) {
             horario.status = event.target.checked;
             var statusLocalStorage = JSON.parse(localStorage.getItem('status'));
@@ -83,17 +92,14 @@ export default {
             }
             localStorage.setItem('status',JSON.stringify(statusLocalStorage));
         },
-        
-    },
-
-    mounted: function() {
-        // this.horarios.length = 0;
+        tabelaShow: function() {
+             // this.horarios.length = 0;
         var statusDisciplinas = [];
         var statusLocalStorage = JSON.parse(localStorage.getItem('status'));
 
-        for ( var k = 0 ; k < this.disciplinas.length ; k++ ) {
-            for ( var i = 0 ; i < this.disciplinas[k].unidades.length ; i++ ) {
-                for ( var j = 0 ; j < this.disciplinas[k].unidades[i].horarios.length ; j++ ) {
+        for (var k = 0 ; k < this.disciplinas.length ; k++ ) {
+            for (var i = 0 ; i < this.disciplinas[k].unidades.length ; i++ ) {
+                for (var j = 0 ; j < this.disciplinas[k].unidades[i].horarios.length ; j++ ) {
                     
                     var codigoDaDisciplina = k + '-' + i + '-' + j;
                     if (statusLocalStorage) {
@@ -141,8 +147,8 @@ export default {
                 }
             }
         });
+        }
     },
-
     filters: {
         dataFormatada: function(data) {
             var dataParse = JSON.parse(data+'000')
