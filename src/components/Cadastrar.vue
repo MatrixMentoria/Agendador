@@ -10,7 +10,7 @@
           <i class="large material-icons">mode_edit</i>
         </a>
       </div>
-      <novocadastro></novocadastro>
+      <novo-cadastro></novo-cadastro>
     </div>
   </div>
 </template>
