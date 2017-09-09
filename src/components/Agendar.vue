@@ -21,7 +21,7 @@
     },
     data() {
       return {
-        disciplinas: ''
+        disciplinas: []
       };
     },
     beforeCreate: function() {

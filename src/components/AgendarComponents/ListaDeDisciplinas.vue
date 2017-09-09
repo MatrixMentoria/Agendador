@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div v-show="disciplinas.length" class="container">
         <div>
             <p id="textoAjuda" class="center-align">Clique numa disciplina abaixo para começar a agendar</p>
         </div>

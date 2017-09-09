@@ -56,11 +56,6 @@ export default {
       smdajson: sMDAJSON,
     }
   },
-  /*for (var i = 0; i < smdaLenght; i++) {
-          if(user.uid == this.smdajson.smda[i].smdaCode){
-            window.location.href = "/cadastrar";
-          }
-        }*/
   created: function() {
     firebase.auth().signOut();
     var smdaLenght = Object.keys(this.smdajson.smda).length;
@@ -80,14 +75,31 @@ export default {
       firebase.auth().signInWithEmailAndPassword(this.email, this.senha).then(function(){
         window.location.href = "/agendar";
       }).catch(function(error) {
-      alert("email ou senha incorreto");
+        console.log(error);
+        if (error.code == "auth/invalid-email") {
+          alert("E-mail inválido");
+        } else if(error.code == "auth/wrong-password") {
+          alert("E-mail ou senha incorreto");
+        } else if(error.code == "auth/user-not-found") {
+          alert("E-mail não cadastrado");
+        } else {
+          alert(error);
+        }
     });
     },
     signup: function () {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.senha).then(function(){
         alert("Cadastrado com sucesso");
       }).catch(function(error) {
-      alert("erro ao cadastrar, verifique se as informações estão corretas");
+        if (error.code == "auth/invalid-email") {
+          alert("E-mail Inválido");
+        } else if (error.code == "auth/weak-password") {
+          alert("A senha deve conter no mínimo 6 caracteres");
+        } else if (error.code == "auth/email-already-in-use") {
+          alert("E-mail já cadastrado");
+        } else {
+          alert(error);
+        }
       });
     }
   }
