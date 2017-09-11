@@ -60,7 +60,7 @@
     import sweetalert from 'sweetalert';
     import {firebase} from '../../Firebase'
     const firebaseDatabase = firebase.database();
-    const disciplinasRef = firebaseDatabase.ref('agendamentos');
+    const disciplinasRef = firebaseDatabase.ref('disciplina');
 
 export default {
     data() {
