@@ -16,7 +16,7 @@
                     <th>Sala</th>
                     <th>Vagas</th>
                     <th>Editar</th>
-                    <th>Status</th>
+                    <th>Ativo</th>
                 </tr>
             </thead>
             <tbody>
