@@ -1,11 +1,11 @@
 import Firebase from 'firebase'
 const firebaseApp = Firebase.initializeApp ({
-    apiKey: "AIzaSyBFk5L8simT9Oj5LUA5zRjH1YpEi8LatX8",
-    authDomain: "agendador-unicarioca.firebaseapp.com",
-    databaseURL: "https://agendador-unicarioca.firebaseio.com",
-    projectId: "agendador-unicarioca",
-    storageBucket: "agendador-unicarioca.appspot.com",
-    messagingSenderId: "681569781782"
+    apiKey: "AIzaSyCGdLFWep-fuAlpc9RterbDSPxtn0SEIHU",
+    authDomain: "agendador-projetomatrix2.firebaseapp.com",
+    databaseURL: "https://agendador-projetomatrix2.firebaseio.com",
+    projectId: "agendador-projetomatrix2",
+    storageBucket: "agendador-projetomatrix2.appspot.com",
+    messagingSenderId: "759238728235"
 });
 
 export const firebase = firebaseApp
