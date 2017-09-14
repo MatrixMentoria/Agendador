@@ -53,6 +53,10 @@
                     dataAgendada: horario,
                     salaAgendada: sala
                     }
+                    console.log(objDisciplinaAgendada.disciplinaAgendada)
+                    console.log(objDisciplinaAgendada.unidadeAgendada)
+                    console.log(objDisciplinaAgendada.dataAgendada)
+                    console.log(objDisciplinaAgendada.salaAgendada)
                     //Verifica se já há disciplinas agendadas
                     if(localStorage.getItem("Agendamentos") === null) {
                     //Caso não haja matérias agendadas, insere o objeto em um array e o armazena no local storage

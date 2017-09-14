@@ -32,7 +32,7 @@
           this.disciplinas.forEach((item)=> {
             this.$set(item,'pendente',true);
           })
-        });             
+        });           
       });
     }
   };
