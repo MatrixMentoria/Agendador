@@ -49,6 +49,10 @@
     import ListaDeUnidades from './ListaDeUnidades';
     import Badge from './Badge';
     import sweetalert from 'sweetalert';
+    import {firebase} from '../../Firebase'
+
+    const firebaseDatabase = firebase.database();
+    const disciplinasRef = firebaseDatabase.ref('usuarios');
 
     export default {
         props: ['disciplina'],
@@ -62,28 +66,45 @@
                 dataAgendada: '',
                 horarioAgendado: '',
                 salaAgendada: '',
+                usuario: [],
+                uidUsuarioLogado: '',
             }
+        },
+        created: function() {
+            this.uidUsuarioLogado = JSON.parse(localStorage.getItem("firebase:authUser:AIzaSyCGdLFWep-fuAlpc9RterbDSPxtn0SEIHU:[DEFAULT]"));
+            this.uidUsuarioLogado = this.uidUsuarioLogado.uid;
+            var disciplinasPromise = disciplinasRef.once('value');
+            disciplinasPromise.then((snapshot) => {
+                snapshot.forEach((item) => {               
+                this.usuario = item.val();
+                });
+                this.usuarioDisciplinasAgendadas();
+            });
         },
         mounted: function() {
             $('.collapsible').collapsible();
             $('select').material_select();
             this.disciplina.pendente = true;
-            var agendamentos = JSON.parse(localStorage.getItem("Agendamentos"));
-            if (agendamentos) {
-                var qtd = agendamentos.length;
-                for( var i = 0 ; i < qtd ; i++ ) {
-                    if (this.disciplina.descricao == agendamentos[i].disciplinaAgendada) {
-                        this.disciplina.pendente = false;
-                        this.unidadeAgendada = agendamentos[i].unidadeAgendada;
-                        this.dataAgendada = moment(JSON.parse(agendamentos[i].dataAgendada+'000')).format('DD/MM/YYYY');
-                        this.horarioAgendado = moment(JSON.parse(agendamentos[i].dataAgendada+'000')).format('hh:mm');
-                        this.salaAgendada = agendamentos[i].salaAgendada;
-                        break;
-                    }
-                }
-            }
         },
         methods: {
+            usuarioDisciplinasAgendadas: function() {
+                var qtdUsuarios = this.usuario.length;
+                for (var i = 0; i < qtdUsuarios; i++) {
+                    if(this.usuario[i].uid == this.uidUsuarioLogado) {
+                        var qtdDisciplinasAgendadas = this.usuario[i].disciplinasAgendadas.length;
+                        for(var j = 0; j < qtdDisciplinasAgendadas; j++) {
+                            if (this.disciplina.descricao == this.usuario[i].disciplinasAgendadas[j].disciplinaAgendada) {
+                                this.disciplina.pendente = false;
+                                this.unidadeAgendada = this.usuario[i].disciplinasAgendadas[j].unidadeAgendada;
+                                this.dataAgendada = moment(JSON.parse(this.usuario[i].disciplinasAgendadas[j].dataAgendada+'000')).format('DD/MM/YYYY');
+                                this.horarioAgendado = moment(JSON.parse(this.usuario[i].disciplinasAgendadas[j].dataAgendada+'000')).format('hh:mm');
+                                this.salaAgendada = this.usuario[i].disciplinasAgendadas[j].salaAgendada;
+                                break;
+                            }
+                        }
+                    }
+                }
+            },
             cancelarDisciplina: function(disciplina) {
                 // var horarioMoment = moment(JSON.parse(horario+'000')).format('DD/MM/YYYY - hh:mm') -->
                 sweetalert({

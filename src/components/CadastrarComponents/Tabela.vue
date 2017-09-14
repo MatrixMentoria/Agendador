@@ -1,11 +1,11 @@
 <template>
     <div>
-    <div>
-        <p style="float:right;">
+        <!-- <div class="row">
+            <div class="col s8">
                 <input type="checkbox" id="exibicao" v-model="estadoCheck"/>
                 <label for="exibicao" >Exibir Disponiveis</label>
-        </p>
-    </div>
+            </p>
+        </div> -->
         <table class='highlight striped centered'>
             <thead>
                 <tr>
@@ -20,8 +20,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr :id="''+ horario.codigo" v-for="horario in horarios" v-if="horario.disciplina === horario.filtro && horario.status == estadoCheck">
-                  
+                <tr :id="''+ horario.codigo" v-for="horario in horarios" v-if="horario.disciplina === horario.filtroDisciplina && horario.filtroStatus === true">
+
                     <td>{{ horario.disciplina }}</td>
                     <td>{{ horario.unidade }}</td>
                     <td>{{ horario.data | dataFormatada }}</td>
@@ -65,11 +65,11 @@
 export default {
     data() {
         return {
-            estadoCheck:true,
             horarios: [],
             unidades: '',
             disciplinas: [],
             status: '',
+            keys:[],
         };
     },
     mounted: function() {
@@ -78,78 +78,74 @@ export default {
         snapshot.forEach((item) => {               
           this.disciplinas = item.val();
         });
-        this.tabelaShow();       
+        this.tabelaShow();
         });
     },
     methods: {  
         alterarStatus: function(horario,event) {
             if(event)
             horario.status = event.target.checked;
-            var statusLocalStorage = JSON.parse(localStorage.getItem('status'));
-            for (var i = 0 ; i < statusLocalStorage.length ; i++) {
-                if( horario.codigo === statusLocalStorage[i].chave) {
-                    statusLocalStorage[i].status =  horario.status
-                }
-            }
-            localStorage.setItem('status',JSON.stringify(statusLocalStorage));
+            horario.filtroStatus = horario.status;
+            var caminho = firebaseDatabase.ref('disciplina/disciplinas/' + horario.keyDisciplina +
+                                               '/unidades/' + horario.keyUnidade + 
+                                               '/horarios/' + horario.keyHorario)
+
+            caminho.update({status: horario.status})
         },
+
         tabelaShow: function() {
-             // this.horarios.length = 0;
-        var statusDisciplinas = [];
-        var statusLocalStorage = JSON.parse(localStorage.getItem('status'));
+            this.horarios.length = 0;
 
-        for (var k = 0 ; k < this.disciplinas.length ; k++ ) {
-            for (var i = 0 ; i < this.disciplinas[k].unidades.length ; i++ ) {
-                for (var j = 0 ; j < this.disciplinas[k].unidades[i].horarios.length ; j++ ) {
-                    
-                    var codigoDaDisciplina = k + '-' + i + '-' + j;
-                    if (statusLocalStorage) {
-                        for( var z = 0 ; z < statusLocalStorage.length ; z++ ) {
-                            if( statusLocalStorage[z].chave === codigoDaDisciplina ) {
-                                var statusDaDisciplina = statusLocalStorage[z].status
-                                break;
-                            }
+            for ( var k = 0 ; k < this.disciplinas.length ; k++ ) {
+                for ( var i = 0 ; i < this.disciplinas[k].unidades.length ; i++ ) {
+                    for ( var j = 0 ; j < this.disciplinas[k].unidades[i].horarios.length ; j++ ) {
+
+                        var obj = {
+                            keyDisciplina: k,
+                            keyUnidade: i,
+                            keyHorario: j,
+                            filtroDisciplina: this.disciplinas[k].descricao,
+                            disciplina: this.disciplinas[k].descricao,
+                            unidade: this.disciplinas[k].unidades[i].descrição,
+                            data: this.disciplinas[k].unidades[i].horarios[j].data,
+                            horario: this.disciplinas[k].unidades[i].horarios[j].data,
+                            sala: this.disciplinas[k].unidades[i].horarios[j].sala,
+                            vagas: this.disciplinas[k].unidades[i].horarios[j].vagas,
+                            status: this.disciplinas[k].unidades[i].horarios[j].status,
+                            filtroStatus: this.disciplinas[k].unidades[i].horarios[j].status,
                         }
-                    } else {
-                        statusDaDisciplina = true;
+                        this.horarios.push (obj)
                     }
-
-                    var obj = {
-                        codigo: codigoDaDisciplina,
-                        filtro: this.disciplinas[k].descricao,
-                        disciplina: this.disciplinas[k].descricao,
-                        unidade: this.disciplinas[k].unidades[i].descrição,
-                        data: this.disciplinas[k].unidades[i].horarios[j].data,
-                        horario: this.disciplinas[k].unidades[i].horarios[j].data,
-                        sala: this.disciplinas[k].unidades[i].horarios[j].sala,
-                        vagas: this.disciplinas[k].unidades[i].horarios[j].vagas,
-                        status: statusDaDisciplina,
-                    }
-                    this.horarios.push (obj)
-                    var objLocal = {
-                        chave: obj.codigo,
-                        status: obj.status, 
-                    }
-                    
-                    statusDisciplinas.push(objLocal)
                 }
             }
-        }
-        localStorage.setItem('status',JSON.stringify(statusDisciplinas))
 
-        Dados.$on('filtro', (disciplinaFiltrada) => {
-            if(disciplinaFiltrada === 'tudo') {
-                for (var i = 0 ; i < this.horarios.length ; i++) {
-                    this.horarios[i].filtro = this.horarios[i].disciplina;
+            Dados.$on('status', (statusHorario) => {
+                this.status = statusHorario;
+                if (statusHorario) {
+                    for (var i = 0 ; i < this.horarios.length ; i++) {
+                        this.horarios[i].filtroStatus = true;
+                    }
+                } else {
+                    for (var i = 0 ; i < this.horarios.length ; i++) {
+                        this.horarios[i].filtroStatus = this.horarios[i].status;
+                    }
                 }
-            } else {
-                for (var i = 0 ; i < this.horarios.length ; i++) {
-                    this.horarios[i].filtro = disciplinaFiltrada;
+            });
+
+            Dados.$on('filtro', (disciplinaFiltrada) => {
+                if(disciplinaFiltrada === 'tudo') {
+                    for (var i = 0 ; i < this.horarios.length ; i++) {
+                        this.horarios[i].filtroDisciplina = this.horarios[i].disciplina;
+                    }
+                } else {
+                    for (var i = 0 ; i < this.horarios.length ; i++) {
+                        this.horarios[i].filtroDisciplina = disciplinaFiltrada;
+                    }
                 }
-            }
-        });
-        }
+            });
+        },
     },
+
     filters: {
         dataFormatada: function(data) {
             var dataParse = JSON.parse(data+'000')
