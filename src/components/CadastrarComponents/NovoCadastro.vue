@@ -39,28 +39,28 @@
           </div>
         </div>
 
-        <div class="row right">
-          <div class="switch">
-            <label>
-              Inativo
-              <input type="checkbox">
-              <span class="lever"></span>
-              Ativo
-            </label>
-          </div>
+        <div class="col s6 offset-s10">
+            <div class="switch">
+                <label>
+                  Inativo
+                  <input type="checkbox">
+                  <span class="lever"></span>
+                  Ativo
+                </label>
+              </div>
         </div>
 
+        <div class="row">
+          <div class="col s12 m9">
+            <div class="modal-footer">
+              <a href="#!" class=" modal-action modal-close btn red darken-4">Salvar e sair</a>
+              <a href="#!" class=" modal-action modal-close btn red darken-4">Salvar e continuar</a>
+            </div>
+          </div>
+        </div>               
       </form>
     </div>
-
-    </div>
-    <div class="modal-footer">
-      <div class="row center">
-        <a href="#!" class=" modal-action modal-close btn red darken-4">Salvar e sair</a>
-        <a href="#!" class=" modal-action modal-close btn red darken-4">Salvar e continuar</a>
-      </div>
-    </div>
-    
+  </div>    
 </div>
 
 </template>
@@ -100,8 +100,7 @@
     #modalAdd {
         width:70%;
         overflow: hidden;
-         
-         
     }
+
 </style>
 
