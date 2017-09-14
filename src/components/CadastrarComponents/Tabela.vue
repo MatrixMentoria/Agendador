@@ -33,7 +33,7 @@
                     </td>
                     <td>
                         <div class = "switch">
-                            <label><input type = "checkbox" :checked="horario.status" @change="alterarStatus(horario)"><span class = "lever"></span></label>
+                            <label><input type = "checkbox" :checked="horario.status" @change="alterarStatus(horario, $event)"><span class = "lever"></span></label>
                         </div> 
                     </td>
                 </tr>
@@ -65,7 +65,7 @@
 export default {
     data() {
         return {
-            estadoCheck:'',
+            estadoCheck:true,
             horarios: [],
             unidades: '',
             disciplinas: [],
@@ -82,7 +82,8 @@ export default {
         });
     },
     methods: {  
-        alterarStatus: function(horario,e) {
+        alterarStatus: function(horario,event) {
+            if(event)
             horario.status = event.target.checked;
             var statusLocalStorage = JSON.parse(localStorage.getItem('status'));
             for (var i = 0 ; i < statusLocalStorage.length ; i++) {
