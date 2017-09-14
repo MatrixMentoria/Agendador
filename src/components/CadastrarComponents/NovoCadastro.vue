@@ -96,5 +96,12 @@
 
 </script>
 
-
+<style>
+    #modalAdd {
+        width:70%;
+        overflow: hidden;
+         
+         
+    }
+</style>
 
