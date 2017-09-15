@@ -61,6 +61,7 @@ export default {
                 });
             });
         },
+
         emitirCheckbox: function(status) {
             Dados.$emit('status', this.status);
         }

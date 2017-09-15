@@ -16,8 +16,7 @@
             <tbody>
                 <tr :id="''+ horario.codigo"
                     v-for="horario in horarios" 
-                    v-if="horario.disciplina === horario.filtroDisciplina && horario.filtroStatus === true"
-                    :key="horario.data">
+                    v-if="horario.disciplina === horario.filtroDisciplina && horario.filtroStatus === true">
 
                     <td>{{ horario.disciplina }}</td>
                     <td>{{ horario.unidade }}</td>
@@ -26,7 +25,7 @@
                     <td>{{ horario.sala }}</td>
                     <td>{{ horario.vagas }}</td>
                     <td>
-                        <a class="btn-floating btn-small waves-effect waves-light red modal-trigger" href="#modalEdicao" @click="editarCadastro(horario)"><i class="material-icons">edit</i></a>
+                        <a class="btn-floating btn-small waves-effect waves-light red modal-trigger" :class="horario.botaoEdicao" href="#modalEdicao" @click="editarCadastro(horario)"><i class="material-icons">edit</i></a>
                     </td>
                     <td>
                         <div class = "switch">
@@ -49,7 +48,7 @@
             </ul>
         </div>
 
-        <modal-edicao :horarioCadastrado="horarioEditado"></modal-edicao>
+        <modal-edicao :horario="horarioEditado" :disciplinas="listaDeDisciplinas"></modal-edicao>
 
     </div>
 </template>
@@ -73,10 +72,8 @@ export default {
             unidades: '',
             disciplinas: [],
             status: '',
-            keys: [],
-            horarioEditado: {
-                horario: "1234567890"
-            }
+            horarioEditado: '',
+            listaDeDisciplinas: []
         };
     },
 
@@ -93,8 +90,15 @@ export default {
 
     methods: {  
         alterarStatus: function(horario,event) {
+
             horario.status = event.target.checked;
             horario.filtroStatus = horario.status;
+            if ( horario.status === false ) {
+                horario.botaoEdicao = 'disabled'
+            } else {
+                horario.botaoEdicao = ''
+            }
+
             var caminho = firebaseDatabase.ref('disciplina/disciplinas/' + horario.keyDisciplina +
                                                '/unidades/' + horario.keyUnidade + 
                                                '/horarios/' + horario.keyHorario)
@@ -108,29 +112,53 @@ export default {
 
         tabelaShow: function() {
             this.horarios.length = 0;
+            this.listaDeDisciplinas.length = 0;
 
+            var chaveDisciplina = Object.keys(this.disciplinas);
+                                        
             for ( var k = 0 ; k < this.disciplinas.length ; k++ ) {
+                var novaDisciplina = {
+                    codigoDisciplina: this.disciplinas[k].codigo,
+                    descricaoDisciplina: this.disciplinas[k].descricao,
+                    professorDisciplina: this.disciplinas[k].professor,
+                    keyDisciplina: chaveDisciplina,
+                }
+                this.listaDeDisciplinas.push(novaDisciplina)
+                var chaveUnidade = Object.keys(this.disciplinas[k].unidades);
+                
+                
                 for ( var i = 0 ; i < this.disciplinas[k].unidades.length ; i++ ) {
+                        var chaveHorario = Object.keys(this.disciplinas[k].unidades[i].horarios);
+
                     for ( var j = 0 ; j < this.disciplinas[k].unidades[i].horarios.length ; j++ ) {
+                        if ( this.disciplinas[k].unidades[i].horarios[j].status === false ) {
+                            var botaoEdicao = 'disabled'
+                        } else {
+                            var botaoEdicao = ''
+                        }
 
                         var obj = {
-                            keyDisciplina: k,
-                            keyUnidade: i,
-                            keyHorario: j,
+                            keyDisciplina: chaveDisciplina[k],
+                            keyUnidade: chaveUnidade[i],
+                            keyHorario: chaveHorario[j],
                             filtroDisciplina: this.disciplinas[k].descricao,
+                            codigoDisciplina: this.disciplinas[k].codigo,
                             disciplina: this.disciplinas[k].descricao,
+                            codigoUnidade: this.disciplinas[k].unidades[i].codigo,
                             unidade: this.disciplinas[k].unidades[i].descrição,
                             data: this.disciplinas[k].unidades[i].horarios[j].data,
-                            horario: this.disciplinas[k].unidades[i].horarios[j].data,
                             sala: this.disciplinas[k].unidades[i].horarios[j].sala,
                             vagas: this.disciplinas[k].unidades[i].horarios[j].vagas,
                             status: this.disciplinas[k].unidades[i].horarios[j].status,
                             filtroStatus: this.disciplinas[k].unidades[i].horarios[j].status,
+                            botaoEdicao: botaoEdicao,
                         }
                         this.horarios.push (obj)
+
                     }
                 }
             }
+            console.log(this.horarios)
 
             Dados.$on('status', (statusHorario) => {
                 this.status = statusHorario;
