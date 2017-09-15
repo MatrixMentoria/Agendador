@@ -64,6 +64,11 @@ export default {
         emitirCheckbox: function(status) {
             Dados.$emit('status', this.status);
         }
+    },
+    watch: {
+        disciplinaSelecionada: function() {
+            Dados.$emit('filtro','tudo');
+        }
     }
 };
 </script>

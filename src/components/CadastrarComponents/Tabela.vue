@@ -1,11 +1,5 @@
 <template>
     <div>
-        <!-- <div class="row">
-            <div class="col s8">
-                <input type="checkbox" id="exibicao" v-model="estadoCheck"/>
-                <label for="exibicao" >Exibir Disponiveis</label>
-            </p>
-        </div> -->
         <table class='highlight striped centered'>
             <thead>
                 <tr>
@@ -20,7 +14,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr :id="''+ horario.codigo" v-for="horario in horarios" v-if="horario.disciplina === horario.filtroDisciplina && horario.filtroStatus === true">
+                <tr :id="''+ horario.codigo"
+                    v-for="horario in horarios" 
+                    v-if="horario.disciplina === horario.filtroDisciplina && horario.filtroStatus === true"
+                    :key="horario.data">
 
                     <td>{{ horario.disciplina }}</td>
                     <td>{{ horario.unidade }}</td>
@@ -29,7 +26,7 @@
                     <td>{{ horario.sala }}</td>
                     <td>{{ horario.vagas }}</td>
                     <td>
-                        <a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons">edit</i></a>
+                        <a class="btn-floating btn-small waves-effect waves-light red modal-trigger" href="#modalEdicao" @click="editarCadastro(horario)"><i class="material-icons">edit</i></a>
                     </td>
                     <td>
                         <div class = "switch">
@@ -51,6 +48,9 @@
                 <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
             </ul>
         </div>
+
+        <modal-edicao :horarioCadastrado="horarioEditado"></modal-edicao>
+
     </div>
 </template>
 
@@ -61,18 +61,27 @@
     import {firebase} from '../../Firebase'
     const firebaseDatabase = firebase.database();
     const disciplinasRef = firebaseDatabase.ref('disciplina');
+    import ModalEdicao from './ModalEdicao'
 
 export default {
+    components: {
+        ModalEdicao
+    },
     data() {
         return {
             horarios: [],
             unidades: '',
             disciplinas: [],
             status: '',
-            keys:[],
+            keys: [],
+            horarioEditado: {
+                horario: "1234567890"
+            }
         };
     },
+
     mounted: function() {
+        $('.modal').modal();
         var disciplinasPromise = disciplinasRef.once('value');
         disciplinasPromise.then((snapshot) => {
         snapshot.forEach((item) => {               
@@ -81,9 +90,9 @@ export default {
         this.tabelaShow();
         });
     },
+
     methods: {  
         alterarStatus: function(horario,event) {
-            if(event)
             horario.status = event.target.checked;
             horario.filtroStatus = horario.status;
             var caminho = firebaseDatabase.ref('disciplina/disciplinas/' + horario.keyDisciplina +
@@ -91,6 +100,10 @@ export default {
                                                '/horarios/' + horario.keyHorario)
 
             caminho.update({status: horario.status})
+        },
+
+        editarCadastro: function(horario) {
+            this.horarioEditado = horario;
         },
 
         tabelaShow: function() {
