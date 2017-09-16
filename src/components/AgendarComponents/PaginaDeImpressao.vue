@@ -1,5 +1,5 @@
 <template>
- 
+ <div id="teste">
  <div id="modalAdd" class="modal">
     <div class="modal-content" id="bloco">
       <h4 class="center">Pagina de Impressao</h4>
@@ -29,6 +29,7 @@
             <a class="red darken-4 waves-light btn-large" onclick="print()"><i class="material-icons left">local_printshop</i> Imprimir</a>
     </div>
 </div>
+ </div>
 
 </template>
 
@@ -60,7 +61,12 @@ import moment from 'moment';
 
 </script>
 <style>
+.modal{
+width:100%;
+height:100%;
+position:absolute;
 
+}
 </style>
 
 
