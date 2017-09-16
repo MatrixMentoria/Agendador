@@ -22,9 +22,18 @@
 <script>
     import moment from 'moment';
     import sweetalert from 'sweetalert';
+    import {firebase} from '../../Firebase'
+
+    const firebaseDatabase = firebase.database();
+    const disciplinasRef = firebaseDatabase.ref('usuarios');
 
     export default {
         props: ['horarios','unidade','disciplina','pendente','selecao'],
+        data() {
+            return {
+                disciplinasAgendadasUsuario: [],
+            }
+        },
         methods: {
             confirmacaoDeAgendamento(disciplina,unidade,horario,sala){
                 var horarioMoment = moment(JSON.parse(horario+'000')).format('DD/MM/YYYY - hh:mm')
@@ -53,23 +62,23 @@
                     dataAgendada: horario,
                     salaAgendada: sala
                     }
-                    console.log(objDisciplinaAgendada.disciplinaAgendada)
-                    console.log(objDisciplinaAgendada.unidadeAgendada)
-                    console.log(objDisciplinaAgendada.dataAgendada)
-                    console.log(objDisciplinaAgendada.salaAgendada)
-                    //Verifica se já há disciplinas agendadas
-                    if(localStorage.getItem("Agendamentos") === null) {
-                    //Caso não haja matérias agendadas, insere o objeto em um array e o armazena no local storage
-                    var arrayDeAgendamentos = [objDisciplinaAgendada];
-                    localStorage.setItem("Agendamentos",JSON.stringify(arrayDeAgendamentos));
-                    }
-                    else
-                    {
-                    //Caso haja matérias agendadas, insere o objeto no array já criado
-                    var arrayDeAgendamentos = JSON.parse(localStorage.getItem("Agendamentos"));
-                    arrayDeAgendamentos.push(objDisciplinaAgendada);
-                    localStorage.setItem("Agendamentos",JSON.stringify(arrayDeAgendamentos));
-                    }
+                    
+                    //Sobre o código abaixo: sei que tô na vida errada mas é por falta de oportunidade...
+                    var disciplinasPromise = disciplinasRef.once('value');
+                    disciplinasPromise.then((snapshot) => {
+                      snapshot.forEach((user) => {
+                        for (var i = 0; i < user.val().length; i++) {
+                          if (user.val()[i].uid == firebase.auth().currentUser.uid && user.val()[i].disciplinasAgendadas != undefined) {
+                            firebaseDatabase.ref('usuarios/usuario/'+ [i] + '/disciplinasAgendadas/' + [user.val()[i].disciplinasAgendadas.length]).set(objDisciplinaAgendada);
+                          } else if (user.val()[i].uid == firebase.auth().currentUser.uid && user.val()[i].disciplinasAgendadas == undefined) {
+                            firebaseDatabase.ref('usuarios/usuario/'+ [i] + '/disciplinasAgendadas/' + [0]).set(objDisciplinaAgendada);
+                          }
+                        }
+                      });
+                    });
+
+
+
                     sweetalert({
                         title: 'Confirmado',
                         html: true,
@@ -83,7 +92,9 @@
                             '</ul>',
                         type: 'success',
                     },
-                    () => { this.disciplina.pendente = false; }   
+                    () => { this.disciplina.pendente = false;
+                            location.reload(); //Não me orgulho disso
+                          }   
                     );                            
                 });
             },

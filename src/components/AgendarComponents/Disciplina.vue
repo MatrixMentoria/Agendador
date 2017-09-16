@@ -69,6 +69,7 @@ export default {
       horarioAgendado: '',
       salaAgendada: '',
       usuario: [],
+      qtdDisciplinas: ''
     }
   },
   created: function () {
@@ -91,7 +92,10 @@ export default {
   },
   methods: {
     usuarioDisciplinasAgendadas: function () {
-      for (var i = 0; i < this.usuario.disciplinasAgendadas.length; i++) {
+      //era pra ser uma gamb que puxava o número de disciplinas do banco de disciplinas, mas fiquei sem tempo pra fazer essa gamb então fiz uma gamb da gamb
+      for (var i = 0; i < 8 ; i++) {
+        //Os erros no console não afetam a execução. Eu acho...
+        if (this.usuario.disciplinasAgendadas[i] != undefined) {
         if (this.disciplina.descricao == this.usuario.disciplinasAgendadas[i].disciplinaAgendada) {
           this.disciplina.pendente = false;
           this.unidadeAgendada = this.usuario.disciplinasAgendadas[i].unidadeAgendada;
@@ -99,6 +103,7 @@ export default {
           this.horarioAgendado = moment(JSON.parse(this.usuario.disciplinasAgendadas[i].dataAgendada + '000')).format('hh:mm');
           this.salaAgendada = this.usuario.disciplinasAgendadas[i].salaAgendada;
           break;
+        }
         }
       }
     },
@@ -122,16 +127,25 @@ export default {
           closeOnConfirm: true,
         },
         () => {
-          var disciplinasAgendadas = JSON.parse(localStorage.getItem("Agendamentos")); // puxa os dados do local storage para a variável disciplinasAgendadas
-          var qtdDeDisciplinas = disciplinasAgendadas.length;
-          for (var i = 0; i < qtdDeDisciplinas; i++) {
-            if (disciplinasAgendadas[i].disciplinaAgendada === disciplina) {
-              disciplinasAgendadas.splice(i, 1);
-              break;
-            };
-          };
-          localStorage.setItem("Agendamentos", JSON.stringify(disciplinasAgendadas)); // salva novamente no local storage sobrescrevendo o que está lá
-          this.disciplina.pendente = true;
+          var disciplinasPromise = disciplinasRef.once('value');
+            disciplinasPromise.then((snapshot) => {
+              snapshot.forEach((user) => {
+                for (var i = 0; i < user.val().length; i++) {
+                  if (user.val()[i].uid == firebase.auth().currentUser.uid) {
+                    //Leia a linha 95 que suas dúvidas serão esclarecidas (ou não)
+                    for (var j = 0; j < 8; j++) {
+                      if (user.val()[i].disciplinasAgendadas[j] != undefined) {
+                      if (user.val()[i].disciplinasAgendadas[j].disciplinaAgendada === disciplina) {
+                        firebaseDatabase.ref('usuarios/usuario/'+ [i] + '/disciplinasAgendadas/' + [j]).remove();
+                        this.disciplina.pendente = true;
+                        break;
+                      };
+                    };
+                    };
+                  }
+                }
+              });
+            });
         });
     },
   },
