@@ -9,7 +9,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="horario in horarios" :key="horario.data" @click="confirmacaoDeAgendamento(disciplina.descricao,unidade.descrição,horario.data,horario.sala)">
+                <tr v-for="horario in horarios" :key="horario.data" @click="confirmacaoDeAgendamento(disciplina.codigo, disciplina.descricao,unidade.descrição,horario.data,horario.sala)">
                     <td>{{ horario.data | dataFormatada }}</td>
                     <td>{{ horario.data | horarioFormatado }}</td>
                     <td>{{ horario.sala }}</td>
@@ -25,7 +25,6 @@
     import {firebase} from '../../Firebase'
 
     const firebaseDatabase = firebase.database();
-    const disciplinasRef = firebaseDatabase.ref('usuarios');
 
     export default {
         props: ['horarios','unidade','disciplina','pendente','selecao'],
@@ -35,7 +34,7 @@
             }
         },
         methods: {
-            confirmacaoDeAgendamento(disciplina,unidade,horario,sala){
+            confirmacaoDeAgendamento(codigo,disciplina,unidade,horario,sala){
                 var horarioMoment = moment(JSON.parse(horario+'000')).format('DD/MM/YYYY - hh:mm')
                 sweetalert({
                     title: 'Confirmar Agendamento?',
@@ -55,29 +54,14 @@
                     closeOnConfirm: false,
                 },
                 () => {
-                    //↓ Cria o objeto que será armazenado no local storage
+                    //↓ Cria o objeto que será armazenado no firebase
                     var objDisciplinaAgendada = {
                     disciplinaAgendada: disciplina,
                     unidadeAgendada: unidade,
                     dataAgendada: horario,
                     salaAgendada: sala
                     }
-                    
-                    //Sobre o código abaixo: sei que tô na vida errada mas é por falta de oportunidade...
-                    var disciplinasPromise = disciplinasRef.once('value');
-                    disciplinasPromise.then((snapshot) => {
-                      snapshot.forEach((user) => {
-                        for (var i = 0; i < user.val().length; i++) {
-                          if (user.val()[i].uid == firebase.auth().currentUser.uid && user.val()[i].disciplinasAgendadas != undefined) {
-                            firebaseDatabase.ref('usuarios/usuario/'+ [i] + '/disciplinasAgendadas/' + [user.val()[i].disciplinasAgendadas.length]).set(objDisciplinaAgendada);
-                          } else if (user.val()[i].uid == firebase.auth().currentUser.uid && user.val()[i].disciplinasAgendadas == undefined) {
-                            firebaseDatabase.ref('usuarios/usuario/'+ [i] + '/disciplinasAgendadas/' + [0]).set(objDisciplinaAgendada);
-                          }
-                        }
-                      });
-                    });
-
-
+                    firebaseDatabase.ref('usuarios').child(firebase.auth().currentUser.uid).child('disciplinasAgendadas').child(codigo).set(objDisciplinaAgendada);
 
                     sweetalert({
                         title: 'Confirmado',
@@ -93,7 +77,7 @@
                         type: 'success',
                     },
                     () => { this.disciplina.pendente = false;
-                            location.reload(); //Não me orgulho disso
+                            //location.reload(); //Não me orgulho disso
                           }   
                     );                            
                 });

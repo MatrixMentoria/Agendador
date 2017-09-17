@@ -54,7 +54,6 @@ import sweetalert from 'sweetalert';
 import {firebase} from '../../Firebase'
 
 const firebaseDatabase = firebase.database();
-const disciplinasRef = firebaseDatabase.ref('usuarios');
 
 export default {
   props: ['disciplina'],
@@ -72,43 +71,24 @@ export default {
       qtdDisciplinas: ''
     }
   },
-  created: function () {
-    var disciplinasPromise = disciplinasRef.once('value');
-    disciplinasPromise.then((snapshot) => {
-      snapshot.forEach((user) => {
-        for (var i = 0; i < user.val().length; i++) {
-          if (user.val()[i].uid == firebase.auth().currentUser.uid) {
-            this.usuario = user.val()[i];
-          }
-        }
-      });
-      this.usuarioDisciplinasAgendadas();
-    });
-  },
   mounted: function () {
     $('.collapsible').collapsible();
     $('select').material_select();
-    this.disciplina.pendente = true;
+    var usuarioDisciplinasAgendadas = firebaseDatabase.ref('usuarios').child(firebase.auth().currentUser.uid).child('disciplinasAgendadas').child(this.disciplina.codigo);
+    usuarioDisciplinasAgendadas.once('value', user => {
+      if (user.val() != null) {
+        var userDisciplinasAgendadas = user.val();
+        this.unidadeAgendada = userDisciplinasAgendadas.unidadeAgendada
+        var momentDataHoraAgendada = JSON.parse(userDisciplinasAgendadas.dataAgendada + '000');
+        this.dataAgendada = moment(momentDataHoraAgendada).format('DD/MM/YYYY')
+        this.horarioAgendado = moment(momentDataHoraAgendada).format('hh:mm');
+        this.salaAgendada = userDisciplinasAgendadas.salaAgendada;
+        this.disciplina.pendente = false;
+      }
+    })
   },
   methods: {
-    usuarioDisciplinasAgendadas: function () {
-      //era pra ser uma gamb que puxava o número de disciplinas do banco de disciplinas, mas fiquei sem tempo pra fazer essa gamb então fiz uma gamb da gamb
-      for (var i = 0; i < 8 ; i++) {
-        //Os erros no console não afetam a execução. Eu acho...
-        if (this.usuario.disciplinasAgendadas[i] != undefined) {
-        if (this.disciplina.descricao == this.usuario.disciplinasAgendadas[i].disciplinaAgendada) {
-          this.disciplina.pendente = false;
-          this.unidadeAgendada = this.usuario.disciplinasAgendadas[i].unidadeAgendada;
-          this.dataAgendada = moment(JSON.parse(this.usuario.disciplinasAgendadas[i].dataAgendada + '000')).format('DD/MM/YYYY');
-          this.horarioAgendado = moment(JSON.parse(this.usuario.disciplinasAgendadas[i].dataAgendada + '000')).format('hh:mm');
-          this.salaAgendada = this.usuario.disciplinasAgendadas[i].salaAgendada;
-          break;
-        }
-        }
-      }
-    },
     cancelarDisciplina: function (disciplina) {
-      // var horarioMoment = moment(JSON.parse(horario+'000')).format('DD/MM/YYYY - hh:mm') -->
       sweetalert({
           title: 'Cancelar Agendamento?',
           html: true,
@@ -127,25 +107,8 @@ export default {
           closeOnConfirm: true,
         },
         () => {
-          var disciplinasPromise = disciplinasRef.once('value');
-            disciplinasPromise.then((snapshot) => {
-              snapshot.forEach((user) => {
-                for (var i = 0; i < user.val().length; i++) {
-                  if (user.val()[i].uid == firebase.auth().currentUser.uid) {
-                    //Leia a linha 95 que suas dúvidas serão esclarecidas (ou não)
-                    for (var j = 0; j < 8; j++) {
-                      if (user.val()[i].disciplinasAgendadas[j] != undefined) {
-                      if (user.val()[i].disciplinasAgendadas[j].disciplinaAgendada === disciplina) {
-                        firebaseDatabase.ref('usuarios/usuario/'+ [i] + '/disciplinasAgendadas/' + [j]).remove();
-                        this.disciplina.pendente = true;
-                        break;
-                      };
-                    };
-                    };
-                  }
-                }
-              });
-            });
+         firebaseDatabase.ref('usuarios').child(firebase.auth().currentUser.uid).child('disciplinasAgendadas').child(this.disciplina.codigo).remove();
+         this.disciplina.pendente = true;
         });
     },
   },
