@@ -158,7 +158,6 @@ export default {
                     }
                 }
             }
-            console.log(this.horarios)
 
             Dados.$on('status', (statusHorario) => {
                 this.status = statusHorario;

@@ -30,6 +30,7 @@
         <div class="row center">
             <a @click="login" class="red darken-4 waves-effect waves-light btn">Entrar</a>
             <a @click="signup" class="red darken-4 waves-effect waves-light btn">Cadastrar Usuário</a>
+            <a @click="signup('adm')" class="red darken-4 waves-effect waves-light btn">Cadastrar Administrador</a>
         </div>
       </form>
     </div>
@@ -45,7 +46,6 @@
 
 <<script>
 import {firebase} from '../Firebase'
-import sMDAJSON from '../sMDA.json'
 
 export default {
   name: 'login',
@@ -53,27 +53,19 @@ export default {
     return {
       email: '',
       senha: '',
-      smdajson: sMDAJSON,
     }
   },
-  created: function() {
+  beforeCreate: function() {
     firebase.auth().signOut();
-    var smdaLenght = Object.keys(this.smdajson.smda).length;
-    var smdaFirebase = this.smdajson;
-    firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      for (var i = 0; i < smdaLenght; i++) {
-        if (user.uid == smdaFirebase.smda[i].smdaCode){
-            window.location.href = "/cadastrar";
-        }
-      }
-    } 
-});
   },
   methods: {
     login: function () {
       firebase.auth().signInWithEmailAndPassword(this.email, this.senha).then(function(){
-        window.location.href = "/agendar";
+        if (firebase.auth().currentUser.displayName == "adm") {
+          window.location.href = "/cadastrar"
+        } else {
+          window.location.href = "/agendar";
+        }
       }).catch(function(error) {
         console.log(error);
         if (error.code == "auth/invalid-email") {
@@ -87,9 +79,20 @@ export default {
         }
     });
     },
-    signup: function () {
+    signup: function (adm) {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.senha).then(function(){
-        alert("Cadastrado com sucesso");
+        if (adm){
+          var user = firebase.auth().currentUser;
+          user.updateProfile({
+            displayName: "adm",
+          }).then(function () {
+            alert("administrador cadastrado com sucesso");
+          }, function (error) {
+            alert(error);
+          });
+        } else {
+          alert("Cadastrado com sucesso");
+        }
       }).catch(function(error) {
         if (error.code == "auth/invalid-email") {
           alert("E-mail Inválido");

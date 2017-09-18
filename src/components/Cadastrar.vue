@@ -21,7 +21,6 @@ import Navbar from './CadastrarComponents/Navbar';
 import Filtro from './CadastrarComponents/Filtro';
 import Tabela from './CadastrarComponents/Tabela';
 import NovoCadastro from './CadastrarComponents/NovoCadastro';
-import sMDAJSON from '../sMDA.json'
 
 export default {
   name:'cadastrar',
@@ -31,33 +30,21 @@ export default {
       Tabela,
       NovoCadastro
     },
-    data() {
-      return {
-        smdajson: sMDAJSON,
-      }
+    beforeCreate: function() {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user){
+          if (user.displayName !== "adm") {
+            alert("Você não tem permissão para acessar essa página");
+            window.location.href = "/agendar";
+          }
+        } else {
+          window.location.href = "/";
+        }
+      });
     },
-      mounted: function() {
-        $(".button-collapse").sideNav();
-        $('.modal').modal();
-    },
-    created: function() {
-      var smdaLenght = Object.keys(this.smdajson.smda).length;
-      var smdaFirebase = this.smdajson;
-      var smda = false;
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (!user) {
-            window.location.href = "/";
-            }
-            for (var i = 0; i < smdaLenght; i++) {
-              if (user.uid == smdaFirebase.smda[i].smdaCode){
-                smda = true;
-              }
-            }
-            if (smda === false) {
-              alert("Você não tem permissão para acessar essa página");
-              window.location.href = "/agendar";
-            }
-        });
+    mounted: function() {
+      $(".button-collapse").sideNav();
+      $('.modal').modal();
     }
 }
 </script>

@@ -12,29 +12,16 @@
 
 <script>
 import {firebase} from '../../Firebase'
-import sMDAJSON from '../../sMDA.json'
 
 export default {
-    data() {
-      return {
-        smdajson: sMDAJSON,
-      }
-    },
     mounted: function() {
         $("#cadastrarNav").hide();
+        if (firebase.auth().currentUser.displayName) {
+            if (firebase.auth().currentUser.displayName == "adm") {
+                $("#cadastrarNav").show();   
+            }
+        }
         $(".button-collapse").sideNav();
-        var smdaLenght = Object.keys(this.smdajson.smda).length;
-        var smdaFirebase = this.smdajson;
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (!user) {
-            window.location.href = "/";
-            }
-            for (var i = 0; i < smdaLenght; i++) {
-              if (user.uid == smdaFirebase.smda[i].smdaCode){
-                  $("#cadastrarNav").show();
-              }
-            }
-        });
     },
     methods: {
         logout: function() {
