@@ -81,7 +81,7 @@ export default {
     },
     signup: function (adm) {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.senha).then(function(){
-        if (adm){
+        if (adm === "adm"){
           var user = firebase.auth().currentUser;
           user.updateProfile({
             displayName: "adm",
