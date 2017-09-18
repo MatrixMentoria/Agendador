@@ -16,7 +16,7 @@ import {firebase} from '../../Firebase'
 export default {
     mounted: function() {
         $("#cadastrarNav").hide();
-        if (firebase.auth().currentUser.displayName) {
+        if (firebase.auth().currentUser) {
             if (firebase.auth().currentUser.displayName == "adm") {
                 $("#cadastrarNav").show();   
             }

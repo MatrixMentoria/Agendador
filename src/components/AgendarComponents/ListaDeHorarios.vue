@@ -77,7 +77,6 @@
                         type: 'success',
                     },
                     () => { this.disciplina.pendente = false;
-                            //location.reload(); //Não me orgulho disso
                           }   
                     );                            
                 });
