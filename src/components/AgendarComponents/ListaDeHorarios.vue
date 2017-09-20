@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table class="highlight striped centered" v-if="selecao">
+        <table class="highlight centered" v-if="selecao">
             <thead>
                 <tr>
                     <th>Data</th>
@@ -9,7 +9,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="horario in horarios" :key="horario.data" @click="confirmacaoDeAgendamento(disciplina.codigo, disciplina.descricao,unidade.descrição,horario.data,horario.sala)">
+                <tr class="horarios" v-for="horario in horarios" :key="horario.data" @click="confirmacaoDeAgendamento(disciplina.codigo, disciplina.descricao,unidade.descrição,horario.data,horario.sala)">
                     <td>{{ horario.data | dataFormatada }}</td>
                     <td>{{ horario.data | horarioFormatado }}</td>
                     <td>{{ horario.sala }}</td>
@@ -96,3 +96,8 @@
         }
     };
 </script>
+<style>
+.horarios{
+    cursor: pointer;
+}
+</style>
