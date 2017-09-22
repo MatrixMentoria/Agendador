@@ -1,7 +1,7 @@
 <template>
     <div class="navbar-fixed">
         <nav class="nav-wrapper red darken-4">
-            <span class="brand-logo center">Cadastro</span>
+            <span class="brand-logo center">Cadastro de Horários</span>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><router-link to="/agendar">Agendar</router-link></li>
                 <li><a @click="logout">Sair</a></li>
