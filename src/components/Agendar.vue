@@ -1,7 +1,7 @@
 <template>
   <div id="agendar">
     <navbar></navbar>
-    <lista-de-disciplinas v-bind:disciplinas="disciplinas"></lista-de-disciplinas>
+    <lista-de-disciplinas v-bind:disciplinas="disciplinas"></lista-de-disciplinas> -->
     <div class="fixed-action-btn">
         <a class="btn-floating btn-large red darken-4 modal-trigger" href="#modalAdd">
           <i class="large material-icons">local_printshop</i>
@@ -18,7 +18,6 @@
   import PaginaDeImpressao from './AgendarComponents/PaginaDeImpressao';
 
   const firebaseDatabase = firebase.database();
-  const disciplinasRef = firebaseDatabase.ref('disciplina');
 
   export default {
     name:'agendar',
@@ -48,15 +47,15 @@
   );
     },
     beforeCreate: function() {
-      var disciplinasPromise = disciplinasRef.once('value');
-        disciplinasPromise.then((snapshot) => {
-        snapshot.forEach((item) => {               
-          this.disciplinas = item.val();
-          this.disciplinas.forEach((item)=> {
+      firebaseDatabase.ref('disciplinas').once('value').then(disciplina => {
+        var self = this;
+          disciplina.forEach((discip) => {
+            self.disciplinas.push(discip.val());
+          });
+           this.disciplinas.forEach((item)=> {
             this.$set(item,'pendente',true);
           })
-        });           
-      });
+      })
     }
   };
 </script>
