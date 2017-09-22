@@ -22,7 +22,7 @@
     import { Dados } from './Dados.js'
     import {firebase} from '../../Firebase'
     const firebaseDatabase = firebase.database();
-    const disciplinasRef = firebaseDatabase.ref('disciplina');
+    const disciplinasRef = firebaseDatabase.ref('disciplinas');
 
 export default {
     firebase: {
@@ -36,13 +36,13 @@ export default {
         };
     },
     mounted: function() {
-       var disciplinasPromise = disciplinasRef.once('value');
-        disciplinasPromise.then((snapshot) => {
-        snapshot.forEach((item) => {               
-          this.disciplinas = item.val();
-        });
-        this.autoComplete();
-      });
+       firebaseDatabase.ref('disciplinas').once('value').then(disciplina => {
+         var self = this;
+         disciplina.forEach((discip) => {
+           self.disciplinas.push(discip.val());
+         });
+         this.autoComplete();
+       })
     },
     methods: {
         autoComplete: function() {
