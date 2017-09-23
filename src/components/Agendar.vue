@@ -1,22 +1,19 @@
 <template>
   <div id="agendar">
     <navbar></navbar>
-    <lista-de-disciplinas v-bind:disciplinas="disciplinas"></lista-de-disciplinas> -->
+    <lista-de-disciplinas v-bind:disciplinas="disciplinas"></lista-de-disciplinas>
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red darken-4 modal-trigger" href="#modalAdd">
+        <a class="btn-floating btn-large red darken-4" @click="imprimir()">
           <i class="large material-icons">local_printshop</i>
         </a>
-      </div>
-    <Pagina-De-Impressao></Pagina-De-Impressao>
-  </div>
+    </div>
+    </div>
 </template>
 
 <script>
   import ListaDeDisciplinas from './AgendarComponents/ListaDeDisciplinas';
   import Navbar from './AgendarComponents/Navbar';
   import {firebase} from '../Firebase'
-  import PaginaDeImpressao from './AgendarComponents/PaginaDeImpressao';
-
   const firebaseDatabase = firebase.database();
 
   export default {
@@ -24,12 +21,21 @@
     components: {
       Navbar,
       ListaDeDisciplinas,
-      PaginaDeImpressao,
     },
     data() {
       return {
         disciplinas: []
       };
+    },
+    methods: {
+      imprimir: function(){
+        var winPrint = window.open('/impressao', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
+        //winPrint.document.write('<table><thead><tr><th>Disciplina</th><th>Unidade</th><th>Data</th><th>Horario</th><th>Sala</th></tr></thead>');
+        //winPrint.document.close();
+        winPrint.focus();
+        winPrint.print();
+       // winPrint.close(); 
+      }
     },
     mounted: function() {
       $(".button-collapse").sideNav();

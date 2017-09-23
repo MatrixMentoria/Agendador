@@ -15,7 +15,8 @@ import Agendar from './components/Agendar'
 import Login from './components/Login'
 //importar o componente Cadastrar
 import Cadastrar from './components/Cadastrar'
-
+//importar o componente impressao
+import impressao from './components/impressao'
 //Diga ao vue para usar o router.
 Vue.use(VueRouter)
 Vue.use(VueFire)
@@ -26,6 +27,7 @@ const routes = [
   {path: '/', component: Login },
   {path: '/agendar', component: Agendar},
   {path: '/cadastrar', component: Cadastrar},
+  {path:'/impressao', component: impressao}
 ]
 
 // Criar a instancia do router e passar a opção de 'routes'

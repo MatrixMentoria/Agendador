@@ -1,8 +1,7 @@
 <template>
- <div id="teste">
- <div id="modalAdd" class="modal">
-    <div class="modal-content" id="bloco">
-      <h4 class="center">Pagina de Impressao</h4>
+ <div>
+    <div class>
+      <h4 class="center">Pagina de Impressão</h4>
       <table>
         <thead>
           <tr>
@@ -15,36 +14,33 @@
         </thead>
 
         <tbody>
-          <tr v-for="disciplina in disciplinas" >
-            <td>{{disciplina.disciplinaAgendada}}</td>
-            <td>{{disciplina.unidadeAgendada}}</td>
-            <td>{{disciplina.dataAgendada | dataFormatada}}</td>
-            <td>{{disciplina.dataAgendada | horarioFormatado}}</td>
-            <td>{{disciplina.salaAgendada}}</td>
+          <tr>
+            <td>{{unidadeAgendada}}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="row center">
-            <a class="red darken-4 waves-light btn-large" onclick="print()"><i class="material-icons left">local_printshop</i> Imprimir</a>
-    </div>
 </div>
- </div>
-
 </template>
 
 <script>
+ import { Dados } from './CadastrarComponents/Dados.js'
 import moment from 'moment';
   export default {
+    name: 'impressao',
       data(){
           return{
-            disciplinas:[],
+            unidadeAgendada: [],
+            dataAgendada: [],
+            horarioAgendado: [],
+            salaAgendada: [],
+            usuario: [],
           }
       },
-    created: function(){ 
-        var agendamentos = JSON.parse(localStorage.getItem("Agendamentos"));
-        this.disciplinas = agendamentos;
-        
+    methods: function(){ 
+      /*Dados.$on('unidade',(teste)=>{
+        this.unidadeAgendada = teste;
+      })*/       
     },   
      filters: {
             dataFormatada: function(data) {

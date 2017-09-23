@@ -2,7 +2,7 @@
  
  <div id="modalAdd" class="modal">
     <div class="modal-content">
-      <h4 class="center">Cadastrar Agendamento</h4>
+      <h4 class="center">Cadastrar Horários</h4>
       
     <div class="row">
       <form class="col s12">
