@@ -9,7 +9,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="horarios" v-for="horario in horarios" :key="horario.data" @click="confirmacaoDeAgendamento(disciplina.codigo, disciplina.descricao,unidade.descricao,horario.data,horario.sala)">
+                <tr class="horarios" v-if="horario.status" v-for="horario in horarios" :key="horario.data" @click="confirmacaoDeAgendamento(disciplina.codigo, disciplina.descricao,unidade.descricao,horario.data,horario.sala)">
                     <td>{{ horario.data | dataFormatada }}</td>
                     <td>{{ horario.data | horarioFormatado }}</td>
                     <td>{{ horario.sala }}</td>
