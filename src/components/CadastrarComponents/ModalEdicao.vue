@@ -11,7 +11,8 @@
                 <select class="browser-default" v-model="cadastroEditado.codigoDisciplina">
                   <option value="" disabled>Disciplina</option>
                   <option v-for="disciplina in disciplinas"
-                          :value="disciplina.codigo">{{disciplina.descricao}}</option>
+                          :value="disciplina.codigo"
+                          :key="disciplina.codigo">{{disciplina.descricao}}</option>
                 </select>
               </div>
               <div class="input-field col s6">
@@ -75,7 +76,7 @@
   import moment from 'moment';
   import {firebase} from '../../Firebase'
   const firebaseDatabase = firebase.database();
-  const disciplinasRef = firebaseDatabase.ref('disciplina');
+  const disciplinasRef = firebaseDatabase.ref('test2');
   // import 'moment/locale/pt-br' - o pickadate.js no materialize só funciona em ingles
 
   export default {
@@ -83,9 +84,11 @@
 
     data: function(){
       return {
+        cadastroAntigo: [],
         disciplinas: [],
         hora: '',
         data: '',
+        listaDeUnidades : [],
         cadastroEditado: {
           keyDisciplina: '',
           keyUnidade: '',
@@ -104,47 +107,94 @@
       }
     },
 
+  mounted: function() {
+    var disciplinasPromise = disciplinasRef.once('value');
+    disciplinasPromise.then((snapshot) => {
+      snapshot.forEach((item) => {               
+        this.disciplinas = item.val();
+      });
+      $('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 15, // Creates a dropdown of 15 years to control year,
+        today: 'Hoje',
+        clear: 'Limpar',
+        close: 'Ok',
+        closeOnSelect: true // Close upon selecting a date,
+      });
+
+      $('.timepicker').pickatime({
+        default:  'now', // Set default time: 'now', '1:30AM', '16:30'
+        fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+        twelvehour: false, // Use AM/PM or 24-hour format
+        donetext: 'OK', // text for done-button
+        cleartext: 'Limpar', // text for clear-button
+        canceltext: 'Cancelar', // Text for cancel-button
+        autoclose: false, // automatic close timepicker
+        ampmclickable: true // make AM PM clickable
+      });
+    });
+  },  
+
+
     methods: {
       salvarCadastro: function(){
 
         var velho = this.horario;
         var novo = this.cadastroEditado;
 
-        var caminho = firebaseDatabase.ref('disciplina/disciplinas/' + velho.keyDisciplina +
-                                               '/unidades/' + velho.keyUnidade + 
-                                               '/horarios/' + velho.keyHorario)
+        var keyDisciplinaAntiga = velho.keyDisciplina
+        var keyUnidadeAntiga = velho.keyUnidade
+        var keyHorarioAntigo = velho.keyHorario
+
+        // var horarioAntigo = this.disciplinas.keyDisciplinaAntiga.unidades.keyUnidade.horarios.keyHorarioAntigo
+
+        var disciplinasPromise = disciplinasRef.once('value');
+        disciplinasPromise.then((snapshot) => {
+          snapshot.forEach((item) => {
+            this.cadastroAntigo = item.val();
+          });
+        })
+
+        console.log(this.velho['keyDisciplinaAntiga'])
+        
+
+
+
+        // var caminhoVelho =  firebaseDatabase.ref('test2').child(velho.keyDisciplina)
+        //                                                   .child('unidades')
+        //                                                   .child(velho.keyUnidade)
+        //                                                   .child('horarios')
+        //                                                   .child(velho.keyHorario)
+
+        // console.log(velho)
+        // console.log(novo)
+
+        // var x = novo.dataFormatada + ' ' + novo.horarioFormatado
+        // var y = Date.parse(x)
+        // console.log(x)
+        // console.log(y)
+
+        // if ( firebaseDatabase.ref('test2').child(novo.keyDisciplina)) {
+        //   console.log('existe')
+        // } else {
+        //   console.log('não existe')
+        // }
+        // var caminhoNovo = firebaseDatabase.ref('disciplinas').child(novo.keyDisciplina)
+        //                                                    .child('unidades')
+        //                                                    .child(novo.keyUnidade)
+        //                                                    .child('horarios')
+        //                                                    .child(novo.keyHorario)
+
+
+        // var caminho = firebaseDatabase.ref('test/disciplinas/' + velho.keyDisciplina +
+        //                                        '/unidades/' + velho.keyUnidade + 
+        //                                        '/horarios/' + velho.keyHorario)
 
         // caminho.remove() EXCLUI O HORÁRIO DO FIREBASE
+
       }
     },
 
-    mounted: function() {
-        var disciplinasPromise = disciplinasRef.once('value');
-        disciplinasPromise.then((snapshot) => {
-        snapshot.forEach((item) => {               
-          this.disciplinas = item.val();
-        });
-        $('.datepicker').pickadate({
-          selectMonths: true, // Creates a dropdown to control month
-          selectYears: 15, // Creates a dropdown of 15 years to control year,
-          today: 'Hoje',
-          clear: 'Limpar',
-          close: 'Ok',
-          closeOnSelect: true // Close upon selecting a date,
-        });
-
-        $('.timepicker').pickatime({
-          default:  'now', // Set default time: 'now', '1:30AM', '16:30'
-          fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
-          twelvehour: false, // Use AM/PM or 24-hour format
-          donetext: 'OK', // text for done-button
-          cleartext: 'Limpar', // text for clear-button
-          canceltext: 'Cancelar', // Text for cancel-button
-          autoclose: false, // automatic close timepicker
-          ampmclickable: true // make AM PM clickable
-        });
-      });
-    },
 
     watch: {
       horario: function() {
@@ -162,7 +212,7 @@
           status: this.horario.status,
         }
 
-        var dataParse = JSON.parse(this.horario.data+'000')
+        var dataParse = JSON.parse(this.horario.data)
         this.cadastroEditado.horarioFormatado = moment(dataParse).format('hh:mm')
         this.cadastroEditado.dataFormatada = moment(dataParse).format('DD MMMM, YYYY')
       },
