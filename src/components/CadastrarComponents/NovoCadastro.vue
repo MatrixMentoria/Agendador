@@ -9,12 +9,18 @@
         <div class="row">
           
           <div class="input-field col s6">
-            <input id="last_name" type="text" class="validate">
-            <label for="last_name">Disciplina</label>
+            <select class="browser-default" v-model="disciplinaSelecionada">
+              <option value="" disabled>Disciplina</option>
+              <option v-for="disciplina in disciplinas"
+                      :value="disciplina.codigo">{{disciplina.descricao}}</option>
+            </select>
           </div>
           <div class="input-field col s6">
-            <input id="last_name" type="text" class="validate">
-            <label for="last_name">Unidade</label>
+            <select class="browser-default" v-model="unidadeSelecionada">
+              <option value="" disabled>Unidade</option>
+              <option v-for="unidade in unidades"
+                      :value="unidade.codigo">{{unidade.descricao}}</option>
+            </select>
           </div>
 
         </div>
@@ -68,10 +74,31 @@
 </template>
 
 <script>
-  export default {
-    mounted: function() {
-        
+  import {firebase} from '../../Firebase'
+  const firebaseDatabase = firebase.database();
 
+  export default {
+    data: function() {
+      return {
+        disciplinas: [],
+        unidades: [],
+        disciplinaSelecionada: '',
+        unidadeSelecionada: '',
+      }
+    },
+    mounted: function() {
+      firebaseDatabase.ref('disciplinas').once('value').then(disciplina => {
+        var self = this;
+          disciplina.forEach((discip) => {
+            self.disciplinas.push(discip.val());
+          });
+      });
+      firebaseDatabase.ref('unidades').once('value').then(unidade => {
+        var self = this;
+          unidade.forEach((unid) => {
+            self.unidades.push(unid.val());
+          });
+      });
          $('.datepicker').pickadate({
                 selectMonths: true, // Creates a dropdown to control month
                 selectYears: 15, // Creates a dropdown of 15 years to control year,

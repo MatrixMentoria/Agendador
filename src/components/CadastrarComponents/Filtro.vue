@@ -22,12 +22,8 @@
     import { Dados } from './Dados.js'
     import {firebase} from '../../Firebase'
     const firebaseDatabase = firebase.database();
-    const disciplinasRef = firebaseDatabase.ref('disciplinas');
 
 export default {
-    firebase: {
-        disciplinas: disciplinasRef
-    },
     data() {
         return {
             status: '',
