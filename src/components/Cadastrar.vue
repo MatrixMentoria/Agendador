@@ -6,11 +6,11 @@
       <tabela></tabela>
       
       <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red darken-4 modal-trigger" href="#modalAdd">
+        <a class="btn-floating btn-large red darken-4 modal-trigger" href="#modalNovo">
           <i class="large material-icons">add</i>
         </a>
       </div>
-      <novo-cadastro></novo-cadastro>
+      <modal-novo></modal-novo>
     </div>
   </div>
 </template>
@@ -20,7 +20,7 @@ import {firebase} from '../Firebase'
 import Navbar from './CadastrarComponents/Navbar';
 import Filtro from './CadastrarComponents/Filtro';
 import Tabela from './CadastrarComponents/Tabela';
-import NovoCadastro from './CadastrarComponents/NovoCadastro';
+import ModalNovo from './CadastrarComponents/ModalNovo';
 
 export default {
   name:'cadastrar',
@@ -28,7 +28,7 @@ export default {
       Navbar,
       Filtro,
       Tabela,
-      NovoCadastro
+      ModalNovo
     },
     beforeCreate: function() {
       firebase.auth().onAuthStateChanged(function(user) {

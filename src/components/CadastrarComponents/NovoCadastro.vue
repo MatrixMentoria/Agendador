@@ -65,10 +65,10 @@
               <a href="#!" class=" modal-action modal-close btn red darken-4">Salvar e continuar</a>
             </div>
           </div>
-        </div>               
+        </div>
       </form>
     </div>
-  </div>    
+  </div>
 </div>
 
 </template>
