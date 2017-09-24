@@ -30,11 +30,7 @@
     methods: {
       imprimir: function(){
         var winPrint = window.open('/impressao', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
-        //winPrint.document.write('<table><thead><tr><th>Disciplina</th><th>Unidade</th><th>Data</th><th>Horario</th><th>Sala</th></tr></thead>');
-        //winPrint.document.close();
-        winPrint.focus();
-        winPrint.print();
-       // winPrint.close(); 
+        winPrint.focus(); 
       }
     },
     mounted: function() {
