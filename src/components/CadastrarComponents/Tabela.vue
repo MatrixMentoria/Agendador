@@ -154,10 +154,10 @@ export default {
             }
 
             var caminho =  firebaseDatabase.ref('test3').child(horario.keyDisciplina)
-                                                              .child('unidades')
-                                                              .child(horario.keyUnidade)
-                                                              .child('horarios')
-                                                              .child(horario.keyHorario)
+                                                        .child('unidades')
+                                                        .child(horario.keyUnidade)
+                                                        .child('horarios')
+                                                        .child(horario.keyHorario)
 
             caminho.update({status: horario.status})
         },

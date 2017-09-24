@@ -76,7 +76,6 @@
   import {firebase} from '../../Firebase'
   const firebaseDatabase = firebase.database();
   const disciplinasRef = firebaseDatabase.ref('test3');
-  // import 'moment/locale/pt-br' - o pickadate.js no materialize só funciona em ingles
 
   export default {
     props: [],
@@ -99,11 +98,17 @@
     },
 
     mounted: function() {
-      firebaseDatabase.ref('test3').once('value').then(disciplina => {
-         var self = this;
-         disciplina.forEach((discip) => {
-           self.disciplinas.push(discip.val());
-         });
+      firebaseDatabase.ref('disciplinas').once('value').then(disciplina => {
+        var self = this;
+          disciplina.forEach((discip) => {
+            self.disciplinas.push(discip.val());
+          });
+      });
+      firebaseDatabase.ref('unidades').once('value').then(unidade => {
+        var self = this;
+          unidade.forEach((unid) => {
+            self.unidades.push(unid.val());
+          });
       });
 
       $('.datepicker').pickadate({
@@ -142,25 +147,15 @@
 
         this.unidadeKey = this.unidadeCodigo
 
-        firebaseDatabase.ref('test4/' + this.disciplinaCodigo)
-                        .once('value')
-                        .then((snapshot) => {
-                            this.disciplinaKey = snapshot.val()
-                            firebaseDatabase.ref('test3')
-                                            .child(this.disciplinaKey)
-                                            .child('unidades')
-                                            .child(this.unidadeKey)
-                                            .child('horarios')
-                                            .push(this.obj)
-                        })
-
-        // firebaseDatabase.ref('test3')
-        //                 .child(this.disciplinaKey)
-        //                 .child('unidades')
-        //                 .child(this.unidadeKey)
-        //                 .child('horarios')
-        //                 .push(this.obj)
-      
+        // firebaseDatabase.ref('test4/' + this.disciplinaCodigo).once('value').then((snapshot) => {
+        //   this.disciplinaKey = snapshot.val()
+        firebaseDatabase.ref('disciplinasCadastradas')
+                        .child(this.disciplinaCodigo)
+                        .child('unidades')
+                        .child(this.unidadeKey)
+                        .child('horarios')
+                        .push(this.obj)
+        // })
 
         //limpar formulario
         // this.disciplinaCodigo = '';
@@ -175,10 +170,6 @@
         // this.obj.vagas = '';
         // this.obj.status = '';
       }
-    },
-
-    watch: {
-
     },
   };
 

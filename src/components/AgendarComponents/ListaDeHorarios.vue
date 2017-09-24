@@ -35,7 +35,7 @@
         },
         methods: {
             confirmacaoDeAgendamento(codigo,disciplina,unidade,horario,sala){
-                var horarioMoment = moment(JSON.parse(horario+'000')).format('DD/MM/YYYY - hh:mm')
+                var horarioMoment = moment(JSON.parse(horario)).format('DD/MM/YYYY - hh:mm')
                 sweetalert({
                     title: 'Confirmar Agendamento?',
                     html: true,
@@ -84,13 +84,11 @@
         },
         filters: {
             dataFormatada: function(data) {
-                //Precisamos melhorar essa parte. Consegui converter as datas somente
-                //a partir de milisegundos. Por isso o '+000'
-                var dataParse = JSON.parse(data+'000')
+                var dataParse = JSON.parse(data)
                 return moment(dataParse).format('DD/MM/YYYY')
             },
             horarioFormatado: function(data) {
-                var dataParse = JSON.parse(data+'000')
+                var dataParse = JSON.parse(data)
                 return moment(dataParse).format('hh:mm')
             },
         }
