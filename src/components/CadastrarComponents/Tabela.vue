@@ -45,7 +45,7 @@
     import sweetalert from 'sweetalert';
     import {firebase} from '../../Firebase'
     const firebaseDatabase = firebase.database();
-    const disciplinasRef = firebaseDatabase.ref('test2');
+    const disciplinasRef = firebaseDatabase.ref('test3');
     import ModalEdicao from './ModalEdicao'
 
 export default {
@@ -54,10 +54,8 @@ export default {
     },
     data() {
         return {
-            chaves: [],
             horarios: [],
             unidades: '',
-            disciplinasTemporario: [],
             status: '',
             horarioEditado: '',
             listaDeDisciplinas: [],
@@ -72,18 +70,13 @@ export default {
         disciplinasPromise.then((snapshot) => {
             snapshot.forEach((item) => {
                 var chaveDisciplina = item.key
+                var codDisciplina = item.val().codigo
+
+                var listaDisciplina = firebaseDatabase.ref('test4')
+                listaDisciplina.update({[codDisciplina]: chaveDisciplina})
+
                 var chavesUnidades = []
                 chavesUnidades = Object.keys(item.val().unidades)
-
-                var codDisciplina = item.val().codigo
-                var disciplina = {}
-                disciplina[codDisciplina] =  item.key
-                // var y = disciplina[codDisciplina]
-                // var x = disciplina['codDisciplina']
-                // console.log(y)
-                // console.log(x)
-                // this.listaDeDisciplinas.push(x)
-                // console.log(this.listaDeDisciplinas)
 
                 for ( var i = 0 ; i < chavesUnidades.length ; i++ )  {
                     var unidadeChild = item.val().unidades[chavesUnidades[i]]
@@ -160,7 +153,7 @@ export default {
                 horario.botaoEdicao = ''
             }
 
-            var caminho =  firebaseDatabase.ref('test2').child(horario.keyDisciplina)
+            var caminho =  firebaseDatabase.ref('test3').child(horario.keyDisciplina)
                                                               .child('unidades')
                                                               .child(horario.keyUnidade)
                                                               .child('horarios')
@@ -174,80 +167,6 @@ export default {
 
 
         },
-
-        // tabelaShow: function() {
-        //     this.horarios.length = 0;
-        //     this.listaDeDisciplinas.length = 0;
-
-        //     var chaveDisciplina = Object.keys(this.disciplinas);
-
-        //     for ( var k = 0 ; k < this.disciplinas.length ; k++ ) {
-        //         var novaDisciplina = {
-        //             codigoDisciplina: this.disciplinas[k].codigo,
-        //             descricaoDisciplina: this.disciplinas[k].descricao,
-        //             professorDisciplina: this.disciplinas[k].professor,
-        //             keyDisciplina: chaveDisciplina,
-        //         }
-        //         this.listaDeDisciplinas.push(novaDisciplina)
-        //         var chaveUnidade = Object.keys(this.disciplinas[k].unidades);
-
-        //         for ( var i = 0 ; i < this.disciplinas[k].unidades.length ; i++ ) {
-        //                 var chaveHorario = Object.keys(this.disciplinas[k].unidades[i].horarios);
-
-        //             for ( var j = 0 ; j < this.disciplinas[k].unidades[i].horarios.length ; j++ ) {
-        //                 if ( this.disciplinas[k].unidades[i].horarios[j].status === false ) {
-        //                     var botaoEdicao = 'disabled'
-        //                 } else {
-        //                     var botaoEdicao = ''
-        //                 }
-
-        //                 var obj = {
-        //                     keyDisciplina: chaveDisciplina[k],
-        //                     keyUnidade: chaveUnidade[i],
-        //                     keyHorario: chaveHorario[j],
-        //                     filtroDisciplina: this.disciplinas[k].descricao,
-        //                     codigoDisciplina: this.disciplinas[k].codigo,
-        //                     disciplina: this.disciplinas[k].descricao,
-        //                     codigoUnidade: this.disciplinas[k].unidades[i].codigo,
-        //                     unidade: this.disciplinas[k].unidades[i].descrição,
-        //                     data: this.disciplinas[k].unidades[i].horarios[j].data,
-        //                     sala: this.disciplinas[k].unidades[i].horarios[j].sala,
-        //                     vagas: this.disciplinas[k].unidades[i].horarios[j].vagas,
-        //                     status: this.disciplinas[k].unidades[i].horarios[j].status,
-        //                     filtroStatus: this.disciplinas[k].unidades[i].horarios[j].status,
-        //                     botaoEdicao: botaoEdicao,
-        //                 }
-        //                 this.horarios.push (obj)
-
-        //             }
-        //         }
-        //     }
-
-        //     Dados.$on('status', (statusHorario) => {
-        //         this.status = statusHorario;
-        //         if (statusHorario) {
-        //             for (var i = 0 ; i < this.horarios.length ; i++) {
-        //                 this.horarios[i].filtroStatus = true;
-        //             }
-        //         } else {
-        //             for (var i = 0 ; i < this.horarios.length ; i++) {
-        //                 this.horarios[i].filtroStatus = this.horarios[i].status;
-        //             }
-        //         }
-        //     });
-
-        //     Dados.$on('filtro', (disciplinaFiltrada) => {
-        //         if(disciplinaFiltrada === 'tudo') {
-        //             for (var i = 0 ; i < this.horarios.length ; i++) {
-        //                 this.horarios[i].filtroDisciplina = this.horarios[i].disciplina;
-        //             }
-        //         } else {
-        //             for (var i = 0 ; i < this.horarios.length ; i++) {
-        //                 this.horarios[i].filtroDisciplina = disciplinaFiltrada;
-        //             }
-        //         }
-        //     });
-        // },
     },
 
     filters: {

@@ -76,7 +76,7 @@
   import moment from 'moment';
   import {firebase} from '../../Firebase'
   const firebaseDatabase = firebase.database();
-  const disciplinasRef = firebaseDatabase.ref('test2');
+  const disciplinasRef = firebaseDatabase.ref('test3');
   // import 'moment/locale/pt-br' - o pickadate.js no materialize só funciona em ingles
 
   export default {
@@ -148,19 +148,19 @@
 
         // var horarioAntigo = this.disciplinas.keyDisciplinaAntiga.unidades.keyUnidade.horarios.keyHorarioAntigo
 
-        var disciplinasPromise = disciplinasRef.once('value');
-        disciplinasPromise.then((snapshot) => {
-          snapshot.forEach((item) => {
-            this.cadastroAntigo = item.val();
-          });
-        })
+        // var disciplinasPromise = disciplinasRef.once('value');
+        // disciplinasPromise.then((snapshot) => {
+        //   snapshot.forEach((item) => {
+        //     this.cadastroAntigo = item.val();
+        //   });
+        // })
 
-        console.log(this.velho['keyDisciplinaAntiga'])
+        
         
 
 
 
-        // var caminhoVelho =  firebaseDatabase.ref('test2').child(velho.keyDisciplina)
+        // var caminhoVelho =  firebaseDatabase.ref('test3').child(velho.keyDisciplina)
         //                                                   .child('unidades')
         //                                                   .child(velho.keyUnidade)
         //                                                   .child('horarios')
@@ -174,7 +174,7 @@
         // console.log(x)
         // console.log(y)
 
-        // if ( firebaseDatabase.ref('test2').child(novo.keyDisciplina)) {
+        // if ( firebaseDatabase.ref('test3').child(novo.keyDisciplina)) {
         //   console.log('existe')
         // } else {
         //   console.log('não existe')
