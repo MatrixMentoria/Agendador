@@ -139,12 +139,12 @@
     methods: {
       salvarCadastro: function(){
 
-        var velho = this.horario;
-        var novo = this.cadastroEditado;
+        // var velho = this.horario;
+        // var novo = this.cadastroEditado;
 
-        var keyDisciplinaAntiga = velho.keyDisciplina
-        var keyUnidadeAntiga = velho.keyUnidade
-        var keyHorarioAntigo = velho.keyHorario
+        // var keyDisciplinaAntiga = velho.keyDisciplina
+        // var keyUnidadeAntiga = velho.keyUnidade
+        // var keyHorarioAntigo = velho.keyHorario
 
         // var horarioAntigo = this.disciplinas.keyDisciplinaAntiga.unidades.keyUnidade.horarios.keyHorarioAntigo
 
@@ -154,11 +154,6 @@
         //     this.cadastroAntigo = item.val();
         //   });
         // })
-
-        
-        
-
-
 
         // var caminhoVelho =  firebaseDatabase.ref('test3').child(velho.keyDisciplina)
         //                                                   .child('unidades')

@@ -1,7 +1,7 @@
 <template>
   <div id="modalNovo" class="modal">
     <div class="modal-content">
-      <h4 class="center">Novo Agendamento</h4>
+      <h4 class="center">Cadastrar Horário</h4>
 
       <div class="row">
         <form class="col s12" @submit.prevent="teste()">
@@ -18,11 +18,9 @@
               <div class="input-field col s6">
                 <select class="browser-default" v-model="unidadeCodigo">
                   <option value="" disabled>Unidade</option>
-                  <option value="u5">Bento Ribeiro</option>
-                  <option value="u4">Jacarepaguá</option>
-                  <option value="u3">Méier I</option>
-                  <option value="u12">Méier II</option>
-                  <option value="u2">Rio Comprido</option>
+                  <option v-for="unidade in unidades"
+                          :value="unidade.codigo"
+                          :key="unidade.key">{{unidade.descricao}}</option>
                 </select>
               </div>
             </div>
@@ -88,6 +86,7 @@
         unidadeKey: '',
         unidadeDescricao: '',
         disciplinas:[],
+        unidades:[],  
         obj: {
           data: '',
           sala: '',
