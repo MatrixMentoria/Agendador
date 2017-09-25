@@ -45,7 +45,7 @@
     import sweetalert from 'sweetalert';
     import {firebase} from '../../Firebase'
     const firebaseDatabase = firebase.database();
-    const disciplinasRef = firebaseDatabase.ref('test3');
+    const disciplinasRef = firebaseDatabase.ref('disciplinasCadastradas');
     import ModalEdicao from './ModalEdicao'
 
 export default {
@@ -72,7 +72,7 @@ export default {
                 var chaveDisciplina = item.key
                 var codDisciplina = item.val().codigo
 
-                var listaDisciplina = firebaseDatabase.ref('test4')
+                var listaDisciplina = firebaseDatabase.ref('codigosDisciplinas')
                 listaDisciplina.update({[codDisciplina]: chaveDisciplina})
 
                 var chavesUnidades = []
@@ -153,7 +153,7 @@ export default {
                 horario.botaoEdicao = ''
             }
 
-            var caminho =  firebaseDatabase.ref('test3').child(horario.keyDisciplina)
+            var caminho =  firebaseDatabase.ref('disciplinasCadastradas').child(horario.keyDisciplina)
                                                         .child('unidades')
                                                         .child(horario.keyUnidade)
                                                         .child('horarios')
