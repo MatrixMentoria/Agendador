@@ -8,29 +8,29 @@
     <div class="container">
       <form id="formulario">
         <div class="row">
-          <p class="center-align" id="loginEstud">Login de Estudantes</p>
+          <p class="center-align" id="loginEstud"><strong>Entrar</strong></p>
         </div>
 
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix">account_circle</i>
-            <input id="icon_prefix" type="text" class="validate">
-            <label for="text" data-error="incorreto" data-success="ok">Matrícula: </label>
+            <input v-model="email" id="icon_prefix" type="email" class="validate" required>
+            <label for="text" data-error="incorreto" data-success="ok">E-mail: </label>
           </div>
         </div>
 
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix">edit</i>
-            <input id="icon_prefix" type="password" class="validate">
-            <label for="password" data-error="incorreto" data-success="ok">Senha de Acesso: </label>
+            <input @keyup.enter="login" v-model="senha" id="icon_prefix" type="password" class="validate" required>
+            <label for="password" data-error="incorreto" data-success="ok">Senha:</label>
           </div>
         </div>
 
-        <div class="row">
-          <div class="input-field col l1 s1 offset-l5 push-s4 push-m5 ">
-            <router-link to="/Agendar"><a class="red darken-4 waves-effect waves-light btn">Entrar</a></router-link>
-          </div>
+        <div class="row center">
+            <a @click="login" class="red darken-4 waves-effect waves-light btn">Entrar</a>
+            <a @click="signup" class="red darken-4 waves-effect waves-light btn">Cadastrar Usuário</a>
+            <a @click="signup('adm')" class="red darken-4 waves-effect waves-light btn">Cadastrar Administrador</a>
         </div>
       </form>
     </div>
@@ -43,3 +43,70 @@
       font-size: 25px;
     }
 </style>
+
+<<script>
+import {firebase} from '../Firebase'
+
+export default {
+  name: 'login',
+  data() {
+    return {
+      email: '',
+      senha: '',
+    }
+  },
+  beforeCreate: function() {
+    firebase.auth().signOut();
+  },
+  methods: {
+    login: function () {
+      firebase.auth().signInWithEmailAndPassword(this.email, this.senha).then(function(){
+        if (firebase.auth().currentUser.displayName == "adm") {
+          window.location.href = "/cadastrar"
+        } else {
+          window.location.href = "/agendar";
+        }
+      }).catch(function(error) {
+        console.log(error);
+        if (error.code == "auth/invalid-email") {
+          alert("E-mail inválido");
+        } else if(error.code == "auth/wrong-password") {
+          alert("E-mail ou senha incorreto");
+        } else if(error.code == "auth/user-not-found") {
+          alert("E-mail não cadastrado");
+        } else {
+          alert(error);
+        }
+    });
+    },
+    signup: function (adm) {
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.senha).then(function(){
+        if (adm === "adm"){
+          var user = firebase.auth().currentUser;
+          user.updateProfile({
+            displayName: "adm",
+          }).then(function () {
+            alert("administrador cadastrado com sucesso");
+          }, function (error) {
+            alert(error);
+          });
+        } else {
+          alert("Cadastrado com sucesso");
+        }
+      }).catch(function(error) {
+        if (error.code == "auth/invalid-email") {
+          alert("E-mail Inválido");
+        } else if (error.code == "auth/weak-password") {
+          alert("A senha deve conter no mínimo 6 caracteres");
+        } else if (error.code == "auth/email-already-in-use") {
+          alert("E-mail já cadastrado");
+        } else {
+          alert(error);
+        }
+      });
+    }
+  }
+}
+</script>
+
+

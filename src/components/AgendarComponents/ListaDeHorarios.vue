@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table class="highlight centered">
+        <table class="highlight centered" v-if="selecao">
             <thead>
                 <tr>
                     <th>Data</th>
@@ -9,7 +9,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="horario in horarios" :key="horario.data" @click="confirmacaoDeAgendamento(disciplina.descricao,unidade.descrição,horario.data,horario.sala)">
+                <tr class="horarios" v-if="horario.status" v-for="horario in horarios" :key="horario.data" @click="confirmacaoDeAgendamento(disciplina.codigo, disciplina.descricao,unidade.descricao,horario.data,horario.sala)">
                     <td>{{ horario.data | dataFormatada }}</td>
                     <td>{{ horario.data | horarioFormatado }}</td>
                     <td>{{ horario.sala }}</td>
@@ -22,12 +22,20 @@
 <script>
     import moment from 'moment';
     import sweetalert from 'sweetalert';
+    import {firebase} from '../../Firebase'
+
+    const firebaseDatabase = firebase.database();
 
     export default {
-        props: ['horarios','unidade','disciplina','pendente'],
+        props: ['horarios','unidade','disciplina','pendente','selecao'],
+        data() {
+            return {
+                disciplinasAgendadasUsuario: [],
+            }
+        },
         methods: {
-            confirmacaoDeAgendamento(disciplina,unidade,horario,sala){
-                var horarioMoment = moment(JSON.parse(horario+'000')).format('DD/MM/YYYY - hh:mm')
+            confirmacaoDeAgendamento(codigo,disciplina,unidade,horario,sala){
+                var horarioMoment = moment(JSON.parse(horario)).format('DD/MM/YYYY - hh:mm')
                 sweetalert({
                     title: 'Confirmar Agendamento?',
                     html: true,
@@ -46,26 +54,15 @@
                     closeOnConfirm: false,
                 },
                 () => {
-                    //↓ Cria o objeto que será armazenado no local storage
+                    //↓ Cria o objeto que será armazenado no firebase
                     var objDisciplinaAgendada = {
                     disciplinaAgendada: disciplina,
                     unidadeAgendada: unidade,
                     dataAgendada: horario,
                     salaAgendada: sala
                     }
-                    //Verifica se já há disciplinas agendadas
-                    if(localStorage.getItem("Agendamentos") === null) {
-                    //Caso não haja matérias agendadas, insere o objeto em um array e o armazena no local storage
-                    var arrayDeAgendamentos = [objDisciplinaAgendada];
-                    localStorage.setItem("Agendamentos",JSON.stringify(arrayDeAgendamentos));
-                    }
-                    else
-                    {
-                    //Caso haja matérias agendadas, insere o objeto no array já criado
-                    var arrayDeAgendamentos = JSON.parse(localStorage.getItem("Agendamentos"));
-                    arrayDeAgendamentos.push(objDisciplinaAgendada);
-                    localStorage.setItem("Agendamentos",JSON.stringify(arrayDeAgendamentos));
-                    }
+                    firebaseDatabase.ref('usuarios').child(firebase.auth().currentUser.uid).child('disciplinasAgendadas').child(codigo).set(objDisciplinaAgendada);
+
                     sweetalert({
                         title: 'Confirmado',
                         html: true,
@@ -79,22 +76,26 @@
                             '</ul>',
                         type: 'success',
                     },
-                    () => { this.disciplina.pendente = false; }   
+                    () => { this.disciplina.pendente = false;
+                          }   
                     );                            
                 });
             },
         },
         filters: {
             dataFormatada: function(data) {
-                //Precisamos melhorar essa parte. Consegui converter as datas somente
-                //a partir de milisegundos. Por isso o '+000'
-                var dataParse = JSON.parse(data+'000')
+                var dataParse = JSON.parse(data)
                 return moment(dataParse).format('DD/MM/YYYY')
             },
             horarioFormatado: function(data) {
-                var dataParse = JSON.parse(data+'000')
+                var dataParse = JSON.parse(data)
                 return moment(dataParse).format('hh:mm')
             },
         }
     };
 </script>
+<style>
+.horarios{
+    cursor: pointer;
+}
+</style>

@@ -1,19 +1,27 @@
 <template>
     <div class="navbar-fixed">
         <nav class="nav-wrapper red darken-4">
-            <span class="brand-logo center">Agendamento de Provas</span>
+            <span class="brand-logo center">Cadastro de Horários</span>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a onclick="window.print()">Imprimir Comprovante</a></li>
+                <li><a @click="logout">Sair</a></li>
             </ul>
         </nav>
     </div>
 </template>
 
 <script>
+import {firebase} from '../../Firebase'
 export default {
     mounted: function() {
         $(".button-collapse").sideNav();
     },
+    methods: {
+        logout: function() {
+            firebase.auth().signOut().then(function(){
+                window.location.href = "/";
+            });
+        }
+    }
 };
 </script>
 

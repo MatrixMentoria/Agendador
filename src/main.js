@@ -5,21 +5,29 @@
 import Vue from 'vue'
 //importar o vue router
 import VueRouter from 'vue-router'
+//import the vuefirebase
+import VueFire from 'vuefire'
 //import the App component
 import App from './App'
 //importar o componente Agendar
 import Agendar from './components/Agendar'
 //importar o componente Login
 import Login from './components/Login'
-
+//importar o componente Cadastrar
+import Cadastrar from './components/Cadastrar'
+//importar o componente impressao
+import impressao from './components/impressao'
 //Diga ao vue para usar o router.
 Vue.use(VueRouter)
+Vue.use(VueFire)
 
 //defina suas rotas
 const routes = [
   //defina a url raíz da aplicação
   {path: '/', component: Login },
   {path: '/agendar', component: Agendar},
+  {path: '/cadastrar', component: Cadastrar},
+  {path:'/impressao', component: impressao}
 ]
 
 // Criar a instancia do router e passar a opção de 'routes'
