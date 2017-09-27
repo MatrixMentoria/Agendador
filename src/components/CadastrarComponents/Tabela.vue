@@ -99,7 +99,7 @@ export default {
                             codigoDisciplina: item.val().codigo,
                             disciplina: item.val().descricao,
                             codigoUnidade: unidadeChild.codigo,
-                            unidade: unidadeChild.descrição,
+                            unidade: unidadeChild.descricao,
                             data: horarioChild.data,
                             sala: horarioChild.sala,
                             vagas: horarioChild.vagas,
