@@ -4,7 +4,7 @@
       <h4 class="center">Cadastrar Horário</h4>
 
       <div class="row">
-        <form class="col s12" @submit.prevent="teste()">
+        <form class="col s12" @submit.prevent="salvar()">
 
             <div class="row">
               <div class="input-field col s6">
@@ -27,11 +27,11 @@
 
             <div class="row">
               <div class="input-field col s6">
-                <input id="sala" type="text" class="validate" v-model="obj.sala">
+                <input id="sala" type="text" class="validate" v-model.number="obj.sala">
                 <label for="sala" class="active">Sala</label>
               </div>
               <div class="input-field col s6">
-                <input id="vagas" type="text" class="validate" v-model="obj.vagas">
+                <input id="vagas" type="text" class="validate" v-model.number="obj.vagas">
                 <label for="vagas" class="active">Vagas</label>
               </div>
             </div>
@@ -73,26 +73,26 @@
   import moment from 'moment';
   import {firebase} from '../../Firebase'
   const firebaseDatabase = firebase.database();
-  const disciplinasRef = firebaseDatabase.ref('test3');
+  const disciplinasRef = firebaseDatabase.ref('disciplinasCadastradas');
 
   export default {
     props: [],
     data: function(){
       return {
         disciplinaCodigo: '',
-        disciplinaKey: '',
-        disciplinaDescricao: '',
         unidadeCodigo: '',
-        unidadeKey: '',
         unidadeDescricao: '',
         disciplinas:[],
-        unidades:[],  
+        unidades:[],
+        status: '',
         obj: {
           data: '',
           sala: '',
           vagas: '',
-          status: '',
-        }
+          status: false,
+        },
+        horarios: [],
+        unidadeSelecionada: ''
       }
     },
 
@@ -133,7 +133,13 @@
     },
 
     methods: {
-      teste: function() {
+      salvar: function() {
+        if (this.status === '') {
+          this.obj.status = false;
+        } else {
+          this.obj.status = this.status;
+        }
+
         var ano = $('.datepicker').pickadate('picker').get('highlight', 'yyyy');
         var mes = $('.datepicker').pickadate('picker').get('highlight', 'mm');
         var dia = $('.datepicker').pickadate('picker').get('highlight', 'dd');
@@ -144,30 +150,44 @@
         var minuto = horarioString.substring(3,5)
         this.obj.data = Date.parse(new Date(ano, mes, dia, hora, minuto))
 
-        this.unidadeKey = this.unidadeCodigo
+        var horariosPromise = firebaseDatabase.ref('disciplinasCadastradas') 
+                                              .child(this.disciplinaCodigo)
+                                              .child('unidades')
+                                              .child(this.unidadeCodigo)
+                                              .child('horarios')
+                                              .once('value');
+        horariosPromise.then((snapshot) => { snapshot.forEach((item) => { this.horarios.push(item.val()) }) 
+          this.horarios.push(this.obj)
+          this.montaUnidade();
+        })
+      },
 
-        // firebaseDatabase.ref('test4/' + this.disciplinaCodigo).once('value').then((snapshot) => {
-        //   this.disciplinaKey = snapshot.val()
-        firebaseDatabase.ref('disciplinasCadastradas')
+      montaUnidade: function() {
+        var unidadePromise = firebaseDatabase.ref('unidades').child(this.unidadeCodigo).once('value');
+        unidadePromise.then((snapshot) => { 
+          this.unidadeSelecionada = snapshot.val() 
+          this.unidadeSelecionada.horarios = this.horarios
+          this.atualizaFirebase()
+          })
+      },
+
+      atualizaFirebase: function() {
+        firebaseDatabase.ref('disciplinasCadastradas') 
                         .child(this.disciplinaCodigo)
                         .child('unidades')
-                        .child(this.unidadeKey)
-                        .child('horarios')
-                        .push(this.obj)
-        // })
+                        .child(this.unidadeCodigo)
+                        .set(this.unidadeSelecionada)
 
-        //limpar formulario
-        // this.disciplinaCodigo = '';
-        // this.disciplinaKey = '';
-        // this.disciplinaDescricao = '';
-        // this.unidadeCodigo = '';
-        // this.unidadeKey = '';
-        // this.unidadeDescricao = '';
-        // this.disciplinas =[];
-        // this.obj.data = '';
-        // this.obj.sala = '';
-        // this.obj.vagas = '';
-        // this.obj.status = '';
+        this.disciplinaCodigo = ''
+        this.disciplinaCodigo = ''
+        this.unidadeCodigo = ''
+        this.unidadeDescricao = ''
+        this.obj.data = ''
+        this.obj.sala = ''
+        this.obj.vagas = ''
+        this.obj.status = ''
+        this.horarios = []
+        this.unidadeSelecionada = ''
       }
     },
   };
