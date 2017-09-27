@@ -4,11 +4,11 @@
       <h4 class="center">Edição de Cadastro</h4>
 
       <div class="row">
-        <form class="col s12" @submit.prevent="salvarCadastro">
+        <form class="col s12" @submit.prevent="salvarCadastro()">
 
             <div class="row">
               <div class="input-field col s6">
-                <select class="browser-default" v-model="cadastroEditado.codigoDisciplina">
+                <select class="browser-default" v-model="codigoDisciplina">
                   <option value="" disabled>Disciplina</option>
                   <option v-for="disciplina in disciplinas"
                           :value="disciplina.codigo"
@@ -16,37 +16,34 @@
                 </select>
               </div>
               <div class="input-field col s6">
-                <select class="browser-default" v-model="cadastroEditado.codigoUnidade">
-                  <option value="" disabled>Disciplina</option>
-                  <option value="A">Unidade Jacarepaguá</option>
-                  <option value="B">Unidade Méier</option>
-                  <option value="C">Unidade Rio Comprido</option>
-                  <option value="D">Unidade Bento Ribeiro</option>
-                  <option value="E">Unidade Méier II</option>
-                  </option>
+                <select class="browser-default" v-model="codigoUnidade">
+                  <option value="" disabled>Unidade</option>
+                  <option v-for="unidade in unidades"
+                          :value="unidade.codigo"
+                          :key="unidade.key">{{unidade.descricao}}</option>
                 </select>
               </div>
             </div>
 
             <div class="row">
               <div class="input-field col s6">
-                <input id="data" type="text" class="datepicker" v-model="cadastroEditado.dataFormatada">
-                <label for="data" class="active">Data</label>
+                <input id="sala" type="text" class="validate"  v-model.number="cadastroEditado.sala" :value="cadastroEditado.sala">
+                <label for="sala" class="active">Sala</label>
               </div>
               <div class="input-field col s6">
-                <input id="horario" type="text" class="timepicker" v-model="cadastroEditado.horarioFormatado">
-                <label for="horario" class="active">Horario</label>
+                <input id="vagas" type="text" class="validate" v-model.number="cadastroEditado.vagas" :value="cadastroEditado.vagas">
+                <label for="vagas" class="active">Vagas</label>
               </div>
             </div>
 
             <div class="row">
               <div class="input-field col s6">
-                <input id="sala" type="text" class="validate"  v-model="cadastroEditado.sala" :value="cadastroEditado.sala">
-                <label for="sala" class="active">Sala</label>
+                <input id="data" type="text" class="datepicker" v-model="dataFormatada">
+                <label for="data" class="active">Data</label>
               </div>
               <div class="input-field col s6">
-                <input id="vagas" type="text" class="validate" v-model="cadastroEditado.vagas" :value="cadastroEditado.vagas">
-                <label for="vagas" class="active">Vagas</label>
+                <input id="horario" type="text" class="timepicker" v-model="horarioFormatado">
+                <label for="horario" class="active">Horario</label>
               </div>
             </div>
 
@@ -54,7 +51,7 @@
               <div class="switch">
                 <label>
                   Inativo
-                  <input type="checkbox" :checked="cadastroEditado.status">
+                  <input type="checkbox" :checked="cadastroEditado.status" v-model="cadastroEditado.status">
                   <span class="lever"></span>
                   Ativo
                 </label>
@@ -76,7 +73,7 @@
   import moment from 'moment';
   import {firebase} from '../../Firebase'
   const firebaseDatabase = firebase.database();
-  const disciplinasRef = firebaseDatabase.ref('test3');
+  const disciplinasRef = firebaseDatabase.ref('disciplinasCadastradas');
   // import 'moment/locale/pt-br' - o pickadate.js no materialize só funciona em ingles
 
   export default {
@@ -86,20 +83,15 @@
       return {
         cadastroAntigo: [],
         disciplinas: [],
-        hora: '',
-        data: '',
-        listaDeUnidades : [],
+        horarios: [],
+        unidades : [],
+        unidadeSelecionada: '',
+        codigoDisciplina: '',
+        codigoUnidade: '',
+        dataFormatada: '',
+        horarioFormatado: '',
         cadastroEditado: {
-          keyDisciplina: '',
-          keyUnidade: '',
-          keyHorario: '',
-          codigoDisciplina: '',
-          codigoUnidade: '',
-          disciplina: '',
-          unidade: '',
           data: '',
-          dataFormatada: '',
-          horarioFormatado: '',
           sala: '',
           vagas: '',
           status: '',
@@ -107,12 +99,23 @@
       }
     },
 
-  mounted: function() {
-    var disciplinasPromise = disciplinasRef.once('value');
-    disciplinasPromise.then((snapshot) => {
-      snapshot.forEach((item) => {               
-        this.disciplinas = item.val();
+    mounted: function() {
+
+      firebaseDatabase.ref('disciplinas').once('value').then(disciplina => {
+        var self = this;
+          disciplina.forEach((discip) => {
+            self.disciplinas.push(discip.val());
+          });
       });
+      firebaseDatabase.ref('unidades').once('value').then(unidade => {
+        var self = this;
+          unidade.forEach((unid) => {
+            self.unidades.push(unid.val());
+          });
+      });
+
+      //Materialize.updateTextFields(); "TypeError: Materialize.updateTextFields is not a function"
+
       $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
         selectYears: 15, // Creates a dropdown of 15 years to control year,
@@ -132,84 +135,74 @@
         autoclose: false, // automatic close timepicker
         ampmclickable: true // make AM PM clickable
       });
-    });
-  },  
+    },  
 
 
     methods: {
       salvarCadastro: function(){
+        var horarioAntigo = firebaseDatabase.ref('disciplinasCadastradas')
+                        .child(this.horario.keyDisciplina)
+                        .child('unidades')
+                        .child(this.horario.keyUnidade)
+                        .child('horarios')
+                        .child(this.horario.keyHorario)
+                        .remove()
 
-        // var velho = this.horario;
-        // var novo = this.cadastroEditado;
+        var ano = $('.datepicker').pickadate('picker').get('highlight', 'yyyy');
+        var mes = $('.datepicker').pickadate('picker').get('highlight', 'mm');
+        var dia = $('.datepicker').pickadate('picker').get('highlight', 'dd');
+        var objTimePicker = $('.timepicker').pickatime('picker').get()
+        var horarioString = objTimePicker[1].value
+        var hora = horarioString.substring(0,2)
+        var minuto = horarioString.substring(3,5)
+        this.cadastroEditado.data = Date.parse(new Date(ano, mes, dia, hora, minuto))
 
-        // var keyDisciplinaAntiga = velho.keyDisciplina
-        // var keyUnidadeAntiga = velho.keyUnidade
-        // var keyHorarioAntigo = velho.keyHorario
+        var listaUnidadesPromise = firebaseDatabase.ref('unidades')
+                                             .child(this.codigoUnidade)
+                                             .once('value');
+        listaUnidadesPromise.then((snapshot) => { 
+          this.unidadeSelecionada = snapshot.val()
+          this.insereHorario();
+        })
+      },
 
-        // var horarioAntigo = this.disciplinas.keyDisciplinaAntiga.unidades.keyUnidade.horarios.keyHorarioAntigo
+      insereHorario: function() {
+        var unidadePromise = firebaseDatabase.ref('disciplinasCadastradas')
+                                             .child(this.codigoDisciplina)
+                                             .child('unidades')
+                                             .child(this.codigoUnidade)
+                                             .child('horarios')
+                                             .once('value');
+        unidadePromise.then((snapshot) => { snapshot.forEach((item) => { this.horarios.push(item.val()) }) 
+          this.horarios.push(this.cadastroEditado)
+          this.unidadeSelecionada.horarios = this.horarios
+          this.atualizaFirebase();
+        })
+      },
 
-        // var disciplinasPromise = disciplinasRef.once('value');
-        // disciplinasPromise.then((snapshot) => {
-        //   snapshot.forEach((item) => {
-        //     this.cadastroAntigo = item.val();
-        //   });
-        // })
-
-        // var caminhoVelho =  firebaseDatabase.ref('test3').child(velho.keyDisciplina)
-        //                                                   .child('unidades')
-        //                                                   .child(velho.keyUnidade)
-        //                                                   .child('horarios')
-        //                                                   .child(velho.keyHorario)
-
-        // console.log(velho)
-        // console.log(novo)
-
-        // var x = novo.dataFormatada + ' ' + novo.horarioFormatado
-        // var y = Date.parse(x)
-        // console.log(x)
-        // console.log(y)
-
-        // if ( firebaseDatabase.ref('test3').child(novo.keyDisciplina)) {
-        //   console.log('existe')
-        // } else {
-        //   console.log('não existe')
-        // }
-        // var caminhoNovo = firebaseDatabase.ref('disciplinas').child(novo.keyDisciplina)
-        //                                                    .child('unidades')
-        //                                                    .child(novo.keyUnidade)
-        //                                                    .child('horarios')
-        //                                                    .child(novo.keyHorario)
-
-
-        // var caminho = firebaseDatabase.ref('test/disciplinas/' + velho.keyDisciplina +
-        //                                        '/unidades/' + velho.keyUnidade + 
-        //                                        '/horarios/' + velho.keyHorario)
-
-        // caminho.remove() EXCLUI O HORÁRIO DO FIREBASE
-
-      }
+      atualizaFirebase: function() {
+        firebaseDatabase.ref('disciplinasCadastradas') 
+                        .child(this.codigoDisciplina)
+                        .child('unidades')
+                        .child(this.codigoUnidade)
+                        .set(this.unidadeSelecionada)
+      },
     },
-
 
     watch: {
       horario: function() {
         this.cadastroEditado = {
-          keyDisciplina: this.horario.keyDisciplina,
-          keyUnidade: this.horario.keyUnidade,
-          keyHorario: this.horario.keyHorario,
-          disciplina: this.horario.disciplina,
-          unidade: this.horario.unidade,
-          codigoDisciplina: this.horario.codigoDisciplina,
-          codigoUnidade: this.horario.codigoUnidade,
           data: this.horario.data,
           sala: this.horario.sala,
           vagas: this.horario.vagas,
           status: this.horario.status,
         }
+        this.codigoDisciplina = this.horario.codigoDisciplina;
+        this.codigoUnidade = this.horario.codigoUnidade;
 
         var dataParse = JSON.parse(this.horario.data)
-        this.cadastroEditado.horarioFormatado = moment(dataParse).format('hh:mm')
-        this.cadastroEditado.dataFormatada = moment(dataParse).format('DD MMMM, YYYY')
+        this.horarioFormatado = moment(dataParse).format('hh:mm')
+        this.dataFormatada = moment(dataParse).format('DD MMMM, YYYY')
       },
     },
   };

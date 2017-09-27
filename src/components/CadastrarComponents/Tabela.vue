@@ -108,6 +108,7 @@ export default {
                             botaoEdicao: botaoEdicao,
                         }
                         this.horarios.push(obj)
+
                     }
                 }
             });
