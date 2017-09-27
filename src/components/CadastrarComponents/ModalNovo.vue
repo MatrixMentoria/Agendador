@@ -51,7 +51,7 @@
               <div class="switch">
                 <label>
                   Inativo
-                  <input type="checkbox"  v-model="obj.status">
+                  <input type="checkbox"  v-model="status">
                   <span class="lever"></span>
                   Ativo
                 </label>
@@ -84,7 +84,7 @@
         unidadeDescricao: '',
         disciplinas:[],
         unidades:[],
-        status: '',
+        status: false,
         obj: {
           data: '',
           sala: '',
@@ -134,10 +134,10 @@
 
     methods: {
       salvar: function() {
-        if (this.status === '') {
-          this.obj.status = false;
+        if (this.status) {
+          this.obj.status = true;
         } else {
-          this.obj.status = this.status;
+          this.obj.status = false;
         }
 
         var ano = $('.datepicker').pickadate('picker').get('highlight', 'yyyy');
