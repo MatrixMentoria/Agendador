@@ -20,82 +20,85 @@
 </template>
 
 <script>
-    import moment from 'moment';
-    import sweetalert from 'sweetalert';
-    import {firebase} from '../../Firebase'
+import moment from 'moment';
+import sweetalert from 'sweetalert';
+import { firebase } from '../../Firebase'
 
-    const firebaseDatabase = firebase.database();
+const firebaseDatabase = firebase.database();
 
-    export default {
-        props: ['horarios','unidade','disciplina','pendente','selecao'],
-        data() {
-            return {
-                disciplinasAgendadasUsuario: [],
-            }
-        },
-        methods: {
-            confirmacaoDeAgendamento(codigo,disciplina,unidade,horario,sala){
-                var horarioMoment = moment(JSON.parse(horario)).format('DD/MM/YYYY - hh:mm')
-                sweetalert({
-                    title: 'Confirmar Agendamento?',
-                    html: true,
-                    text:
-                        '<ul>' + 
-                            '<li>' + disciplina + '</li>' + 
-                            '<li>' + unidade + '</li>' + 
-                            '<li>' + horarioMoment + 'h</li>' + 
-                            '<li> Sala ' +sala + '</li>' +
-                        '</ul>',
-                    type: 'warning',
-                    showCancelButton: true,
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonColor: '#DD6B55',
-                    confirmButtonText: 'Confirmar',
-                    closeOnConfirm: false,
-                },
+export default {
+    props: ['horarios', 'unidade', 'disciplina', 'pendente', 'selecao'],
+    data() {
+        return {
+            disciplinasAgendadasUsuario: [],
+        }
+    },
+    methods: {
+        confirmacaoDeAgendamento(codigo, disciplina, unidade, horario, sala) {
+            var vm = this;
+            var horarioMoment = moment(JSON.parse(horario)).format('DD/MM/YYYY - hh:mm')
+            sweetalert({
+                title: 'Confirmar Agendamento?',
+                html: true,
+                text:
+                '<ul>' +
+                '<li>' + disciplina + '</li>' +
+                '<li>' + unidade + '</li>' +
+                '<li>' + horarioMoment + 'h</li>' +
+                '<li> Sala ' + sala + '</li>' +
+                '</ul>',
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: 'Confirmar',
+                closeOnConfirm: false,
+            },
                 () => {
                     //↓ Cria o objeto que será armazenado no firebase
                     var objDisciplinaAgendada = {
-                    disciplinaAgendada: disciplina,
-                    unidadeAgendada: unidade,
-                    dataAgendada: horario,
-                    salaAgendada: sala
+                        disciplinaAgendada: disciplina,
+                        unidadeAgendada: unidade,
+                        dataAgendada: horario,
+                        salaAgendada: sala
                     }
                     firebaseDatabase.ref('usuarios').child(firebase.auth().currentUser.uid).child('disciplinasAgendadas').child(codigo).set(objDisciplinaAgendada);
+                    vm.$emit('escolhaConfirmada', objDisciplinaAgendada);
 
                     sweetalert({
                         title: 'Confirmado',
                         html: true,
                         closeOnConfirm: true,
-                        text: 
-                            '<ul>' + 
-                                '<li>' + disciplina + '</li>' + 
-                                '<li>' + unidade + '</li>' + 
-                                '<li>' + horarioMoment + 'h</li>' + 
-                                '<li> Sala ' +sala +
-                            '</ul>',
+                        text:
+                        '<ul>' +
+                        '<li>' + disciplina + '</li>' +
+                        '<li>' + unidade + '</li>' +
+                        '<li>' + horarioMoment + 'h</li>' +
+                        '<li> Sala ' + sala +
+                        '</ul>',
                         type: 'success',
                     },
-                    () => { this.disciplina.pendente = false;
-                          }   
-                    );                            
+                        () => {
+                            this.disciplina.pendente = false;
+                        }
+                    );
                 });
-            },
         },
-        filters: {
-            dataFormatada: function(data) {
-                var dataParse = JSON.parse(data)
-                return moment(dataParse).format('DD/MM/YYYY')
-            },
-            horarioFormatado: function(data) {
-                var dataParse = JSON.parse(data)
-                return moment(dataParse).format('hh:mm')
-            },
-        }
-    };
+    },
+    filters: {
+        dataFormatada: function(data) {
+            var dataParse = JSON.parse(data)
+            return moment(dataParse).format('DD/MM/YYYY')
+        },
+        horarioFormatado: function(data) {
+            var dataParse = JSON.parse(data)
+            return moment(dataParse).format('hh:mm')
+        },
+    }
+};
 </script>
 <style>
-.horarios{
+.horarios {
     cursor: pointer;
 }
 </style>
