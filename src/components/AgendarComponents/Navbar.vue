@@ -13,11 +13,15 @@
 import {firebase} from '../../Firebase'
 
 export default {
-    mounted: function() {
+    beforeCreate: function() {
         firebase.auth().onAuthStateChanged(function(user) {
-          if (user.displayName == "adm") {
-            alert("Por favor, utilize uma conta de usuário para agendar");
-            window.location.href = "/cadastrar";
+          if(user) {
+            if (user.displayName == "adm") {
+              alert("Por favor, utilize uma conta de usuário para agendar");
+              window.location.href = "/cadastrar";
+            }
+          } else {
+              window.location.href = "/";
           }
         });
         $(".button-collapse").sideNav();
