@@ -77,7 +77,7 @@
   // import 'moment/locale/pt-br' - o pickadate.js no materialize só funciona em ingles
 
   export default {
-    props: [ 'horario'],
+    props: ['horario'],
 
     data: function(){
       return {
@@ -85,7 +85,7 @@
         disciplinas: [],
         horarios: [],
         unidades : [],
-        unidadeSelecionada: '',
+        unidadeSelecionada: [],
         codigoDisciplina: '',
         codigoUnidade: '',
         dataFormatada: '',
@@ -100,7 +100,6 @@
     },
 
     mounted: function() {
-
       firebaseDatabase.ref('disciplinas').once('value').then(disciplina => {
         var self = this;
           disciplina.forEach((discip) => {
@@ -186,6 +185,8 @@
                         .child('unidades')
                         .child(this.codigoUnidade)
                         .set(this.unidadeSelecionada)
+        this.unidadeSelecionada = [];
+        this.horarios = [];
       },
     },
 
