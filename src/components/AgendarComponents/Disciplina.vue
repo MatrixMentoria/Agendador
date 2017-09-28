@@ -7,7 +7,7 @@
           {{ disciplina.descricao }}
         </div>
         <div class="collapsible-body center" v-if="disciplina.pendente">
-          <lista-de-unidades v-on:agendamentoConfirmado="agendamentoConfirmado" :unidades="disciplina.unidades" :disciplina="disciplina"></lista-de-unidades>
+          <lista-de-unidades :unidades="disciplina.unidades" :disciplina="disciplina"></lista-de-unidades>
         </div>
 
         <div v-show="disciplina.pendente === false">
@@ -77,24 +77,20 @@ export default {
     $('.collapsible').collapsible();
     $('select').material_select();
     var usuarioDisciplinasAgendadas = firebaseDatabase.ref('usuarios').child(firebase.auth().currentUser.uid).child('disciplinasAgendadas').child(this.disciplina.codigo);
-    usuarioDisciplinasAgendadas.once('value', user => {
+    usuarioDisciplinasAgendadas.on('value', user => {
       if (user.val() != null) {
         var userDisciplinasAgendadas = user.val();
-        this.agendamentoConfirmado(userDisciplinasAgendadas);
+        this.unidadeAgendada = userDisciplinasAgendadas.unidadeAgendada
+        var momentDataHoraAgendada = JSON.parse(userDisciplinasAgendadas.dataAgendada);
+        this.dataAgendada = moment(momentDataHoraAgendada).format('DD/MM/YYYY')
+        this.horarioAgendado = moment(momentDataHoraAgendada).format('hh:mm');
+        this.salaAgendada = userDisciplinasAgendadas.salaAgendada;
         this.disciplina.pendente = false;
       }
     })
   },
   methods: {
-    agendamentoConfirmado(agendamento) {
-
-      this.unidadeAgendada = agendamento.unidadeAgendada;
-      var momentDataHoraAgendada = JSON.parse(agendamento.dataAgendada);
-      this.dataAgendada = moment(momentDataHoraAgendada).format('DD/MM/YYYY')
-      this.horarioAgendado = moment(momentDataHoraAgendada).format('hh:mm');
-      this.salaAgendada = agendamento.salaAgendada;
-
-    }, cancelarDisciplina: function(disciplina) {
+    cancelarDisciplina: function(disciplina) {
       sweetalert({
         title: 'Cancelar Agendamento?',
         html: true,

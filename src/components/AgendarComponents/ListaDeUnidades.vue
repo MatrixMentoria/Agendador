@@ -6,7 +6,7 @@
                 {{unidade.descricao}}
             </option>
         </select>
-        <lista-de-horarios v-on:escolhaConfirmada="escolhaConfirmada" :selecao="selecao" :horarios="unidadeSelecionada.horarios" :unidade="unidadeSelecionada" :disciplina="disciplina"></lista-de-horarios>
+        <lista-de-horarios :selecao="selecao" :horarios="unidadeSelecionada.horarios" :unidade="unidadeSelecionada" :disciplina="disciplina"></lista-de-horarios>
     </div>
 </template>
 
@@ -25,10 +25,6 @@ export default {
         };
     },
     methods: {
-        escolhaConfirmada(obj) {
-            this.$emit('agendamentoConfirmado', obj);
-            console.log(obj);
-        },
         selectAlterado: function() {
             this.selecao = true;
         }

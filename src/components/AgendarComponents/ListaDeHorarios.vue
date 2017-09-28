@@ -35,7 +35,6 @@ export default {
     },
     methods: {
         confirmacaoDeAgendamento(codigo, disciplina, unidade, horario, sala) {
-            var vm = this;
             var horarioMoment = moment(JSON.parse(horario)).format('DD/MM/YYYY - hh:mm')
             sweetalert({
                 title: 'Confirmar Agendamento?',
@@ -63,7 +62,6 @@ export default {
                         salaAgendada: sala
                     }
                     firebaseDatabase.ref('usuarios').child(firebase.auth().currentUser.uid).child('disciplinasAgendadas').child(codigo).set(objDisciplinaAgendada);
-                    vm.$emit('escolhaConfirmada', objDisciplinaAgendada);
 
                     sweetalert({
                         title: 'Confirmado',
