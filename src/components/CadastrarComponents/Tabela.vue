@@ -62,13 +62,11 @@ export default {
             disciplinas: {},
         };
     },
-
     mounted: function() {
         $('.modal').modal();
         this.horarios.length = 0;
-        var disciplinasPromise = disciplinasRef.once('value');
-        disciplinasPromise.then((snapshot) => {
-            snapshot.forEach((item) => {
+        disciplinasRef.on('value', snapshot => {
+                        snapshot.forEach((item) => {
                 var chaveDisciplina = item.key
                 var codDisciplina = item.val().codigo
 
@@ -113,7 +111,7 @@ export default {
                 }
             });
             this.filtroTabela();
-        });
+        })
     },
 
     methods: {
