@@ -113,7 +113,7 @@
           });
       });
 
-      //Materialize.updateTextFields(); "TypeError: Materialize.updateTextFields is not a function"
+      //Materialize.updateTextFields(); //"TypeError: Materialize.updateTextFields is not a function"
 
       $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
@@ -134,7 +134,7 @@
         autoclose: false, // automatic close timepicker
         ampmclickable: true // make AM PM clickable
       });
-    },  
+    },
 
 
     methods: {
@@ -151,7 +151,7 @@
         var mes = $('.datepicker').pickadate('picker').get('highlight', 'mm');
         var dia = $('.datepicker').pickadate('picker').get('highlight', 'dd');
         var objTimePicker = $('.timepicker').pickatime('picker').get()
-        var horarioString = objTimePicker[1].value
+        var horarioString = objTimePicker[0].value
         var hora = horarioString.substring(0,2)
         var minuto = horarioString.substring(3,5)
         this.cadastroEditado.data = Date.parse(new Date(ano, mes, dia, hora, minuto))
