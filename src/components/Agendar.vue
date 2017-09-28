@@ -49,7 +49,8 @@
   );
     },
     beforeCreate: function() {
-      firebaseDatabase.ref('disciplinasCadastradas').once('value').then(disciplina => {
+      firebaseDatabase.ref('disciplinasCadastradas').on('value', disciplina => {
+        this.disciplinas = [];
         var self = this;
           disciplina.forEach((discip) => {
             self.disciplinas.push(discip.val());
