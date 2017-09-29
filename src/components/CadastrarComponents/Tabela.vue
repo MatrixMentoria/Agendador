@@ -148,7 +148,7 @@
             }
           });
         },
-    
+
         alterarStatus: function (horario, event) {
           this.statusGamb = true;
           horario.status = event.target.checked;
@@ -158,13 +158,13 @@
           } else {
             horario.botaoEdicao = ''
           }
-    
+
           var caminho = firebaseDatabase.ref('disciplinasCadastradas').child(horario.keyDisciplina)
-            .child('unidades')
-            .child(horario.keyUnidade)
-            .child('horarios')
-            .child(horario.keyHorario)
-    
+                                                                      .child('unidades')
+                                                                      .child(horario.keyUnidade)
+                                                                      .child('horarios')
+                                                                      .child(horario.keyHorario)
+
           caminho.update({
             status: horario.status
           })
@@ -182,7 +182,7 @@
         },
         horarioFormatado: function (data) {
           var dataParse = JSON.parse(data)
-          return moment(dataParse).format('hh:mm')
+          return moment(dataParse).format('HH:mm')
         },
       }
     

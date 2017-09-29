@@ -83,7 +83,7 @@ export default {
         this.unidadeAgendada = userDisciplinasAgendadas.unidadeAgendada
         var momentDataHoraAgendada = JSON.parse(userDisciplinasAgendadas.dataAgendada);
         this.dataAgendada = moment(momentDataHoraAgendada).format('DD/MM/YYYY')
-        this.horarioAgendado = moment(momentDataHoraAgendada).format('hh:mm');
+        this.horarioAgendado = moment(momentDataHoraAgendada).format('HH:mm');
         this.salaAgendada = userDisciplinasAgendadas.salaAgendada;
         this.disciplina.pendente = false;
       }

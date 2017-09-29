@@ -100,7 +100,6 @@
     },
 
     mounted: function() {
-      
       firebaseDatabase.ref('disciplinas').once('value').then(disciplina => {
         var self = this;
           disciplina.forEach((discip) => {
@@ -134,7 +133,6 @@
         ampmclickable: true // make AM PM clickable
       });
     },
-
 
     methods: {
       salvarCadastro: function(){
@@ -201,7 +199,7 @@
         this.codigoUnidade = this.horario.codigoUnidade;
 
         var dataParse = JSON.parse(this.horario.data)
-        this.horarioFormatado = moment(dataParse).format('hh:mm')
+        this.horarioFormatado = moment(dataParse).format('HH:mm')
         this.dataFormatada = moment(dataParse).format('DD MMMM, YYYY')
         $('#modalEdicao').modal({dismissible: true, // Modal can be dismissed by clicking outside of the modal
         opacity: .100, // Opacity of modal background
@@ -213,7 +211,6 @@
       },
     },
   };
-
 </script>
 
 <style>

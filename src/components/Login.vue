@@ -41,7 +41,7 @@
   }
 
   #formulario{
-    background-color: #fff; 
+    background-color:rgba(255, 255, 255, 0.3);
     padding: 10px; 
     min-width: 100px;
     max-width: 400px;
