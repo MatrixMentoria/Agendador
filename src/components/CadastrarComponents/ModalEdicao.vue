@@ -207,8 +207,6 @@
         opacity: .100, // Opacity of modal background
         inDuration: 300, // Transition in duration
         outDuration: 200, // Transition out duration
-        endingBottom: '0%',
-        endingTop: '0%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
         Materialize.updateTextFields();
       },})
