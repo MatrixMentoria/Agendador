@@ -35,7 +35,7 @@ export default {
     },
     methods: {
         confirmacaoDeAgendamento(codigo, disciplina, unidade, horario, sala) {
-            var horarioMoment = moment(JSON.parse(horario)).format('DD/MM/YYYY - hh:mm')
+            var horarioMoment = moment(JSON.parse(horario)).format('DD/MM/YYYY - HH:mm')
             sweetalert({
                 title: 'Confirmar Agendamento?',
                 html: true,
@@ -90,7 +90,7 @@ export default {
         },
         horarioFormatado: function(data) {
             var dataParse = JSON.parse(data)
-            return moment(dataParse).format('hh:mm')
+            return moment(dataParse).format('HH:mm')
         },
     }
 };
