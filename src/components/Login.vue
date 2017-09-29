@@ -1,50 +1,72 @@
 <template>
-  <div id="login">
-    <div class="navbar-fixed">
-      <nav id="nav_f" class="red darken-4" role="navigation">
-        <a href="http://www.unicarioca.edu.br/" id="logo-container" target="_blank" class="brand-logo center" alt="UniCarioca">Agendamento de Provas</a>
-      </nav>
-    </div>
-    <div class="container">
-      <form id="formulario">
-        <div class="row">
-          <p class="center-align" id="loginEstud"><strong>Entrar</strong></p>
-        </div>
-
-        <div class="row">
-          <div class="input-field col s12">
-            <i class="material-icons prefix">account_circle</i>
-            <input v-model="email" id="icon_prefix" type="email" class="validate" required>
-            <label for="text" data-error="incorreto" data-success="ok">E-mail: </label>
+    <div class="backgroundImage">
+        <div id="login">
+          <div class="navbar-fixed">
+              <nav id="nav_f" class="red darken-4" role="navigation">
+              <a href="http://www.unicarioca.edu.br/" id="logo-container" target="_blank" class="brand-logo center" alt="UniCarioca">Agendamento de Provas</a>
+              </nav>
           </div>
-        </div>
+          <div class="mascara">
+            <div id='formContainer'>
+              <form id="formulario" class="container col s12 m12 l12">
+                  <h4 class="center-align">Entrar</h4>
 
-        <div class="row">
-          <div class="input-field col s12">
-            <i class="material-icons prefix">edit</i>
-            <input @keyup.enter="login" v-model="senha" id="icon_prefix" type="password" class="validate" required>
-            <label for="password" data-error="incorreto" data-success="ok">Senha:</label>
-          </div>
-        </div>
+                  <div class="input-field col s12">
+                      <i class="material-icons prefix">account_circle</i>
+                      <input v-model="email" id="icon_prefix" type="email" class="validate" required>
+                      <label for="text" data-error="incorreto" data-success="ok">E-mail: </label>
+                  </div>
 
-        <div class="row center">
-            <a @click="login" class="red darken-4 waves-effect waves-light btn">Entrar</a>
-            <a @click="signup" class="red darken-4 waves-effect waves-light btn">Cadastrar Usuário</a>
-            <a @click="signup('adm')" class="red darken-4 waves-effect waves-light btn">Cadastrar Administrador</a>
-        </div>
-      </form>
-    </div>
-  </div>
+                  <div class="input-field col s12">
+                      <i class="material-icons prefix">edit</i>
+                      <input @keyup.enter="login" v-model="senha" id="icon_prefix" type="password" class="validate" required>
+                      <label for="password" data-error="incorreto" data-success="ok">Senha:</label>
+                  </div>
+
+                  <div class="row center">
+                      <a @click="login" class="red darken-4 waves-effect waves-light btn">Entrar</a>
+                  </div>
+              </form>
+            </div><!--formContainer-->
+            <footer>
+              <div id="container">Photo credit: <a href="https://www.flickr.com/photos/83633410@N07/7658219802/">
+                CollegeDegrees360</a> via <a href="https://visualhunt.com/re/1a80e8">VisualHunt</a> / <a href="http://creativecommons.org/
+                licenses/by-sa/2.0/"> CC BY-SA</a></p></div>
+            </footer>  
+          </div><!--opacidade do background-->
+        </div><!--login-->
+    </div><!--backGroundImage-->
 </template>
 
-
 <style>
-    #loginEstud {
-      font-size: 25px;
-    }
+  .backgroundImage{
+    background: url(./background.jpg) no-repeat;
+    background-size: cover;
+    height: 100vmin;
+  }
+
+  #formulario{
+    background-color: #fff; 
+    padding: 10px; 
+    min-width: 100px;
+    max-width: 400px;
+  }
+
+  #formContainer{
+    height: 90vmin;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+  }
+
+  .mascara{
+    background-color: rgba(50,50,50,0.2);
+  }
 </style>
 
-<<script>
+<script>
 import {firebase} from '../Firebase'
 
 export default {
