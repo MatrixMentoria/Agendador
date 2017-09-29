@@ -100,7 +100,7 @@
     },
 
     mounted: function() {
-      
+      console.log(this.horario)
       firebaseDatabase.ref('disciplinas').once('value').then(disciplina => {
         var self = this;
           disciplina.forEach((discip) => {
@@ -135,7 +135,6 @@
       });
     },
 
-
     methods: {
       salvarCadastro: function(){
         var horarioAntigo = firebaseDatabase.ref('disciplinasCadastradas')
@@ -151,9 +150,11 @@
         var dia = $('.datepicker').pickadate('picker').get('highlight', 'dd');
         var objTimePicker = $('.timepicker').pickatime('picker').get()
         var horarioString = objTimePicker[0].value
+        console.log(horarioString)
         var hora = horarioString.substring(0,2)
         var minuto = horarioString.substring(3,5)
         this.cadastroEditado.data = Date.parse(new Date(ano, mes, dia, hora, minuto))
+        console.log(this.cadastroEditado)
 
         var listaUnidadesPromise = firebaseDatabase.ref('unidades')
                                              .child(this.codigoUnidade)
@@ -201,7 +202,7 @@
         this.codigoUnidade = this.horario.codigoUnidade;
 
         var dataParse = JSON.parse(this.horario.data)
-        this.horarioFormatado = moment(dataParse).format('hh:mm')
+        this.horarioFormatado = moment(dataParse).format('HH:mm')
         this.dataFormatada = moment(dataParse).format('DD MMMM, YYYY')
         $('#modalEdicao').modal({dismissible: true, // Modal can be dismissed by clicking outside of the modal
         opacity: .100, // Opacity of modal background
@@ -213,7 +214,6 @@
       },
     },
   };
-
 </script>
 
 <style>
