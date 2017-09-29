@@ -112,8 +112,12 @@
             self.unidades.push(unid.val());
           });
       });
-
+      
+      var amanha = new Date();
+      amanha.setDate(amanha.getDate()+1)
+      console.log(moment(amanha).add(-1,'months').format('MM'))
       $('.datepicker').pickadate({
+        min: new Date(moment(amanha).format('YYYY'),moment(amanha).add(-1,'months').format('MM'),moment(amanha).format('DD')),
         selectMonths: true, // Creates a dropdown to control month
         selectYears: 15, // Creates a dropdown of 15 years to control year,
         today: 'Hoje',
