@@ -28,11 +28,6 @@
                   </div>
               </form>
             </div><!--formContainer-->
-            <footer>
-              <div id="container">Photo credit: <a href="https://www.flickr.com/photos/83633410@N07/7658219802/">
-                CollegeDegrees360</a> via <a href="https://visualhunt.com/re/1a80e8">VisualHunt</a> / <a href="http://creativecommons.org/
-                licenses/by-sa/2.0/"> CC BY-SA</a></p></div>
-            </footer>  
           </div><!--opacidade do background-->
         </div><!--login-->
     </div><!--backGroundImage-->

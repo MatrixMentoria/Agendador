@@ -27,22 +27,22 @@
 
             <div class="row">
               <div class="input-field col s6">
-                <input id="sala" type="text" class="validate"  v-model.number="cadastroEditado.sala" :value="cadastroEditado.sala">
+                <input id="sala" type="text" class="validate"  v-model.number="cadastroEditado.sala" :value="cadastroEditado.sala" required>
                 <label for="sala" class="active">Sala</label>
               </div>
               <div class="input-field col s6">
-                <input id="vagas" type="text" class="validate" v-model.number="cadastroEditado.vagas" :value="cadastroEditado.vagas">
+                <input id="vagas" type="text" class="validate" v-model.number="cadastroEditado.vagas" :value="cadastroEditado.vagas" required>
                 <label for="vagas" class="active">Vagas</label>
               </div>
             </div>
 
             <div class="row">
               <div class="input-field col s6">
-                <input id="data" type="text" class="datepicker" v-model="dataFormatada">
+                <input id="data" type="text" class="datepicker" v-model="dataFormatada" required>
                 <label for="data" class="active">Data</label>
               </div>
               <div class="input-field col s6">
-                <input id="horario" type="text" class="timepicker" v-model="horarioFormatado">
+                <input id="horario" type="text" class="timepicker" v-model="horarioFormatado" required>
                 <label for="horario" class="active">Horario</label>
               </div>
             </div>
@@ -112,8 +112,6 @@
             self.unidades.push(unid.val());
           });
       });
-
-      //Materialize.updateTextFields(); //"TypeError: Materialize.updateTextFields is not a function"
 
       $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month

@@ -8,7 +8,7 @@
 
             <div class="row">
               <div class="input-field col s6">
-                <select class="browser-default" v-model="disciplinaCodigo">
+                <select class="browser-default" v-model="disciplinaCodigo" required>
                   <option value="" disabled>Disciplina</option>
                   <option v-for="disciplina in disciplinas"
                           :value="disciplina.codigo"
@@ -16,7 +16,7 @@
                 </select>
               </div>
               <div class="input-field col s6">
-                <select class="browser-default" v-model="unidadeCodigo">
+                <select class="browser-default" v-model="unidadeCodigo" required>
                   <option value="" disabled>Unidade</option>
                   <option v-for="unidade in unidades"
                           :value="unidade.codigo"
@@ -27,22 +27,22 @@
 
             <div class="row">
               <div class="input-field col s6">
-                <input id="sala" type="text" class="validate" v-model.number="obj.sala">
+                <input id="sala" type="text" class="validate" v-model.number="obj.sala" required>
                 <label for="sala" class="active">Sala</label>
               </div>
               <div class="input-field col s6">
-                <input id="vagas" type="text" class="validate" v-model.number="obj.vagas">
+                <input id="vagas" type="text" class="validate" v-model.number="obj.vagas" required>
                 <label for="vagas" class="active">Vagas</label>
               </div>
             </div>
 
             <div class="row">
               <div class="input-field col s6">
-                <input id="data" type="text" class="datepicker">
+                <input id="data" type="text" class="datepicker" required>
                 <label for="data" class="active">Data</label>
               </div>
               <div class="input-field col s6">
-                <input id="horario" type="text" class="timepicker">
+                <input id="horario" type="text" class="timepicker" required>
                 <label for="horario" class="active">Horario</label>
               </div>
             </div>
