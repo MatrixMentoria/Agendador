@@ -96,32 +96,6 @@ export default {
         }
     });
     },
-    signup: function (adm) {
-      firebase.auth().createUserWithEmailAndPassword(this.email, this.senha).then(function(){
-        if (adm === "adm"){
-          var user = firebase.auth().currentUser;
-          user.updateProfile({
-            displayName: "adm",
-          }).then(function () {
-            alert("administrador cadastrado com sucesso");
-          }, function (error) {
-            alert(error);
-          });
-        } else {
-          alert("Cadastrado com sucesso");
-        }
-      }).catch(function(error) {
-        if (error.code == "auth/invalid-email") {
-          alert("E-mail Inválido");
-        } else if (error.code == "auth/weak-password") {
-          alert("A senha deve conter no mínimo 6 caracteres");
-        } else if (error.code == "auth/email-already-in-use") {
-          alert("E-mail já cadastrado");
-        } else {
-          alert(error);
-        }
-      });
-    }
   }
 }
 </script>
