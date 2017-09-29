@@ -1,14 +1,14 @@
 <template>
+  <div class="mascara">
     <div class="backgroundImage">
-        <div id="login">
+       <div id="login">
           <div class="navbar-fixed">
               <nav id="nav_f" class="red darken-4" role="navigation">
               <a href="http://www.unicarioca.edu.br/" id="logo-container" target="_blank" class="brand-logo center" alt="UniCarioca">Agendamento de Provas</a>
               </nav>
           </div>
-          <div class="mascara">
-            <div id='formContainer'>
-              <form id="formulario" class="container col s12 m12 l12">
+          <div id='formContainer'>
+              <form id="formulario" class="container card-panel col s12 m12 l12">
                   <h4 class="center-align">Entrar</h4>
 
                   <div class="input-field col s12">
@@ -27,10 +27,10 @@
                       <a @click="login" class="red darken-4 waves-effect waves-light btn">Entrar</a>
                   </div>
               </form>
-            </div><!--formContainer-->
-          </div><!--opacidade do background-->
+            </div><!--formContainer--> 
         </div><!--login-->
     </div><!--backGroundImage-->
+  </div><!--opacidade do background-->
 </template>
 
 <style>
@@ -59,6 +59,7 @@
   .mascara{
     background-color: rgba(50,50,50,0.2);
   }
+
 </style>
 
 <script>
