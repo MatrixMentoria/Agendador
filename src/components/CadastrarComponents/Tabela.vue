@@ -64,18 +64,6 @@
       },
       mounted: function () {
         $('.modal').modal();
-        $('#modalEdicao').modal({dismissible: true, // Modal can be dismissed by clicking outside of the modal
-      opacity: .100, // Opacity of modal background
-      inDuration: 300, // Transition in duration
-      outDuration: 200, // Transition out duration
-      endingBottom: '0%',
-      endingTop: '0%', // Ending top style attribute
-      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-      alert('oi');
-      },
-      complete: function() { } // Callback for Modal close
-    }
-  );
         this.horarios.length = 0;
         disciplinasRef.on('value', snapshot => {
           this.horarios = [];
