@@ -31,7 +31,7 @@
                 <label for="sala" class="active">Sala</label>
               </div>
               <div class="input-field col s6">
-                <input id="vagas" type="text" class="validate" v-model.number="obj.vagas" required>
+                <input id="vagas" type="number" class="validate" v-model.number="obj.vagas" required>
                 <label for="vagas" class="active">Vagas</label>
               </div>
             </div>

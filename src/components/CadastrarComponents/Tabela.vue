@@ -57,6 +57,7 @@
           horarios: [],
           unidades: '',
           status: '',
+          statusGamb: false,
           horarioEditado: '',
           listaDeDisciplinas: [],
           disciplinas: {},
@@ -66,6 +67,7 @@
         $('.modal').modal();
         this.horarios.length = 0;
         disciplinasRef.on('value', snapshot => {
+          if (!this.statusGamb) {
           this.horarios = [];
           snapshot.forEach((item) => {
             var chaveDisciplina = item.key
@@ -114,6 +116,8 @@
             }
           });
           this.filtroTabela();
+          }
+          this.statusGamb = false;
         })
       },
     
@@ -146,7 +150,7 @@
         },
     
         alterarStatus: function (horario, event) {
-        
+          this.statusGamb = true;
           horario.status = event.target.checked;
           horario.filtroStatus = horario.status;
           if (horario.status === false) {
