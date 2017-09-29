@@ -100,6 +100,7 @@
     },
 
     mounted: function() {
+      
       firebaseDatabase.ref('disciplinas').once('value').then(disciplina => {
         var self = this;
           disciplina.forEach((discip) => {
@@ -202,6 +203,15 @@
         var dataParse = JSON.parse(this.horario.data)
         this.horarioFormatado = moment(dataParse).format('hh:mm')
         this.dataFormatada = moment(dataParse).format('DD MMMM, YYYY')
+        $('#modalEdicao').modal({dismissible: true, // Modal can be dismissed by clicking outside of the modal
+        opacity: .100, // Opacity of modal background
+        inDuration: 300, // Transition in duration
+        outDuration: 200, // Transition out duration
+        endingBottom: '0%',
+        endingTop: '0%', // Ending top style attribute
+        ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+        Materialize.updateTextFields();
+      },})
       },
     },
   };
