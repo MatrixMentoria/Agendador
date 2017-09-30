@@ -68,12 +68,12 @@
     },
     filters: {
       dataFormatada: function (data) {
-        var dataParse = JSON.parse(data + '000')
+        var dataParse = JSON.parse(data)
         return moment(dataParse).format('DD/MM/YYYY')
       },
       horarioFormatado: function (data) {
-        var dataParse = JSON.parse(data + '000')
-        return moment(dataParse).format('hh:mm')
+        var dataParse = JSON.parse(data)
+        return moment(dataParse).format('HH:mm')
       },
     }
   };
